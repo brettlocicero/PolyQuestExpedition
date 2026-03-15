@@ -1077,7 +1077,7 @@ GameObject:
   - component: {fileID: 995001908}
   - component: {fileID: 995001912}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1889,8 +1889,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.005879356, y: 0.02, z: 0.027298806}
-  m_Center: {x: 0.00001884332, y: 0.00000009714253, z: -0.012649409}
+  m_Size: {x: 0.011021429, y: 0.02, z: 0.034065552}
+  m_Center: {x: 0.00023033483, y: 0.00000031299172, z: -0.016032808}
 --- !u!114 &5334037119335541809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1904,6 +1904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponHitbox
   active: 0
+  knockbackForce: 15
 --- !u!33 &5366159435827338874
 MeshFilter:
   m_ObjectHideFlags: 0

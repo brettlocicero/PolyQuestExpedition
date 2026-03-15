@@ -63,6 +63,7 @@ public abstract class WeaponObject : MonoBehaviour
 
         hitboxCoroutine = StartCoroutine(HitboxWorker(attack));
 
+        attackAnimation.Rewind(attack.attackAnimation.name);
         attackAnimation.Play(attack.attackAnimation.name);
         attackCounter = 0f;
         comboIndex = ++comboIndex % weaponSO.attacks.Length;
@@ -72,9 +73,9 @@ public abstract class WeaponObject : MonoBehaviour
     IEnumerator HitboxWorker(WeaponAttack attack)
     {
         yield return new WaitForSeconds(attack.hitboxTimeRange.x);
-        hitbox.active = true;
+        hitbox.StartSwing();
 
         yield return new WaitForSeconds(attack.hitboxTimeRange.y);
-        hitbox.active = false;
+        hitbox.EndSwing();
     }
 }
