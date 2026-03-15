@@ -3,12 +3,10 @@ using UnityEngine;
 
 public abstract class WeaponObject : MonoBehaviour
 {
-    [SerializeField] WeaponSO weaponSO;
+    [SerializeField] protected WeaponSO weaponSO;
     
-    [Header("Hitbox Settings")]
-    [SerializeField] WeaponHitbox hitbox;
-
     [Header("References")]
+    [SerializeField] protected Transform attackOrigin;
     [SerializeField] Animator movementAnimator;
     [SerializeField] Animation attackAnimation;
     [SerializeField] CharacterController playerCC;
@@ -19,8 +17,6 @@ public abstract class WeaponObject : MonoBehaviour
     float attackCounter = 0f;
 
     int comboIndex = 0;
-
-    Coroutine hitboxCoroutine;
 
     void Start()
     {
@@ -48,34 +44,23 @@ public abstract class WeaponObject : MonoBehaviour
         bool isAttacking = InputManager.Actions.Player.Attack.ReadValue<float>() > 0;
         if (isAttacking && attackCounter >= weaponSO.attackRate)
         {
-            Attack();
+            WeaponAttack attack = weaponSO.attacks[comboIndex];
+
+            attackAnimation.Rewind(attack.attackAnimation.name);
+            attackAnimation.Play(attack.attackAnimation.name);
+
+            StartCoroutine(AttackWorker(attack));
+
+            comboIndex = ++comboIndex % weaponSO.attacks.Length;
+            attackCounter = 0f;
         }
     }
 
-    protected virtual void Attack()
+    IEnumerator AttackWorker(WeaponAttack attack)
     {
-        WeaponAttack attack = weaponSO.attacks[comboIndex];
-
-        if (hitboxCoroutine != null)
-        {
-            StopCoroutine(hitboxCoroutine);
-        }
-
-        hitboxCoroutine = StartCoroutine(HitboxWorker(attack));
-
-        attackAnimation.Rewind(attack.attackAnimation.name);
-        attackAnimation.Play(attack.attackAnimation.name);
-        attackCounter = 0f;
-        comboIndex = ++comboIndex % weaponSO.attacks.Length;
-
+        yield return new WaitForSeconds(attack.attackDelay);
+        Attack(attack);
     }
 
-    IEnumerator HitboxWorker(WeaponAttack attack)
-    {
-        yield return new WaitForSeconds(attack.hitboxTimeRange.x);
-        hitbox.StartSwing();
-
-        yield return new WaitForSeconds(attack.hitboxTimeRange.y);
-        hitbox.EndSwing();
-    }
+    protected abstract void Attack(WeaponAttack attack);
 }

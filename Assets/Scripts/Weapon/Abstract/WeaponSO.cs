@@ -17,5 +17,5 @@ public class WeaponAttack
 {
     public AnimationClip attackAnimation;
     public float damage = 10f;
-    public Vector2 hitboxTimeRange;
+    public float attackDelay = 0.333f;
 }
