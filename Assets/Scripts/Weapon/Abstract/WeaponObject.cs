@@ -4,6 +4,10 @@ using UnityEngine;
 public abstract class WeaponObject : MonoBehaviour
 {
     [SerializeField] protected WeaponSO weaponSO;
+
+    [Header("Settings")]
+    [SerializeField] float maxChargeTime = 1f;
+    [SerializeField] Vector3 maxChargeRotation;
     
     [Header("References")]
     [SerializeField] protected Transform attackOrigin;
@@ -15,8 +19,13 @@ public abstract class WeaponObject : MonoBehaviour
     float velocity = 0f;
 
     float attackCounter = 0f;
+    float chargeCounter = 0f;
 
     int comboIndex = 0;
+
+    bool isAttacking = false;
+
+    Vector3 currentRotation;
 
     void Start()
     {
@@ -40,11 +49,24 @@ public abstract class WeaponObject : MonoBehaviour
 
     void HandleAttack()
     {
+        if (isAttacking) return;
+
         attackCounter += Time.deltaTime;
-        bool isAttacking = InputManager.Actions.Player.Attack.ReadValue<float>() > 0;
-        if (isAttacking && attackCounter >= weaponSO.attackRate)
+        bool attackPressed = InputManager.Actions.Player.Attack.IsPressed();
+        bool attackReleased = InputManager.Actions.Player.Attack.WasReleasedThisFrame();
+        transform.localEulerAngles = Vector3.Lerp(Vector3.zero, maxChargeRotation, chargeCounter / maxChargeTime);
+
+        WeaponAttack attack = weaponSO.attacks[comboIndex];
+        if (attackPressed)
         {
-            WeaponAttack attack = weaponSO.attacks[comboIndex];
+            chargeCounter += Time.deltaTime;
+            chargeCounter = Mathf.Clamp(chargeCounter, 0f, maxChargeTime);
+        }
+
+        if (attackReleased && attackCounter >= weaponSO.attackRate)
+        {
+            if (chargeCounter >= maxChargeTime / 2f)
+                attack = weaponSO.heavyAttack;
 
             attackAnimation.Rewind(attack.attackAnimation.name);
             attackAnimation.Play(attack.attackAnimation.name);
@@ -53,13 +75,23 @@ public abstract class WeaponObject : MonoBehaviour
 
             comboIndex = ++comboIndex % weaponSO.attacks.Length;
             attackCounter = 0f;
+            chargeCounter = 0f;
+        }
+
+        else if (attackReleased)
+        {
+            chargeCounter = 0f;
         }
     }
 
     IEnumerator AttackWorker(WeaponAttack attack)
     {
+        isAttacking = true;
+
         yield return new WaitForSeconds(attack.attackDelay);
         Attack(attack);
+
+        isAttacking = false;
     }
 
     protected abstract void Attack(WeaponAttack attack);

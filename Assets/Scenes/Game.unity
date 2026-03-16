@@ -15,7 +15,7 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
   m_Fog: 1
-  m_FogColor: {r: 0.94509804, g: 0.8109754, b: 0.6156863, a: 1}
+  m_FogColor: {r: 1, g: 0.81003153, b: 0.5990566, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.01
   m_LinearFogStart: 0
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   speed: 12
-  mouseSensitivity: 0.1
+  mouseSensitivity: 0.05
   jumpHeight: 2
   gravity: -29.43
   cameraHolder: {fileID: 989068894}
@@ -969,6 +969,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponObject
   weaponSO: {fileID: 11400000, guid: f03f5dc8ad95f8441962e8780e40a556, type: 2}
+  maxChargeTime: 1
+  maxChargeRotation: {x: -20, y: 30, z: 0}
   attackOrigin: {fileID: 558781065}
   movementAnimator: {fileID: 1983475054}
   attackAnimation: {fileID: 1986414465}
@@ -1679,6 +1681,7 @@ Animation:
   m_Animations:
   - {fileID: 7400000, guid: 30a02ab8a68cd294695e64059bfde137, type: 2}
   - {fileID: 7400000, guid: 7cf44fb0814eb09419a70557fa07f9fc, type: 2}
+  - {fileID: 7400000, guid: 2fdfde1d4d3325e47a1300851db498cb, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0

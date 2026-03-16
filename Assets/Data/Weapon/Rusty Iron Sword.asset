@@ -24,3 +24,7 @@ MonoBehaviour:
   - attackAnimation: {fileID: 7400000, guid: 7cf44fb0814eb09419a70557fa07f9fc, type: 2}
     damage: 10
     attackDelay: 0.333
+  heavyAttack:
+    attackAnimation: {fileID: 7400000, guid: 2fdfde1d4d3325e47a1300851db498cb, type: 2}
+    damage: 10
+    attackDelay: 0

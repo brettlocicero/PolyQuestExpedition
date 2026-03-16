@@ -10,6 +10,7 @@ public class WeaponSO : ItemSO
 
     [Header("VFX")]
     public WeaponAttack[] attacks;
+    public WeaponAttack heavyAttack;
 }
 
 [System.Serializable]
