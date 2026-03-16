@@ -49,8 +49,6 @@ public abstract class WeaponObject : MonoBehaviour
 
     void HandleAttack()
     {
-        if (isAttacking) return;
-
         attackCounter += Time.deltaTime;
         bool attackPressed = InputManager.Actions.Player.Attack.IsPressed();
         bool attackReleased = InputManager.Actions.Player.Attack.WasReleasedThisFrame();
@@ -66,19 +64,22 @@ public abstract class WeaponObject : MonoBehaviour
         if (attackReleased && attackCounter >= weaponSO.attackRate)
         {
             if (chargeCounter >= maxChargeTime / 2f)
+            {
                 attack = weaponSO.heavyAttack;
+            }
 
             attackAnimation.Rewind(attack.attackAnimation.name);
             attackAnimation.Play(attack.attackAnimation.name);
-
-            StartCoroutine(AttackWorker(attack));
-
-            comboIndex = ++comboIndex % weaponSO.attacks.Length;
             attackCounter = 0f;
             chargeCounter = 0f;
+
+            StartCoroutine(AttackWorker(attack));
+            comboIndex = ++comboIndex % weaponSO.attacks.Length;
+
+            attackCounter -= attack.attackRatePenalty;
         }
 
-        else if (attackReleased)
+        if (attackReleased)
         {
             chargeCounter = 0f;
         }
@@ -86,12 +87,8 @@ public abstract class WeaponObject : MonoBehaviour
 
     IEnumerator AttackWorker(WeaponAttack attack)
     {
-        isAttacking = true;
-
         yield return new WaitForSeconds(attack.attackDelay);
         Attack(attack);
-
-        isAttacking = false;
     }
 
     protected abstract void Attack(WeaponAttack attack);

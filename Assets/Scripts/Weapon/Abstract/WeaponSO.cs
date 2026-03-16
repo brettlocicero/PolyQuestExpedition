@@ -19,4 +19,5 @@ public class WeaponAttack
     public AnimationClip attackAnimation;
     public float damage = 10f;
     public float attackDelay = 0.333f;
+    public float attackRatePenalty = 0f;
 }
