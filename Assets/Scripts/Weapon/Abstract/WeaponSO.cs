@@ -20,4 +20,6 @@ public class WeaponAttack
     public float damage = 10f;
     public float attackDelay = 0.333f;
     public float attackRatePenalty = 0f;
+    public AudioClip sound;
+    public Vector2 pitchRange = new(0.9f, 1.1f);
 }

@@ -14,6 +14,7 @@ public abstract class WeaponObject : MonoBehaviour
     [SerializeField] Animator movementAnimator;
     [SerializeField] Animation attackAnimation;
     [SerializeField] CharacterController playerCC;
+    [SerializeField] AudioSource audioSource;
 
     float currentMovement = 0f;
     float velocity = 0f;
@@ -89,7 +90,14 @@ public abstract class WeaponObject : MonoBehaviour
     {
         yield return new WaitForSeconds(attack.attackDelay);
         Attack(attack);
+        PlayAttackAudio(attack);
     }
 
     protected abstract void Attack(WeaponAttack attack);
+
+    void PlayAttackAudio(WeaponAttack attack)
+    {
+        audioSource.pitch = Random.Range(attack.pitchRange.x, attack.pitchRange.y);
+        audioSource.PlayOneShot(attack.sound);
+    }
 }

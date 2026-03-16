@@ -15,7 +15,18 @@ public class MeleeWeaponObject : WeaponObject
             //     enemy.TakeDamage(attackDamage);
             // }
 
-            print("hit");
         }
+
+        if (hits.Length > 0)
+            CinemachineShake.instance.ShakeCamera(2f, 0.25f, 0.15f, 85f);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (attackOrigin == null || weaponSO == null)
+            return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackOrigin.position, weaponSO.range);
     }
 }
