@@ -5,20 +5,30 @@ public class MeleeWeaponObject : WeaponObject
     protected override void Attack(WeaponAttack attack)
     {
         int enemyLayer = LayerMask.GetMask("Enemy");
-        Collider[] hits = Physics.OverlapSphere(attackOrigin.position, weaponSO.range, enemyLayer);
 
-        foreach (Collider hit in hits)
+        RaycastHit[] hits = Physics.SphereCastAll(
+            attackOrigin.position,
+            weaponSO.range,
+            attackOrigin.forward,
+            0.01f,
+            enemyLayer
+        );
+
+        foreach (RaycastHit hit in hits)
         {
-            // Enemy enemy = hit.GetComponent<Enemy>();
-            // if (enemy != null)
-            // {
-            //     enemy.TakeDamage(attackDamage);
-            // }
+            if (hit.collider.TryGetComponent<EnemyAI>(out var enemy))
+            {
+                enemy.TakeDamage(attack.damage);
 
+                // Calculate knockback
+                Vector3 knockbackDir = (hit.collider.transform.position - attackOrigin.position).normalized;
+
+                enemy.ApplyKnockback(knockbackDir * attack.knockbackForce);
+            }
         }
 
         if (hits.Length > 0)
-            CinemachineShake.instance.ShakeCamera(2f, 0.25f, 0.15f, 85f);
+            CinemachineShake.instance.ShakeCamera(3f, 0.25f, 0.3f, 85f);
     }
 
     void OnDrawGizmos()

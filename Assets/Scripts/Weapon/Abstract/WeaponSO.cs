@@ -4,7 +4,6 @@ using UnityEngine;
 public class WeaponSO : ItemSO
 {
     [Header("Weapon Settings")]
-    public int damage = 10;
     public float attackRate = 1f;
     public float range = 3f;
 
@@ -17,9 +16,10 @@ public class WeaponSO : ItemSO
 public class WeaponAttack
 {
     public AnimationClip attackAnimation;
-    public float damage = 10f;
+    public int damage = 10;
     public float attackDelay = 0.333f;
     public float attackRatePenalty = 0f;
+    public float knockbackForce = 2f;
     public AudioClip sound;
     public Vector2 pitchRange = new(0.9f, 1.1f);
 }

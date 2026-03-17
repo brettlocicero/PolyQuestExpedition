@@ -14,20 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
   itemName: Rusty Iron Sword
   description: 
-  damage: 10
   attackRate: 1.2
-  range: 1
+  range: 0.7
   attacks:
   - attackAnimation: {fileID: 7400000, guid: 30a02ab8a68cd294695e64059bfde137, type: 2}
     damage: 10
     attackDelay: 0.333
     attackRatePenalty: 0
+    knockbackForce: 10
     sound: {fileID: 8300000, guid: 37bd4299f0adae64fb439ef3915587fb, type: 3}
     pitchRange: {x: 0.7, y: 0.9}
   - attackAnimation: {fileID: 7400000, guid: 7cf44fb0814eb09419a70557fa07f9fc, type: 2}
     damage: 10
     attackDelay: 0.333
     attackRatePenalty: 0
+    knockbackForce: 10
     sound: {fileID: 8300000, guid: 37bd4299f0adae64fb439ef3915587fb, type: 3}
     pitchRange: {x: 0.7, y: 0.9}
   heavyAttack:
@@ -35,5 +36,6 @@ MonoBehaviour:
     damage: 10
     attackDelay: 0
     attackRatePenalty: 0.3
-    sound: {fileID: 8300000, guid: 37bd4299f0adae64fb439ef3915587fb, type: 3}
-    pitchRange: {x: 0.7, y: 0.9}
+    knockbackForce: 20
+    sound: {fileID: 8300000, guid: 123e3cb9a1826514a9b331ad8abeda50, type: 3}
+    pitchRange: {x: 1, y: 1.2}
