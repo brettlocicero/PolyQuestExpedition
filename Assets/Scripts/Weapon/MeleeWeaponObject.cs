@@ -19,16 +19,17 @@ public class MeleeWeaponObject : WeaponObject
             if (hit.collider.TryGetComponent<EnemyAI>(out var enemy))
             {
                 enemy.TakeDamage(attack.damage);
-
-                // Calculate knockback
                 Vector3 knockbackDir = (hit.collider.transform.position - attackOrigin.position).normalized;
-
                 enemy.ApplyKnockback(knockbackDir * attack.knockbackForce);
             }
         }
+        
+        bool hitEnemies = hits.Length > 0;
 
-        if (hits.Length > 0)
-            CinemachineShake.instance.ShakeCamera(3f, 0.25f, 0.3f, 85f);
+        float intensity = hitEnemies ? 3f : 1.5f;
+        CinemachineShake.instance.ShakeCamera(intensity, 0.25f, 0.3f, 85f);
+        
+        if (hitEnemies) UIManager.instance.DisplayHitmarker();
     }
 
     void OnDrawGizmos()

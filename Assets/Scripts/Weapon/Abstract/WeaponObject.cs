@@ -53,19 +53,16 @@ public abstract class WeaponObject : MonoBehaviour
         bool attackPressed = InputManager.Actions.Player.Attack.IsPressed();
         bool attackReleased = InputManager.Actions.Player.Attack.WasReleasedThisFrame();
 
-        transform.localEulerAngles =
-            Vector3.Lerp(Vector3.zero, maxChargeRotation, chargeCounter / maxChargeTime);
+        transform.localEulerAngles = Vector3.Slerp(Vector3.zero, maxChargeRotation, chargeCounter / maxChargeTime);
 
         WeaponAttack attack = weaponSO.attacks[comboIndex];
 
-        // Charging
         if (attackPressed)
         {
             chargeCounter += Time.deltaTime;
             chargeCounter = Mathf.Clamp(chargeCounter, 0f, maxChargeTime);
         }
 
-        // Attack release
         if (attackReleased)
         {
             if (attackCounter >= weaponSO.attackRate)
