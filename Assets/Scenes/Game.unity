@@ -1204,8 +1204,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponObject
   weaponSO: {fileID: 11400000, guid: f03f5dc8ad95f8441962e8780e40a556, type: 2}
   maxChargeTime: 1
+  rotationSmoothSpeed: 10
   maxChargeRotation: {x: -20, y: 30, z: 0}
-  maxBlockRotation: {x: 0, y: 0, z: 20}
+  blockSpeed: 5
+  maxBlockRotation: {x: 0, y: 0, z: 10}
+  maxBlockPosition: {x: -0.15, y: 0.05, z: 0}
   attackOrigin: {fileID: 558781065}
   movementAnimator: {fileID: 1983475054}
   attackAnimation: {fileID: 1986414465}

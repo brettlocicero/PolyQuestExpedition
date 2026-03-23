@@ -5,13 +5,17 @@ public abstract class WeaponObject : MonoBehaviour
 {
     [SerializeField] protected WeaponSO weaponSO;
 
-    [Header("Settings")]
+    [Header("Charge Settings")]
     [SerializeField] float maxChargeTime = 1f;
     [SerializeField] float rotationSmoothSpeed = 10f;
     [SerializeField] Vector3 maxChargeRotation;
+    
+    [Header("Block Settings")]
+    [SerializeField] float blockSpeed = 2f;
     [SerializeField] Vector3 maxBlockRotation;
+    [SerializeField] Vector3 maxBlockPosition;
 
-    [Header("References")]
+    [Header("Object References")]
     [SerializeField] protected Transform attackOrigin;
     [SerializeField] Animator movementAnimator;
     [SerializeField] Animation attackAnimation;
@@ -29,8 +33,10 @@ public abstract class WeaponObject : MonoBehaviour
     bool inAttack = false;
     bool inBlock = false;
 
+    Vector3 currentPosition;
     Vector3 currentRotation;
     Vector3 targetRotation;
+    Vector3 targetPosition;
 
     Coroutine attackRoutine;
 
@@ -38,6 +44,7 @@ public abstract class WeaponObject : MonoBehaviour
     {
         attackCounter = weaponSO.attackRate;
         currentRotation = transform.localEulerAngles;
+        currentPosition = transform.localPosition;
     }
 
     void Update()
@@ -46,6 +53,7 @@ public abstract class WeaponObject : MonoBehaviour
         HandleAttack();
 
         HandleRotation();
+        HandlePosition();
         HandleMovementAnimation();
     }
 
@@ -53,6 +61,12 @@ public abstract class WeaponObject : MonoBehaviour
     {
         currentRotation = Vector3.Lerp(currentRotation, targetRotation, Time.deltaTime * rotationSmoothSpeed);
         transform.localEulerAngles = currentRotation;
+    }
+    
+    void HandlePosition() 
+    {
+        currentPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * blockSpeed);
+        transform.localPosition = currentPosition;
     }
 
     void HandleMovementAnimation()
@@ -148,11 +162,13 @@ public abstract class WeaponObject : MonoBehaviour
         if (inBlock)
         {
             targetRotation = maxBlockRotation;
+            targetPosition = maxBlockPosition;
         }
         
         else if (!InputManager.Actions.Player.Attack.IsPressed())
         {
             targetRotation = Vector3.zero;
+            targetPosition = Vector3.zero;
         }
     }
 }
