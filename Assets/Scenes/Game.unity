@@ -1182,7 +1182,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866541687}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1205,6 +1205,7 @@ MonoBehaviour:
   weaponSO: {fileID: 11400000, guid: f03f5dc8ad95f8441962e8780e40a556, type: 2}
   maxChargeTime: 1
   maxChargeRotation: {x: -20, y: 30, z: 0}
+  maxBlockRotation: {x: 0, y: 0, z: 20}
   attackOrigin: {fileID: 558781065}
   movementAnimator: {fileID: 1983475054}
   attackAnimation: {fileID: 1986414465}

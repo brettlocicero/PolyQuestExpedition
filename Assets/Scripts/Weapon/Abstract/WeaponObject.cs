@@ -7,7 +7,9 @@ public abstract class WeaponObject : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] float maxChargeTime = 1f;
+    [SerializeField] float rotationSmoothSpeed = 10f;
     [SerializeField] Vector3 maxChargeRotation;
+    [SerializeField] Vector3 maxBlockRotation;
 
     [Header("References")]
     [SerializeField] protected Transform attackOrigin;
@@ -24,15 +26,33 @@ public abstract class WeaponObject : MonoBehaviour
 
     int comboIndex;
 
+    bool inAttack = false;
+    bool inBlock = false;
+
+    Vector3 currentRotation;
+    Vector3 targetRotation;
+
+    Coroutine attackRoutine;
+
     void Start()
     {
         attackCounter = weaponSO.attackRate;
+        currentRotation = transform.localEulerAngles;
     }
 
     void Update()
     {
-        HandleMovementAnimation();
+        HandleBlock();
         HandleAttack();
+
+        HandleRotation();
+        HandleMovementAnimation();
+    }
+
+    void HandleRotation()
+    {
+        currentRotation = Vector3.Lerp(currentRotation, targetRotation, Time.deltaTime * rotationSmoothSpeed);
+        transform.localEulerAngles = currentRotation;
     }
 
     void HandleMovementAnimation()
@@ -50,10 +70,10 @@ public abstract class WeaponObject : MonoBehaviour
     {
         attackCounter += Time.deltaTime;
 
+        if (inAttack || inBlock) return;
+
         bool attackPressed = InputManager.Actions.Player.Attack.IsPressed();
         bool attackReleased = InputManager.Actions.Player.Attack.WasReleasedThisFrame();
-
-        transform.localEulerAngles = Vector3.Slerp(Vector3.zero, maxChargeRotation, chargeCounter / maxChargeTime);
 
         WeaponAttack attack = weaponSO.attacks[comboIndex];
 
@@ -61,6 +81,9 @@ public abstract class WeaponObject : MonoBehaviour
         {
             chargeCounter += Time.deltaTime;
             chargeCounter = Mathf.Clamp(chargeCounter, 0f, maxChargeTime);
+
+            float chargePercent = chargeCounter / maxChargeTime;
+            targetRotation = Vector3.Lerp(Vector3.zero, maxChargeRotation, chargePercent);
         }
 
         if (attackReleased)
@@ -74,29 +97,38 @@ public abstract class WeaponObject : MonoBehaviour
             }
 
             chargeCounter = 0f;
+            targetRotation = Vector3.zero;
         }
     }
 
     void PerformAttack(WeaponAttack attack)
     {
+        if (attackRoutine != null)
+            StopCoroutine(attackRoutine);
+
         attackAnimation.Rewind(attack.attackAnimation.name);
         attackAnimation.Play(attack.attackAnimation.name);
 
         attackCounter = 0f;
-
-        StartCoroutine(AttackWorker(attack));
+        attackRoutine = StartCoroutine(AttackWorker(attack));
 
         comboIndex = (comboIndex + 1) % weaponSO.attacks.Length;
-
         attackCounter -= attack.attackRatePenalty;
     }
 
     IEnumerator AttackWorker(WeaponAttack attack)
     {
+        inAttack = true;
+
         yield return new WaitForSeconds(attack.attackDelay);
 
         Attack(attack);
         PlayAttackAudio(attack);
+
+        yield return new WaitForSeconds(attack.attackDelay);
+
+        inAttack = false;
+        targetRotation = Vector3.zero;
     }
 
     protected abstract void Attack(WeaponAttack attack);
@@ -105,5 +137,22 @@ public abstract class WeaponObject : MonoBehaviour
     {
         audioSource.pitch = Random.Range(attack.pitchRange.x, attack.pitchRange.y);
         audioSource.PlayOneShot(attack.sound);
+    }
+
+    void HandleBlock()
+    {
+        if (inAttack) return;
+
+        inBlock = InputManager.Actions.Player.SecondaryAttack.IsPressed();
+
+        if (inBlock)
+        {
+            targetRotation = maxBlockRotation;
+        }
+        
+        else if (!InputManager.Actions.Player.Attack.IsPressed())
+        {
+            targetRotation = Vector3.zero;
+        }
     }
 }

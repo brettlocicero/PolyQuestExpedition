@@ -19,7 +19,6 @@ public class UIManager : MonoBehaviour
         if (hitmarker.alpha <= 0f) return;
         
         hitmarker.alpha = Mathf.Lerp(hitmarker.alpha, 0f, hitmarkerAlphaDecay * Time.deltaTime);
-        print("running");
     }
     
     public void DisplayHitmarker() 
