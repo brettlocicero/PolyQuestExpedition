@@ -15,18 +15,20 @@ MonoBehaviour:
   itemName: Rusty Iron Sword
   description: 
   attackRate: 1.2
-  range: 0.5
+  range: 1.75
   attacks:
   - attackAnimation: {fileID: 7400000, guid: 30a02ab8a68cd294695e64059bfde137, type: 2}
     damage: 10
-    attackDelay: 0.333
+    attackDirection: -1
+    attackDelay: 0.38333333
     attackRatePenalty: 0
     knockbackForce: 10
     sound: {fileID: 8300000, guid: 37bd4299f0adae64fb439ef3915587fb, type: 3}
     pitchRange: {x: 0.7, y: 0.9}
   - attackAnimation: {fileID: 7400000, guid: 7cf44fb0814eb09419a70557fa07f9fc, type: 2}
     damage: 10
-    attackDelay: 0.333
+    attackDirection: 1
+    attackDelay: 0.38333333
     attackRatePenalty: 0
     knockbackForce: 10
     sound: {fileID: 8300000, guid: 37bd4299f0adae64fb439ef3915587fb, type: 3}
@@ -34,8 +36,10 @@ MonoBehaviour:
   heavyAttack:
     attackAnimation: {fileID: 7400000, guid: 2fdfde1d4d3325e47a1300851db498cb, type: 2}
     damage: 10
-    attackDelay: 0
+    attackDirection: -1
+    attackDelay: 0.05
     attackRatePenalty: 0.3
     knockbackForce: 20
     sound: {fileID: 8300000, guid: 123e3cb9a1826514a9b331ad8abeda50, type: 3}
     pitchRange: {x: 1, y: 1.2}
+  bloodParticles: {fileID: 5500697978591745560, guid: eb803c1e5f958694881a7f86616e2532, type: 3}

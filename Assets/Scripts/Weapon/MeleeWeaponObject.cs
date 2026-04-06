@@ -1,20 +1,21 @@
+using System.Collections;
 using UnityEngine;
 
 public class MeleeWeaponObject : WeaponObject
 {
-    protected override void Attack(WeaponAttack attack)
+    protected override bool Attack(WeaponAttack attack)
     {
         int enemyLayer = LayerMask.GetMask("Enemy");
 
-        RaycastHit[] hits = Physics.SphereCastAll(
-            attackOrigin.position,
+        bool hitEnemy = Physics.Raycast(
+            mainCamTform.position,
+            mainCamTform.forward,
+            out RaycastHit hit,
             weaponSO.range,
-            attackOrigin.forward,
-            0.01f,
             enemyLayer
         );
 
-        foreach (RaycastHit hit in hits)
+        if (hitEnemy)
         {
             if (hit.collider.TryGetComponent<EnemyAI>(out var enemy))
             {
@@ -22,22 +23,22 @@ public class MeleeWeaponObject : WeaponObject
                 Vector3 knockbackDir = (hit.collider.transform.position - transform.position).normalized;
                 enemy.ApplyKnockback(knockbackDir * attack.knockbackForce);
             }
+
+            UIManager.instance.DisplayHitmarker();
+            SpawnBloodParticle(hit, attack);
         }
         
-        bool hitEnemies = hits.Length > 0;
-
-        float intensity = hitEnemies ? 3f : 1.5f;
+        float intensity = hitEnemy ? 3f : 1.5f;
         CinemachineShake.instance.ShakeCamera(intensity, 0.25f, 0.3f, 85f);
         
-        if (hitEnemies) UIManager.instance.DisplayHitmarker();
+
+        return hitEnemy;
     }
 
-    void OnDrawGizmos()
+    void SpawnBloodParticle(RaycastHit hit, WeaponAttack attack)
     {
-        if (attackOrigin == null || weaponSO == null)
-            return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackOrigin.position, weaponSO.range);
+        Quaternion hitRot = mainCamTform.rotation;
+        BloodParticles particlesObj = Instantiate(weaponSO.bloodParticles, hit.point, hitRot);
+        particlesObj.InitParticleSystem(attack);
     }
 }

@@ -22,6 +22,8 @@ public abstract class WeaponObject : MonoBehaviour
     [SerializeField] CharacterController playerCC;
     [SerializeField] AudioSource audioSource;
 
+    protected Transform mainCamTform;
+
     float currentMovement;
     float movementVelocity;
 
@@ -45,6 +47,7 @@ public abstract class WeaponObject : MonoBehaviour
         attackCounter = weaponSO.attackRate;
         currentRotation = transform.localEulerAngles;
         currentPosition = transform.localPosition;
+        mainCamTform = Camera.main.transform;
     }
 
     void Update()
@@ -136,7 +139,12 @@ public abstract class WeaponObject : MonoBehaviour
 
         yield return new WaitForSeconds(attack.attackDelay);
 
-        Attack(attack);
+        bool hitEnemy = Attack(attack);
+        if (hitEnemy) 
+        {
+            StartCoroutine(TriggerHitstop(0.05f, attack.attackAnimation));
+        }
+        
         PlayAttackAudio(attack);
 
         yield return new WaitForSeconds(attack.attackDelay);
@@ -145,7 +153,7 @@ public abstract class WeaponObject : MonoBehaviour
         targetRotation = Vector3.zero;
     }
 
-    protected abstract void Attack(WeaponAttack attack);
+    protected abstract bool Attack(WeaponAttack attack);
 
     void PlayAttackAudio(WeaponAttack attack)
     {
@@ -170,5 +178,17 @@ public abstract class WeaponObject : MonoBehaviour
             targetRotation = Vector3.zero;
             targetPosition = Vector3.zero;
         }
+    }
+
+    IEnumerator TriggerHitstop(float duration, AnimationClip anim)
+    {
+        AnimationState state = attackAnimation[anim.name];
+
+        float originalSpeed = state.speed;
+        state.speed = 0f;
+
+        yield return new WaitForSeconds(duration);
+
+        state.speed = originalSpeed;
     }
 }
