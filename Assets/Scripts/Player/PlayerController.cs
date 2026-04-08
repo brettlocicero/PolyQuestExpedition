@@ -1,4 +1,6 @@
 using UnityEngine;
+using DG.Tweening;
+using Unity.Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,17 +9,31 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpHeight = 1.5f;
     [SerializeField] float gravity = -9.81f;
 
+    [Header("Camera")]
     [SerializeField] Transform cameraHolder;
+    [SerializeField] CinemachineCamera vcam;
+
+    [SerializeField] float bobAmount = 0.05f;
+    [SerializeField] float bobSpeed = 8f;
+    [SerializeField] float tiltAmount = 5f;
+    [SerializeField] float tiltSmooth = 6f;
 
     CharacterController controller;
 
     float yVelocity;
     float xRotation;
 
+    Vector3 cameraStartLocalPos;
+    Tween bobTween;
+
+    float currentTilt;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
         CursorManager.LockCursor();
+
+        cameraStartLocalPos = cameraHolder.localPosition;
     }
 
     void Update()
@@ -25,6 +41,7 @@ public class PlayerController : MonoBehaviour
         HandleLook();
         HandleMovement();
         HandleJump();
+        HandleCameraEffects();
     }
 
     void HandleLook()
@@ -63,6 +80,38 @@ public class PlayerController : MonoBehaviour
         if (InputManager.Actions.Player.Jump.triggered && controller.isGrounded)
         {
             yVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        }
+    }
+
+    void HandleCameraEffects()
+    {
+        Vector2 moveInput = InputManager.Actions.Player.Move.ReadValue<Vector2>();
+        bool isMoving = moveInput.magnitude > 0.1f && controller.isGrounded;
+
+        if (isMoving)
+        {
+            if (bobTween == null || !bobTween.IsActive())
+            {
+                bobTween = cameraHolder.DOLocalMoveY(cameraStartLocalPos.y + bobAmount, 1f / bobSpeed)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetEase(Ease.InOutSine);
+            }
+        }
+        
+        else
+        {
+            if (bobTween != null && bobTween.IsActive())
+                bobTween.Kill();
+
+            cameraHolder.DOLocalMove(cameraStartLocalPos, 0.2f);
+        }
+
+        float targetTilt = -moveInput.x * tiltAmount;
+        currentTilt = Mathf.Lerp(currentTilt, targetTilt, Time.deltaTime * tiltSmooth);
+
+        if (vcam != null)
+        {
+            vcam.Lens.Dutch = currentTilt;
         }
     }
 }
