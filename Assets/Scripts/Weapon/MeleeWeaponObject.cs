@@ -19,7 +19,7 @@ public class MeleeWeaponObject : WeaponObject
         {
             if (hit.collider.TryGetComponent<EnemyAI>(out var enemy))
             {
-                enemy.TakeDamage(attack.damage);
+                enemy.TakeDamage(attack);
                 Vector3 knockbackDir = (hit.collider.transform.position - transform.position).normalized;
                 enemy.ApplyKnockback(knockbackDir * attack.knockbackForce);
             }

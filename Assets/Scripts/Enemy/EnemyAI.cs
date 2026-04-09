@@ -5,16 +5,25 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] string enemyName;
+    [SerializeField] Transform target;
     
     [Header("Stats")]
     [SerializeField] int health = 30;
     [SerializeField] int maxHealth = 30;
 
+    [Header("Movement")]
+    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float rotationSpeed = 10f;
+
     [Header("VFX")]
     [SerializeField] AudioClip hitSFX;
+    [SerializeField] Animator anim;
 
     AudioSource audioSource;
     Rigidbody rb;
+
+    bool isStunned = false;
+    float stunTimer = 0f;
 
     void Start()
     {
@@ -26,17 +35,59 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        
+        HandleStunTimer();
     }
 
-    public void TakeDamage(int damage)
+    void HandleStunTimer()
     {
-        health -= damage;
+        isStunned = stunTimer > 0f;
+        if (stunTimer >= 0f) stunTimer -= Time.deltaTime;
+    }
+
+    void FixedUpdate()
+    {
+        if (target == null || isStunned) return;
+
+        Vector3 dir = (target.position - transform.position).normalized;
+        dir.y = 0f;
+
+        Vector3 move = moveSpeed * Time.fixedDeltaTime * dir;
+        rb.MovePosition(rb.position + move);
+
+        if (dir != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(dir);
+            Quaternion smoothRotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
+
+            rb.MoveRotation(smoothRotation);
+        }
+    }
+
+    public void TakeDamage(WeaponAttack attack)
+    {
+        health -= attack.damage;
         PlayDamageAudio();
+        PlayHitDirectionAnimation(attack.attackDirection);
 
         if (health <= 0)
         {
             Die();
+        }
+    }
+
+    void PlayHitDirectionAnimation(AttackDirection direction)
+    {
+        switch (direction)
+        {
+            case AttackDirection.Left:
+                anim.SetTrigger("HitLeft");
+                break;
+            case AttackDirection.Right:
+                anim.SetTrigger("HitRight");
+                break;
+            default:
+                anim.SetTrigger("HitLeft");
+                break;
         }
     }
 
