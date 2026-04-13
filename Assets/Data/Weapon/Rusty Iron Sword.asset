@@ -22,6 +22,7 @@ MonoBehaviour:
     attackDirection: -1
     attackDelay: 0.38333333
     attackRatePenalty: 0
+    stunTime: 0.7
     knockbackForce: 10
     sound: {fileID: 8300000, guid: 37bd4299f0adae64fb439ef3915587fb, type: 3}
     pitchRange: {x: 0.7, y: 0.9}
@@ -30,6 +31,7 @@ MonoBehaviour:
     attackDirection: 1
     attackDelay: 0.38333333
     attackRatePenalty: 0
+    stunTime: 0.7
     knockbackForce: 10
     sound: {fileID: 8300000, guid: 37bd4299f0adae64fb439ef3915587fb, type: 3}
     pitchRange: {x: 0.7, y: 0.9}
@@ -39,7 +41,8 @@ MonoBehaviour:
     attackDirection: -1
     attackDelay: 0.05
     attackRatePenalty: 0.3
-    knockbackForce: 20
+    stunTime: 1
+    knockbackForce: 15
     sound: {fileID: 8300000, guid: 123e3cb9a1826514a9b331ad8abeda50, type: 3}
     pitchRange: {x: 1, y: 1.2}
   bloodParticles: {fileID: 5500697978591745560, guid: eb803c1e5f958694881a7f86616e2532, type: 3}

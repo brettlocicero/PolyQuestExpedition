@@ -31,6 +31,10 @@ public class EnemyAI : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
         rb = GetComponent<Rigidbody>();
+        
+        anim.speed = Random.Range(0.95f, 1.05f);
+        
+        if (!target) target = PlayerInstance.instance.transform;
     }
 
     void Update()
@@ -68,6 +72,7 @@ public class EnemyAI : MonoBehaviour
         health -= attack.damage;
         PlayDamageAudio();
         PlayHitDirectionAnimation(attack.attackDirection);
+        StunEnemy(attack.stunTime);
 
         if (health <= 0)
         {
@@ -90,6 +95,11 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
     }
+    
+    public void StunEnemy(float t) 
+    {
+        stunTimer = Mathf.Max(stunTimer, stunTimer + t);
+    }
 
     public void ApplyKnockback(Vector3 force)
     {
@@ -104,6 +114,6 @@ public class EnemyAI : MonoBehaviour
 
     void Die()
     {
-        
+        Destroy(gameObject);
     }
 }
