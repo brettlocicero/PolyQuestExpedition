@@ -545,12 +545,12 @@ MonoBehaviour:
   stepInterval: 0.325
   jumpSound: {fileID: 8300000, guid: 8802544ed0324a14095edc70ab3bbab1, type: 3}
   landSound: {fileID: 8300000, guid: 942019cf9ecd5854ebeb343b12b7f779, type: 3}
-  dashSpeed: 100
-  dashDuration: 0.2
+  dashSpeed: 50
+  dashDuration: 0.25
   dashCooldown: 1
-  dashFOV: 105
+  dashFOV: 95
   normalFOV: 90
-  fovTweenTime: 0.15
+  fovTweenTime: 0.25
 --- !u!143 &375646405
 CharacterController:
   m_ObjectHideFlags: 0

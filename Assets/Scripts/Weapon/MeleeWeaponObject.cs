@@ -30,7 +30,6 @@ public class MeleeWeaponObject : WeaponObject
                 enemy.ApplyKnockback(knockbackDir * attack.knockbackForce);
             }
 
-            UIManager.instance.DisplayHitmarker();
             SpawnBloodParticle(hit, attack);
         }
 
@@ -55,16 +54,19 @@ public class MeleeWeaponObject : WeaponObject
                 enemy.TakeDamage(attack);
 
                 Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
-                enemy.ApplyKnockback(knockbackDir * attack.knockbackForce * 0.75f); // optional reduced knockback
+                enemy.ApplyKnockback(0.75f * attack.knockbackForce * knockbackDir); // optional reduced knockback
 
                 SpawnBloodParticle(sphereHit, attack);
             }
         }
 
-        float intensity = hitEnemies.Count > 0 ? 3f : 1.5f;
+        bool successfulHit = hitEnemies.Count > 0;
+        if (successfulHit) UIManager.instance.DisplayHitmarker();
+
+        float intensity = successfulHit ? 3f : 1.5f;
         CinemachineShake.instance.ShakeCamera(intensity, 0.25f, 0.3f, 85f);
 
-        return hitEnemies.Count > 0;
+        return successfulHit;
     }
 
     void SpawnBloodParticle(RaycastHit hit, WeaponAttack attack)
