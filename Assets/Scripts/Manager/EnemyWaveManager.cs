@@ -65,7 +65,7 @@ public class EnemyWaveManager : MonoBehaviour
 
         // Random radius between min and max
         float radius = Random.Range(minRadius, maxRadius);
-        Vector3 offset = new Vector3(Mathf.Cos(angle), 5f, Mathf.Sin(angle)) * radius;
+        Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * radius;
 
         return player.position + offset;
     }
