@@ -33,18 +33,16 @@ public class MeleeWeaponObject : WeaponObject
             SpawnBloodParticle(hit, attack);
         }
 
-        float radius = attack.cleaveRadius;
-        RaycastHit[] hits = Physics.SphereCastAll(
-            mainCamTform.position,
-            radius,
-            mainCamTform.forward,
-            weaponSO.range,
+        Vector3 sphereCenter = mainCamTform.position + (mainCamTform.forward * (weaponSO.range - attack.cleaveRadius));
+        Collider[] hits = Physics.OverlapSphere(
+            sphereCenter,
+            attack.cleaveRadius,
             enemyLayer
         );
 
         foreach (var sphereHit in hits)
         {
-            if (sphereHit.collider.TryGetComponent<EnemyAI>(out var enemy))
+            if (sphereHit.TryGetComponent<EnemyAI>(out var enemy))
             {
                 if (hitEnemies.Contains(enemy))
                     continue;
@@ -56,7 +54,7 @@ public class MeleeWeaponObject : WeaponObject
                 Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
                 enemy.ApplyKnockback(0.75f * attack.knockbackForce * knockbackDir); // optional reduced knockback
 
-                SpawnBloodParticle(sphereHit, attack);
+                SpawnBloodParticle(sphereHit.ClosestPoint(sphereCenter), attack);
             }
         }
 
@@ -72,7 +70,19 @@ public class MeleeWeaponObject : WeaponObject
     void SpawnBloodParticle(RaycastHit hit, WeaponAttack attack)
     {
         Quaternion hitRot = mainCamTform.rotation;
-        BloodParticles particlesObj = Instantiate(weaponSO.bloodParticles, hit.point, hitRot);
+        Vector3 hitPoint = hit.point;
+
+        BloodParticles particlesObj = Instantiate(weaponSO.bloodParticles, hitPoint, hitRot);
+        particlesObj.InitParticleSystem(attack);
+        
+        Destroy(particlesObj.gameObject, 4f);
+    }
+
+    void SpawnBloodParticle(Vector3 pos, WeaponAttack attack)
+    {
+        Quaternion hitRot = mainCamTform.rotation;
+
+        BloodParticles particlesObj = Instantiate(weaponSO.bloodParticles, pos, hitRot);
         particlesObj.InitParticleSystem(attack);
         
         Destroy(particlesObj.gameObject, 4f);

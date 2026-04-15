@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
@@ -10,6 +11,10 @@ public class EnemyAI : MonoBehaviour
     [Header("Stats")]
     [SerializeField] int health = 30;
     [SerializeField] int maxHealth = 30;
+
+    [Header("Attack")]
+    [SerializeField] float attackRange = 2f;
+    [SerializeField] float attackTime = 1f;
 
     [Header("Movement")]
     [SerializeField] float moveSpeed = 5f;
@@ -24,6 +29,10 @@ public class EnemyAI : MonoBehaviour
 
     bool isStunned = false;
     float stunTimer = 0f;
+
+    bool isAttacking = false;
+
+    float sqrDistToTarget = 1000000f;
 
     void Start()
     {
@@ -40,6 +49,25 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         HandleStunTimer();
+        HandleAttacking();
+    }
+
+    void HandleAttacking()
+    {
+        if (isStunned || isAttacking) return;
+
+        if (sqrDistToTarget <= attackRange * attackRange)
+            StartCoroutine(AttackWorker());
+
+        IEnumerator AttackWorker()
+        {
+            anim.SetTrigger("Attack");
+            isAttacking = true;
+
+            yield return new WaitForSeconds(attackTime);
+
+            isAttacking = false;
+        }
     }
 
     void HandleStunTimer()
@@ -50,7 +78,14 @@ public class EnemyAI : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (target == null || isStunned) return;
+        HandleMovement();
+    }
+
+    void HandleMovement()
+    {
+        sqrDistToTarget = Vector3.SqrMagnitude(target.position - transform.position);
+        
+        if (target == null || isStunned || isAttacking) return;
 
         Vector3 dir = (target.position - transform.position).normalized;
         dir.y = 0f;
@@ -70,7 +105,7 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(WeaponAttack attack)
     {
         health -= attack.damage;
-        PlayDamageAudio();
+        // PlayDamageAudio();
         PlayHitDirectionAnimation(attack.attackDirection);
         StunEnemy(attack.stunTime);
 
