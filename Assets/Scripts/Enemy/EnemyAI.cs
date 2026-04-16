@@ -149,6 +149,7 @@ public class EnemyAI : MonoBehaviour
 
     void Die()
     {
+        RoomManager.RegisterEnemyDeath();
         Destroy(gameObject);
     }
 }
