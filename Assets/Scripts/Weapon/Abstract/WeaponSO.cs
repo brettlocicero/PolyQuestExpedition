@@ -10,9 +10,6 @@ public class WeaponSO : ItemSO
     [Header("Attacks")]
     public WeaponAttack[] attacks;
     public WeaponAttack heavyAttack;
-
-    [Header("VFX")]
-    public BloodParticles bloodParticles;
 }
 
 [System.Serializable]

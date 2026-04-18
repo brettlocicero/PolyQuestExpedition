@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]
-public class BloodParticles : MonoBehaviour
+public class ContactParticles : MonoBehaviour
 {
     ParticleSystem particles;
 

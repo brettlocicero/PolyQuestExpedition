@@ -30,7 +30,7 @@ public class MeleeWeaponObject : WeaponObject
                 enemy.ApplyKnockback(knockbackDir * attack.knockbackForce);
             }
 
-            SpawnBloodParticle(hit, attack);
+            SpawnBloodParticle(hit, attack, enemy);
         }
 
         Vector3 sphereCenter = mainCamTform.position + (mainCamTform.forward * (weaponSO.range - attack.cleaveRadius));
@@ -54,7 +54,7 @@ public class MeleeWeaponObject : WeaponObject
                 Vector3 knockbackDir = (enemy.transform.position - transform.position).normalized;
                 enemy.ApplyKnockback(0.75f * attack.knockbackForce * knockbackDir); // optional reduced knockback
 
-                SpawnBloodParticle(sphereHit.ClosestPoint(sphereCenter), attack);
+                SpawnBloodParticle(sphereHit.ClosestPoint(sphereCenter), attack, enemy);
             }
         }
 
@@ -67,22 +67,22 @@ public class MeleeWeaponObject : WeaponObject
         return successfulHit;
     }
 
-    void SpawnBloodParticle(RaycastHit hit, WeaponAttack attack)
+    void SpawnBloodParticle(RaycastHit hit, WeaponAttack attack, EnemyAI enemy)
     {
         Quaternion hitRot = mainCamTform.rotation;
         Vector3 hitPoint = hit.point;
 
-        BloodParticles particlesObj = Instantiate(weaponSO.bloodParticles, hitPoint, hitRot);
+        ContactParticles particlesObj = Instantiate(enemy.contactParticles, hitPoint, hitRot);
         particlesObj.InitParticleSystem(attack);
         
         Destroy(particlesObj.gameObject, 4f);
     }
 
-    void SpawnBloodParticle(Vector3 pos, WeaponAttack attack)
+    void SpawnBloodParticle(Vector3 pos, WeaponAttack attack, EnemyAI enemy)
     {
         Quaternion hitRot = mainCamTform.rotation;
 
-        BloodParticles particlesObj = Instantiate(weaponSO.bloodParticles, pos, hitRot);
+        ContactParticles particlesObj = Instantiate(enemy.contactParticles, pos, hitRot);
         particlesObj.InitParticleSystem(attack);
         
         Destroy(particlesObj.gameObject, 4f);

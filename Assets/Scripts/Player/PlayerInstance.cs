@@ -9,6 +9,13 @@ public class PlayerInstance : MonoBehaviour
     {
         instance = this;
     }
+
+    [Header("Runtime")]
+    [SerializeField] int health = 100;
+    [SerializeField] int maxHealth = 100;
+
+    [Header("VFX")]
+    [SerializeField] Animator hitScreenAnim;
     
     PlayerController playerController;
     CharacterController cc;
@@ -24,5 +31,11 @@ public class PlayerInstance : MonoBehaviour
         cc.enabled = false;
         transform.SetPositionAndRotation(pos, transform.rotation);
         cc.enabled = true;
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        hitScreenAnim.SetTrigger("Hit");
     }
 }

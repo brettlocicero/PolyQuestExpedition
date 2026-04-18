@@ -23,6 +23,7 @@ public class EnemyAI : MonoBehaviour
     [Header("VFX")]
     [SerializeField] AudioClip hitSFX;
     [SerializeField] Animator anim;
+    public ContactParticles contactParticles;
 
     AudioSource audioSource;
     Rigidbody rb;
@@ -56,7 +57,7 @@ public class EnemyAI : MonoBehaviour
     {
         if (isStunned || isAttacking) return;
 
-        if (sqrDistToTarget <= attackRange * attackRange)
+        if (InAttackRange())
             StartCoroutine(AttackWorker());
 
         IEnumerator AttackWorker()
@@ -91,7 +92,7 @@ public class EnemyAI : MonoBehaviour
         dir.y = 0f;
 
         Vector3 move = moveSpeed * Time.fixedDeltaTime * dir;
-        rb.MovePosition(rb.position + move);
+        if (!InAttackRange()) rb.MovePosition(rb.position + move);
 
         if (dir != Vector3.zero)
         {
@@ -100,6 +101,11 @@ public class EnemyAI : MonoBehaviour
 
             rb.MoveRotation(smoothRotation);
         }
+    }
+
+    bool InAttackRange()
+    {
+        return sqrDistToTarget <= attackRange * attackRange;
     }
 
     public void TakeDamage(WeaponAttack attack)

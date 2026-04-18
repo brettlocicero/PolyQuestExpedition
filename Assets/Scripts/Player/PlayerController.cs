@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip landSound;
 
     [Header("Dash")]
+    [SerializeField] Animator dashAnim;
     [SerializeField] float dashSpeed = 6f;
     [SerializeField] float dashDuration = 0.2f;
     [SerializeField] float dashCooldown = 1f;
@@ -209,6 +210,7 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         lastDashTime = Time.time;
         PlayDashFOV();
+        dashAnim.SetTrigger("Dash");
 
         Vector2 moveInput = InputManager.Actions.Player.Move.ReadValue<Vector2>();
 
