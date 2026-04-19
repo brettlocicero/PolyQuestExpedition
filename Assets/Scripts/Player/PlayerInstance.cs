@@ -39,4 +39,9 @@ public class PlayerInstance : MonoBehaviour
         health -= damage;
         hitScreenAnim.SetTrigger("Hit");
     }
+
+    public Vector3 GetPlayerVelocity()
+    {
+        return playerController.GetPlayerVelocity();
+    }
 }

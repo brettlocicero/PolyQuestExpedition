@@ -17,6 +17,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] float attackTime = 1f;
 
     [Header("Movement")]
+    [SerializeField] bool alwaysLookAtPlayer = false;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float rotationSpeed = 10f;
 
@@ -87,15 +88,19 @@ public class EnemyAI : MonoBehaviour
     {
         sqrDistToTarget = Vector3.SqrMagnitude(target.position - transform.position);
         
-        if (target == null || isStunned || isAttacking) return;
+        if (target == null || isStunned) return;
 
         Vector3 dir = (target.position - transform.position).normalized;
         dir.y = 0f;
 
-        Vector3 move = moveSpeed * Time.fixedDeltaTime * dir;
-        if (!InAttackRange()) rb.MovePosition(rb.position + move);
+        if (!isAttacking)
+        {
+            Vector3 move = moveSpeed * Time.fixedDeltaTime * dir;
+            if (!InAttackRange()) rb.MovePosition(rb.position + move);
+        }
 
-        if (dir != Vector3.zero)
+
+        if (dir != Vector3.zero || alwaysLookAtPlayer)
         {
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             Quaternion smoothRotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
@@ -153,7 +158,7 @@ public class EnemyAI : MonoBehaviour
     void PlayDamageAudio()
     {
         audioSource.pitch = Random.Range(0.9f, 1.1f);
-        audioSource.PlayOneShot(hitSFX);
+        if (hitSFX) audioSource.PlayOneShot(hitSFX);
     }
 
     void Die()

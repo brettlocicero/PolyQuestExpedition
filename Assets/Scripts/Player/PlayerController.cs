@@ -261,4 +261,9 @@ public class PlayerController : MonoBehaviour
             fovTweenTime
         ).SetEase(Ease.InOutQuad);
     }
+
+    public Vector3 GetPlayerVelocity() 
+    {
+        return controller.velocity;
+    }
 }

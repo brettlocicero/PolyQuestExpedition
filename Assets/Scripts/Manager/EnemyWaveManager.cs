@@ -9,7 +9,7 @@ public class EnemyWaveManager : MonoBehaviour
     [SerializeField] int enemiesPerSpawn = 1;
 
     [Header("Enemy Settings")]
-    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] GameObject[] enemies;
 
     [Header("Player Reference")]
     [SerializeField] Transform player;
@@ -48,6 +48,7 @@ public class EnemyWaveManager : MonoBehaviour
         for (int i = 0; i < enemiesPerSpawn; i++)
         {
             Vector3 spawnPos = GetRandomRingPosition();
+            GameObject enemyPrefab = enemies[Random.Range(0, enemies.Length)];
             Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
         }
     }
@@ -67,7 +68,7 @@ public class EnemyWaveManager : MonoBehaviour
         float radius = Random.Range(minRadius, maxRadius);
         Vector3 offset = new Vector3(Mathf.Cos(angle), 0f, Mathf.Sin(angle)) * radius;
         Vector3 finalPos = player.position + offset;
-        finalPos.y = 0f;
+        finalPos.y = 5f;
 
         return finalPos;
     }
