@@ -23,6 +23,7 @@ public class EnemyAI : MonoBehaviour
     [Header("VFX")]
     [SerializeField] AudioClip hitSFX;
     [SerializeField] Animator anim;
+    [SerializeField] ParticleSystem damagedParticles;
     public ContactParticles contactParticles;
 
     AudioSource audioSource;
@@ -111,9 +112,11 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(WeaponAttack attack)
     {
         health -= attack.damage;
-        // PlayDamageAudio();
+        PlayDamageAudio();
         PlayHitDirectionAnimation(attack.attackDirection);
         StunEnemy(attack.stunTime);
+
+        if (damagedParticles) damagedParticles.Play();
 
         if (health <= 0)
         {

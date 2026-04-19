@@ -10,17 +10,13 @@ public abstract class WeaponObject : MonoBehaviour
     [SerializeField] float rotationSmoothSpeed = 10f;
     [SerializeField] Vector3 maxChargeRotation;
     
-    [Header("Block Settings")]
-    [SerializeField] float blockSpeed = 2f;
-    [SerializeField] Vector3 maxBlockRotation;
-    [SerializeField] Vector3 maxBlockPosition;
-
     [Header("Object References")]
     [SerializeField] protected Transform attackOrigin;
     [SerializeField] Animator movementAnimator;
     [SerializeField] Animation attackAnimation;
     [SerializeField] CharacterController playerCC;
     [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioSource hitAudioSource;
 
     protected Transform mainCamTform;
 
@@ -33,7 +29,6 @@ public abstract class WeaponObject : MonoBehaviour
     int comboIndex;
 
     bool inAttack = false;
-    bool inBlock = false;
 
     Vector3 currentPosition;
     Vector3 currentRotation;
@@ -52,11 +47,9 @@ public abstract class WeaponObject : MonoBehaviour
 
     void Update()
     {
-        HandleBlock();
         HandleAttack();
 
         HandleRotation();
-        HandlePosition();
         HandleMovementAnimation();
     }
 
@@ -66,12 +59,6 @@ public abstract class WeaponObject : MonoBehaviour
         transform.localEulerAngles = currentRotation;
     }
     
-    void HandlePosition() 
-    {
-        currentPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * blockSpeed);
-        transform.localPosition = currentPosition;
-    }
-
     void HandleMovementAnimation()
     {
         float targetMovement = InputManager.Actions.Player.Move.ReadValue<Vector2>().magnitude;
@@ -87,7 +74,7 @@ public abstract class WeaponObject : MonoBehaviour
     {
         attackCounter += Time.deltaTime;
 
-        if (inAttack || inBlock) return;
+        if (inAttack) return;
 
         bool attackPressed = InputManager.Actions.Player.Attack.IsPressed();
         bool attackReleased = InputManager.Actions.Player.Attack.WasReleasedThisFrame();
@@ -143,6 +130,7 @@ public abstract class WeaponObject : MonoBehaviour
         if (hitEnemy) 
         {
             StartCoroutine(TriggerHitstop(0.05f, attack.attackAnimation));
+            PlayContactAudio();
         }
         
         PlayAttackAudio(attack);
@@ -161,25 +149,6 @@ public abstract class WeaponObject : MonoBehaviour
         audioSource.PlayOneShot(attack.sound);
     }
 
-    void HandleBlock()
-    {
-        if (inAttack) return;
-
-        inBlock = InputManager.Actions.Player.SecondaryAttack.IsPressed();
-
-        if (inBlock)
-        {
-            targetRotation = maxBlockRotation;
-            targetPosition = maxBlockPosition;
-        }
-        
-        else if (!InputManager.Actions.Player.Attack.IsPressed())
-        {
-            targetRotation = Vector3.zero;
-            targetPosition = Vector3.zero;
-        }
-    }
-
     IEnumerator TriggerHitstop(float duration, AnimationClip anim)
     {
         AnimationState state = attackAnimation[anim.name];
@@ -190,5 +159,12 @@ public abstract class WeaponObject : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         state.speed = originalSpeed;
+    }
+
+    void PlayContactAudio()
+    {
+        // pitch already randomized from PlayAttackAudio
+        hitAudioSource.pitch = Random.Range(0.9f, 1.1f);
+        hitAudioSource.PlayOneShot(weaponSO.hitSound);
     }
 }

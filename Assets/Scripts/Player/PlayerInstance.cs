@@ -24,6 +24,7 @@ public class PlayerInstance : MonoBehaviour
     {
         playerController = GetComponent<PlayerController>();
         cc = GetComponent<CharacterController>();
+        health = maxHealth;
     }
     
     public void RepositionPlayer(Vector3 pos) 
