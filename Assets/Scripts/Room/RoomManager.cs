@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviour
 {
+    public static RoomManager instance;
+    void Awake() => instance = this;
+
     [Header("Runtime")]
     [SerializeField] int roomIndex = 0;
     [SerializeField] int regionIndex = 0;
@@ -11,10 +14,9 @@ public class RoomManager : MonoBehaviour
     
     GameObject roomObj;
     
-    static int currentEnemyCount = 0;
-
-    void Start()
+    public void StartRun()
     {
+        roomIndex = 0;
         SpawnRoom();
     }
 
@@ -25,13 +27,9 @@ public class RoomManager : MonoBehaviour
         roomIndex++;
         
         RoomObject instancedRoom = Instantiate(rooms[Random.Range(0, rooms.Length)], Vector3.zero, Quaternion.identity);
-        currentEnemyCount = instancedRoom.InitRoom();
-        
         roomObj = instancedRoom.gameObject;
-    }
-    
-    public static void RegisterEnemyDeath() 
-    {
-        currentEnemyCount--;
+
+        // TODO: Add a way to start the room in the room itself, so the player does got ambushed?
+        instancedRoom.StartRoom();
     }
 }

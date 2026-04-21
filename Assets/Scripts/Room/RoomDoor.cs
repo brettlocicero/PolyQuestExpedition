@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class RoomDoor : MonoBehaviour
+public class RoomDoor : MonoBehaviour, IInteractable
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    bool used = false;
 
-    // Update is called once per frame
-    void Update()
+    public void Interact()
     {
-        
+        if (!used)
+        {
+            RoomManager.instance.StartRun();
+            used = true;
+        }
     }
 }

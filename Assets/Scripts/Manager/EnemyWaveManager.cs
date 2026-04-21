@@ -3,13 +3,8 @@ using UnityEngine;
 
 public class EnemyWaveManager : MonoBehaviour
 {
-    [Header("Wave Settings")]
-    [SerializeField] float waveDuration = 60f;
-    [SerializeField] float spawnInterval = 2f;
-    [SerializeField] int enemiesPerSpawn = 1;
-
-    [Header("Enemy Settings")]
-    [SerializeField] GameObject[] enemies;
+    public static EnemyWaveManager instance;
+    void Awake() => instance = this;
 
     [Header("Player Reference")]
     [SerializeField] Transform player;
@@ -21,30 +16,26 @@ public class EnemyWaveManager : MonoBehaviour
     float waveTimer;
     bool isWaveActive;
 
-    void Start()
-    {
-        StartWave();
-    }
-
-    public void StartWave()
+    public void StartWave(GameObject[] enemies, float waveDuration, float spawnInterval)
     {
         waveTimer = waveDuration;
         isWaveActive = true;
 
-        StartCoroutine(SpawnLoop());
+        StartCoroutine(SpawnLoop(enemies, waveDuration, spawnInterval));
     }
 
-    IEnumerator SpawnLoop()
+    IEnumerator SpawnLoop(GameObject[] enemies, float waveDuration, float spawnInterval)
     {
         while (isWaveActive)
         {
-            SpawnEnemies();
+            SpawnEnemies(enemies, waveDuration, spawnInterval);
             yield return new WaitForSeconds(spawnInterval);
         }
     }
 
-    void SpawnEnemies()
+    void SpawnEnemies(GameObject[] enemies, float waveDuration, float spawnInterval)
     {
+        int enemiesPerSpawn = 1;
         for (int i = 0; i < enemiesPerSpawn; i++)
         {
             Vector3 spawnPos = GetRandomRingPosition();
@@ -91,8 +82,5 @@ public class EnemyWaveManager : MonoBehaviour
         StopAllCoroutines();
 
         Debug.Log("Wave Complete!");
-
-        // Hook your dark fantasy transition here:
-        // Ritual circle / portal / coffin / etc.
     }
 }
