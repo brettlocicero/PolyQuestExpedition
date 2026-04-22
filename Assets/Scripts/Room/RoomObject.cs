@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class RoomObject : MonoBehaviour
 {
-    [Header("Wave Settings")]
+    [SerializeField] bool combatRoom = true;
     [SerializeField] GameObject[] enemies;
     [SerializeField] float waveDuration = 60f;
     [SerializeField] float spawnInterval = 2f;
     
     public void StartRoom() 
     {
-        EnemyWaveManager.instance.StartWave(enemies, waveDuration, spawnInterval);
+        if (combatRoom)
+            EnemyWaveManager.instance.StartWave(enemies, waveDuration, spawnInterval);
     }
 }

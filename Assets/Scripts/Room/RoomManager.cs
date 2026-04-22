@@ -11,6 +11,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField] int regionIndex = 0;
     
     [Header("")]
+    [SerializeField] RoomObject startRoom;
     [SerializeField] RoomObject[] rooms;
     
     GameObject roomObj;
@@ -19,6 +20,7 @@ public class RoomManager : MonoBehaviour
     void Start()
     {
         playerInstance = PlayerInstance.instance;
+        StartRun();
     }
 
     public void StartRun()
@@ -29,7 +31,6 @@ public class RoomManager : MonoBehaviour
 
     public void SpawnRoom() 
     {
-        roomIndex++;
         playerInstance.PlayRoomTransitionAnimation();
 
         StartCoroutine(Worker());
@@ -39,12 +40,21 @@ public class RoomManager : MonoBehaviour
 
             if (roomObj) Destroy(roomObj);
 
-            RoomObject instancedRoom = Instantiate(rooms[Random.Range(0, rooms.Length)], Vector3.zero, Quaternion.identity);
+            RoomObject instancedRoom = Instantiate(GetRoomObject(), Vector3.zero, Quaternion.identity);
             roomObj = instancedRoom.gameObject;
 
             // TODO: Add a way to start the room in the room itself, so the player does got ambushed?
             instancedRoom.StartRoom();
             
+            roomIndex++;
         }
+    }
+    
+    public RoomObject GetRoomObject() 
+    {
+        if (roomIndex == 0) 
+            return startRoom;
+        
+        return rooms[Random.Range(0, rooms.Length)];
     }
 }
