@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour
@@ -13,7 +14,13 @@ public class RoomManager : MonoBehaviour
     [SerializeField] RoomObject[] rooms;
     
     GameObject roomObj;
-    
+    PlayerInstance playerInstance;
+
+    void Start()
+    {
+        playerInstance = PlayerInstance.instance;
+    }
+
     public void StartRun()
     {
         roomIndex = 0;
@@ -22,14 +29,22 @@ public class RoomManager : MonoBehaviour
 
     public void SpawnRoom() 
     {
-        if (roomObj) Destroy(roomObj);
-        
         roomIndex++;
-        
-        RoomObject instancedRoom = Instantiate(rooms[Random.Range(0, rooms.Length)], Vector3.zero, Quaternion.identity);
-        roomObj = instancedRoom.gameObject;
+        playerInstance.PlayRoomTransitionAnimation();
 
-        // TODO: Add a way to start the room in the room itself, so the player does got ambushed?
-        instancedRoom.StartRoom();
+        StartCoroutine(Worker());
+        IEnumerator Worker()
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (roomObj) Destroy(roomObj);
+
+            RoomObject instancedRoom = Instantiate(rooms[Random.Range(0, rooms.Length)], Vector3.zero, Quaternion.identity);
+            roomObj = instancedRoom.gameObject;
+
+            // TODO: Add a way to start the room in the room itself, so the player does got ambushed?
+            instancedRoom.StartRoom();
+            
+        }
     }
 }

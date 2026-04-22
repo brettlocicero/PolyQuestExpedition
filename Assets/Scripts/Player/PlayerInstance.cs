@@ -16,6 +16,7 @@ public class PlayerInstance : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] Animator hitScreenAnim;
+    [SerializeField] Animator roomTransitionAnim;
     
     PlayerController playerController;
     CharacterController cc;
@@ -43,5 +44,10 @@ public class PlayerInstance : MonoBehaviour
     public Vector3 GetPlayerVelocity()
     {
         return playerController.GetPlayerVelocity();
+    }
+
+    public void PlayRoomTransitionAnimation()
+    {
+        roomTransitionAnim.SetTrigger("RoomTransition");
     }
 }
