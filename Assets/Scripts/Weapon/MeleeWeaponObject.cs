@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MeleeWeaponObject : WeaponObject
 {
-    protected override bool Attack(WeaponAttack attack)
+    protected override EnemyAI[] Attack(WeaponAttack attack)
     {
         int enemyLayer = LayerMask.GetMask("Enemy");
 
@@ -64,7 +65,7 @@ public class MeleeWeaponObject : WeaponObject
         float intensity = successfulHit ? 3f : 1.5f;
         CinemachineShake.instance.ShakeCamera(intensity, 0.25f, 0.3f, 85f);
 
-        return successfulHit;
+        return hitEnemies.ToArray();
     }
 
     void SpawnBloodParticle(RaycastHit hit, WeaponAttack attack, EnemyAI enemy)

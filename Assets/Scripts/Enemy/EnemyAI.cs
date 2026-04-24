@@ -128,6 +128,21 @@ public class EnemyAI : MonoBehaviour
             Die();
         }
     }
+    
+    public void TakeDamage(int damage, float stunTime) 
+    {
+        health -= damage;
+        PlayDamageAudio();
+        // PlayHitDirectionAnimation(AttackDirection.Left); // TODO: figure out a neutral direction for this?
+        StunEnemy(stunTime);
+
+        if (damagedParticles) damagedParticles.Play();
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
 
     void PlayHitDirectionAnimation(AttackDirection direction)
     {

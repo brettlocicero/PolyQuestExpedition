@@ -1,9 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public abstract class WeaponObject : MonoBehaviour
 {
     [SerializeField] protected WeaponSO weaponSO;
+    
+    [Header("Runtime")]
+    [SerializeField] List<WeaponUpgradeSO> upgrades = new();
 
     [Header("Charge Settings")]
     [SerializeField] float maxChargeTime = 1f;
@@ -109,6 +114,8 @@ public abstract class WeaponObject : MonoBehaviour
     {
         if (attackRoutine != null)
             StopCoroutine(attackRoutine);
+            
+        TriggerUpgrades(WeaponUpgradeType.OnAttack);
 
         attackAnimation.Rewind(attack.attackAnimation.name);
         attackAnimation.Play(attack.attackAnimation.name);
@@ -126,11 +133,13 @@ public abstract class WeaponObject : MonoBehaviour
 
         yield return new WaitForSeconds(attack.attackDelay);
 
-        bool hitEnemy = Attack(attack);
-        if (hitEnemy) 
+        EnemyAI[] hitEnemies = Attack(attack);
+        if (hitEnemies.Length > 0) 
         {
             StartCoroutine(TriggerHitstop(0.05f, attack.attackAnimation));
             PlayContactAudio();
+            
+            TriggerUpgrades(WeaponUpgradeType.OnHit, hitEnemies);
         }
         
         PlayAttackAudio(attack);
@@ -141,7 +150,7 @@ public abstract class WeaponObject : MonoBehaviour
         targetRotation = Vector3.zero;
     }
 
-    protected abstract bool Attack(WeaponAttack attack);
+    protected abstract EnemyAI[] Attack(WeaponAttack attack);
 
     void PlayAttackAudio(WeaponAttack attack)
     {
@@ -166,5 +175,28 @@ public abstract class WeaponObject : MonoBehaviour
         // pitch already randomized from PlayAttackAudio
         hitAudioSource.pitch = Random.Range(0.9f, 1.1f);
         hitAudioSource.PlayOneShot(weaponSO.hitSound);
+    }
+    
+    public void AddUpgrade(WeaponUpgradeSO upgradeSO) 
+    {
+        upgrades.Add(upgradeSO);
+    }
+    
+    void TriggerUpgrades(WeaponUpgradeType weaponUpgradeType, EnemyAI[] enemies = null) 
+    {
+        List<WeaponUpgradeSO> filteredUpgrades = upgrades
+            .Where(u => u.weaponUpgradeType == weaponUpgradeType)
+            .ToList();
+            
+        foreach (WeaponUpgradeSO upgradeSO in filteredUpgrades) 
+        {
+            WeaponContext context = new()
+            {
+                attacker = gameObject,
+                targets = enemies
+            };
+            
+            upgradeSO.effect.Apply(context);
+        }
     }
 }
