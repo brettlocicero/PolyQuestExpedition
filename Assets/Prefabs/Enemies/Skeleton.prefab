@@ -5959,12 +5959,16 @@ MonoBehaviour:
   maxHealth: 30
   attackRange: 2
   attackTime: 2
+  alwaysLookAtPlayer: 0
   moveSpeed: 2
   rotationSpeed: 5
   hitSFX: {fileID: 8300000, guid: fd1311da168b8584f978ba8bd054e726, type: 3}
   anim: {fileID: 9079671228575390626}
   damagedParticles: {fileID: 8465508974881263499}
   contactParticles: {fileID: 5500697978591745560, guid: f2e8822b0d149e749a51bfc65c91cc60, type: 3}
+  randomizedObjects:
+  - {fileID: 6523416868138338850}
+  - {fileID: 659651792201232053}
 --- !u!54 &6096286430891206057
 Rigidbody:
   m_ObjectHideFlags: 0

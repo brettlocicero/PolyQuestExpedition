@@ -26,6 +26,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] Animator anim;
     [SerializeField] ParticleSystem damagedParticles;
     public ContactParticles contactParticles;
+    [SerializeField] GameObject[] randomizedObjects;
 
     AudioSource audioSource;
     Rigidbody rb;
@@ -47,6 +48,8 @@ public class EnemyAI : MonoBehaviour
         anim.speed = Random.Range(0.95f, 1.05f);
         
         if (!target) target = PlayerInstance.instance.transform;
+
+        RandomizeAppearance();
     }
 
     void Update()
@@ -117,30 +120,36 @@ public class EnemyAI : MonoBehaviour
     public void TakeDamage(WeaponAttack attack)
     {
         health -= attack.damage;
-        PlayDamageAudio();
-        PlayHitDirectionAnimation(attack.attackDirection);
-        StunEnemy(attack.stunTime);
-
-        if (damagedParticles) damagedParticles.Play();
-
         if (health <= 0)
         {
             Die();
         }
+        
+        else 
+        {
+            PlayDamageAudio();
+            PlayHitDirectionAnimation(attack.attackDirection);
+            StunEnemy(attack.stunTime);
+
+            if (damagedParticles) damagedParticles.Play();
+        }
     }
     
-    public void TakeDamage(int damage, float stunTime) 
+    public void TakeDamage(int damage, float stunTime)
     {
         health -= damage;
-        PlayDamageAudio();
-        // PlayHitDirectionAnimation(AttackDirection.Left); // TODO: figure out a neutral direction for this?
-        StunEnemy(stunTime);
-
-        if (damagedParticles) damagedParticles.Play();
-
         if (health <= 0)
         {
             Die();
+        }
+        
+        else 
+        {
+            PlayDamageAudio();
+            // PlayHitDirectionAnimation(attack.attackDirection);
+            StunEnemy(stunTime);
+
+            if (damagedParticles) damagedParticles.Play();
         }
     }
 
@@ -179,5 +188,14 @@ public class EnemyAI : MonoBehaviour
     void Die()
     {
         Destroy(gameObject);
+    }
+
+    void RandomizeAppearance()
+    {
+        foreach (GameObject obj in randomizedObjects)
+        {
+            float n = Random.value;
+            if (n <= 0.5f) obj.SetActive(false);
+        }
     }
 }
