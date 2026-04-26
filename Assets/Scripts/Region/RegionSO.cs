@@ -4,7 +4,5 @@ using UnityEngine;
 public class RegionSO : ScriptableObject
 {
     public string regionName = "Unnamed Region";
-
-    [Header("")]
     public RegionFloor[] floors;
 }

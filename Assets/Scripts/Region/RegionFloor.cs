@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[System.Serializable]
 public class RegionFloor
 {
     public int floorLength = 5;

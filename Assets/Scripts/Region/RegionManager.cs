@@ -2,10 +2,17 @@ using UnityEngine;
 
 public class RegionManager : MonoBehaviour
 {
+    [SerializeField] RegionSO testRegion;
+
     RegionSO currentRegion;
     GameObject regionFloorObj;
     int floorIndex = 0;
     Vector3 spawnPos = Vector3.zero;
+
+    void Start()
+    {
+        EnterRegion(testRegion);
+    }
 
     public void EnterRegion(RegionSO region)
     {
