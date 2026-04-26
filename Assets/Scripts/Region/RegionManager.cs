@@ -37,9 +37,12 @@ public class RegionManager : MonoBehaviour
         for (int i = 0; i < floor.floorLength; i++)
         {
             RoomObject roomObj = Instantiate(floor.GetRandomRoom(), spawnPos, Quaternion.identity);
+            HallwayObject hallwayObj = roomObj.SpawnHallway();
+            
+            hallwayObj.transform.SetParent(roomObj.transform);
             roomObj.transform.SetParent(regionFloorObj.transform);
 
-            spawnPos = roomObj.connectionPoint.position;
+            spawnPos = hallwayObj.connectionPoint.position;
         }
     }
 }

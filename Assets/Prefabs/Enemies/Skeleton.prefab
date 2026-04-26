@@ -5959,6 +5959,7 @@ MonoBehaviour:
   maxHealth: 30
   attackRange: 2
   attackTime: 2
+  engageDistance: 50
   alwaysLookAtPlayer: 0
   moveSpeed: 2
   rotationSpeed: 5

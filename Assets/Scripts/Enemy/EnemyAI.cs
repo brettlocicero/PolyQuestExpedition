@@ -17,6 +17,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] float attackTime = 1f;
 
     [Header("Movement")]
+    [SerializeField] float engageDistance = 30f;
     [SerializeField] bool alwaysLookAtPlayer = false;
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float rotationSpeed = 10f;
@@ -32,8 +33,10 @@ public class EnemyAI : MonoBehaviour
     Rigidbody rb;
 
     bool isStunned = false;
+    bool isEngaged = false;
     float stunTimer = 0f;
 
+    bool tookDamage = false;
     bool isAttacking = false;
 
     float sqrDistToTarget = 1000000f;
@@ -58,9 +61,14 @@ public class EnemyAI : MonoBehaviour
         HandleAttacking();
     }
 
+    void HandleEngaging()
+    {
+        isEngaged = sqrDistToTarget <= engageDistance * engageDistance || tookDamage;
+    }
+
     void HandleAttacking()
     {
-        if (isStunned || isAttacking) return;
+        if (isStunned || isAttacking || !isEngaged) return;
 
         if (InAttackRange())
             StartCoroutine(AttackWorker());
@@ -85,13 +93,14 @@ public class EnemyAI : MonoBehaviour
     void FixedUpdate()
     {
         HandleMovement();
+        HandleEngaging();
     }
 
     void HandleMovement()
     {
         sqrDistToTarget = Vector3.SqrMagnitude(target.position - transform.position);
         
-        if (target == null || isStunned) return;
+        if (target == null || isStunned || !isEngaged) return;
 
         Vector3 dir = (target.position - transform.position).normalized;
         dir.y = 0f;
@@ -119,6 +128,7 @@ public class EnemyAI : MonoBehaviour
 
     public void TakeDamage(WeaponAttack attack)
     {
+        tookDamage = true;
         health -= attack.damage;
         if (health <= 0)
         {
@@ -137,6 +147,7 @@ public class EnemyAI : MonoBehaviour
     
     public void TakeDamage(int damage, float stunTime)
     {
+        tookDamage = true;
         health -= damage;
         if (health <= 0)
         {

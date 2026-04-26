@@ -1403,6 +1403,7 @@ MonoBehaviour:
   maxHealth: 60
   attackRange: 10
   attackTime: 2
+  engageDistance: 50
   alwaysLookAtPlayer: 0
   moveSpeed: 5
   rotationSpeed: 10
@@ -1410,6 +1411,7 @@ MonoBehaviour:
   anim: {fileID: 4998154998878591481}
   damagedParticles: {fileID: 0}
   contactParticles: {fileID: 5500697978591745560, guid: 62bfed2336addfd41a4c139f63173b87, type: 3}
+  randomizedObjects: []
 --- !u!136 &6246488238714430806
 CapsuleCollider:
   m_ObjectHideFlags: 0
