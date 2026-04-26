@@ -50,4 +50,11 @@ public class PlayerInstance : MonoBehaviour
     {
         roomTransitionAnim.SetTrigger("RoomTransition");
     }
+
+    public void RepositionPlayer(Vector3 pos, Quaternion rot)
+    {
+        cc.enabled = false;
+        transform.SetPositionAndRotation(pos, rot);
+        cc.enabled = true;
+    }
 }

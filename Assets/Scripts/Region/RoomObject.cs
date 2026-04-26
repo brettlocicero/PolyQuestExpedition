@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class RoomObject : MonoBehaviour
 {
+    public Transform playerSpawn;
     public Transform connectionPoint;
     public HallwayObject[] hallwayObjects;
 

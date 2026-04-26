@@ -2095,6 +2095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RegionManager
   testRegion: {fileID: 11400000, guid: 48b932f6911b88f40a484240818164ba, type: 2}
+  travelAnim: {fileID: 4296057692076978471}
 --- !u!1 &1608193385
 GameObject:
   m_ObjectHideFlags: 0
