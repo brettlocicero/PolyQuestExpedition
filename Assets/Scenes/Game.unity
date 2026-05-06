@@ -1205,7 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56aa324b652379d47b14605f663b1c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  speed: 10
+  speed: 14
   mouseSensitivity: 0.05
   jumpHeight: 2
   gravity: -29.43
@@ -2495,6 +2495,7 @@ MonoBehaviour:
   - {fileID: 206111124}
   - {fileID: 384662611}
   - {fileID: 959805908}
+  isOpen: 0
 --- !u!1 &757308044
 GameObject:
   m_ObjectHideFlags: 0

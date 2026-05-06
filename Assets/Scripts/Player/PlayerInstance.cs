@@ -28,6 +28,11 @@ public class PlayerInstance : MonoBehaviour
         health = maxHealth;
     }
     
+    public PlayerController GetPlayerController() 
+    {
+        return playerController;
+    }
+    
     public void TakeDamage(int damage)
     {
         health -= damage;

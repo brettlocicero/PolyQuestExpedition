@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using Unity.Cinemachine;
+using System.Security.Cryptography;
 
 public class PlayerController : MonoBehaviour
 {
@@ -49,6 +50,8 @@ public class PlayerController : MonoBehaviour
     Tween bobTween;
 
     float currentTilt;
+    
+    bool lockSensitivity = false;
 
     void Start()
     {
@@ -70,6 +73,8 @@ public class PlayerController : MonoBehaviour
 
     void HandleLook()
     {
+        if (lockSensitivity) return;
+    
         Vector2 lookInput = InputManager.Actions.Player.Look.ReadValue<Vector2>();
 
         float mouseX = lookInput.x * mouseSensitivity;
@@ -265,5 +270,10 @@ public class PlayerController : MonoBehaviour
     public Vector3 GetPlayerVelocity() 
     {
         return controller.velocity;
+    }
+    
+    public void SetSensitivity(bool val) 
+    {
+        lockSensitivity = val;
     }
 }

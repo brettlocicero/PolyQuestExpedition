@@ -12,7 +12,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] List<ItemSO> items = new();
     public List<InventorySlot> slots = new();
 
-    bool isOpen = false;
+    [HideInInspector] public bool isOpen = false;
 
     void Awake()
     {
@@ -42,6 +42,7 @@ public class InventoryManager : MonoBehaviour
             inventoryPanelCG.interactable = true;
             inventoryPanelCG.blocksRaycasts = true;
             CursorManager.UnlockCursor();
+            PlayerInstance.instance.GetPlayerController().SetSensitivity(true);
         }
 
         else
@@ -50,6 +51,7 @@ public class InventoryManager : MonoBehaviour
             inventoryPanelCG.interactable = false;
             inventoryPanelCG.blocksRaycasts = false;
             CursorManager.LockCursor();
+            PlayerInstance.instance.GetPlayerController().SetSensitivity(false);
         }
     }
 

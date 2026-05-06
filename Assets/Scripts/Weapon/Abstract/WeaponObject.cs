@@ -79,7 +79,7 @@ public abstract class WeaponObject : MonoBehaviour
     {
         attackCounter += Time.deltaTime;
 
-        if (inAttack) return;
+        if (inAttack || InventoryManager.instance.isOpen) return;
 
         bool attackPressed = InputManager.Actions.Player.Attack.IsPressed();
         bool attackReleased = InputManager.Actions.Player.Attack.WasReleasedThisFrame();

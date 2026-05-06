@@ -5964,12 +5964,11 @@ MonoBehaviour:
   moveSpeed: 2
   rotationSpeed: 5
   hitSFX: {fileID: 8300000, guid: fd1311da168b8584f978ba8bd054e726, type: 3}
+  deathFX: {fileID: 1494546778919266627, guid: 8285ff53934e540ec8144192e571553a, type: 3}
   anim: {fileID: 9079671228575390626}
   damagedParticles: {fileID: 8465508974881263499}
   contactParticles: {fileID: 5500697978591745560, guid: f2e8822b0d149e749a51bfc65c91cc60, type: 3}
-  randomizedObjects:
-  - {fileID: 6523416868138338850}
-  - {fileID: 659651792201232053}
+  randomizedObjects: []
 --- !u!54 &6096286430891206057
 Rigidbody:
   m_ObjectHideFlags: 0

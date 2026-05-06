@@ -24,6 +24,7 @@ public class EnemyAI : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] AudioClip hitSFX;
+    [SerializeField] GameObject deathFX;
     [SerializeField] Animator anim;
     [SerializeField] ParticleSystem damagedParticles;
     public ContactParticles contactParticles;
@@ -198,7 +199,19 @@ public class EnemyAI : MonoBehaviour
 
     void Die()
     {
+        GameObject deathFXObj = Instantiate(deathFX, transform.position, transform.rotation);
+        ApplyForcesToBody(deathFXObj);
+        
+        Destroy(deathFXObj, 10f);
         Destroy(gameObject);
+    }
+    
+    void ApplyForcesToBody(GameObject deathFXObj) 
+    {
+        foreach (Rigidbody rb in deathFXObj.GetComponentsInChildren<Rigidbody>()) 
+        {
+            rb.AddForce(300f * -transform.forward);
+        }
     }
 
     void RandomizeAppearance()
