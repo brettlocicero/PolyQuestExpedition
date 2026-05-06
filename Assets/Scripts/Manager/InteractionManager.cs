@@ -25,7 +25,7 @@ public class InteractionManager : MonoBehaviour
 
     void HandleInteract()
 	{
-		if (InputManager.Actions.Player.Interact.IsPressed())
+		if (InputManager.Actions.Player.Interact.WasPressedThisFrame())
 		{
 			if (Physics.Raycast(cam.position, cam.forward, out RaycastHit hit, interactionRange, interactionLayerMask))
 			{

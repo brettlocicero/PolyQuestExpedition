@@ -28,13 +28,6 @@ public class PlayerInstance : MonoBehaviour
         health = maxHealth;
     }
     
-    public void RepositionPlayer(Vector3 pos) 
-    {
-        cc.enabled = false;
-        transform.SetPositionAndRotation(pos, transform.rotation);
-        cc.enabled = true;
-    }
-
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -49,6 +42,13 @@ public class PlayerInstance : MonoBehaviour
     public void PlayRoomTransitionAnimation()
     {
         roomTransitionAnim.SetTrigger("RoomTransition");
+    }
+
+    public void RepositionPlayer(Vector3 pos) 
+    {
+        cc.enabled = false;
+        transform.SetPositionAndRotation(pos, transform.rotation);
+        cc.enabled = true;
     }
 
     public void RepositionPlayer(Vector3 pos, Quaternion rot)
