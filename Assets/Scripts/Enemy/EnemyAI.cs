@@ -30,6 +30,9 @@ public class EnemyAI : MonoBehaviour
     public ContactParticles contactParticles;
     [SerializeField] GameObject[] randomizedObjects;
 
+    [Header("Drops")]
+    [SerializeField] ItemDropObject[] itemDropObjects;
+
     AudioSource audioSource;
     Rigidbody rb;
 
@@ -199,11 +202,25 @@ public class EnemyAI : MonoBehaviour
 
     void Die()
     {
+        SpawnDrops();
+        
         GameObject deathFXObj = Instantiate(deathFX, transform.position, transform.rotation);
         ApplyForcesToBody(deathFXObj);
         
         Destroy(deathFXObj, 10f);
         Destroy(gameObject);
+    }
+
+    void SpawnDrops()
+    {
+        foreach (ItemDropObject drop in itemDropObjects)
+        {
+            float p = Random.value;
+            if (p <= drop.dropChance)
+            {
+                ItemDropObject dropObj = Instantiate(drop, transform.position, transform.rotation);
+            }
+        }
     }
     
     void ApplyForcesToBody(GameObject deathFXObj) 

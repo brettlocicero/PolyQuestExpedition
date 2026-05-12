@@ -5969,6 +5969,8 @@ MonoBehaviour:
   damagedParticles: {fileID: 8465508974881263499}
   contactParticles: {fileID: 5500697978591745560, guid: f2e8822b0d149e749a51bfc65c91cc60, type: 3}
   randomizedObjects: []
+  itemDropObjects:
+  - {fileID: 2201584002792844670, guid: 5bcb7b44f0f758542a596e7fcd8a0f1d, type: 3}
 --- !u!54 &6096286430891206057
 Rigidbody:
   m_ObjectHideFlags: 0

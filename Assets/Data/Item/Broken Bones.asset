@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemSO
   itemName: Broken Bones
   description: A grim reminder of fragility.
-  icon: {fileID: 740618223, guid: c34d064704c898843a6fcef354df7342, type: 3}
+  icon: {fileID: -758752909, guid: 445e355203b1f6247a625e9ae1dc0465, type: 3}
