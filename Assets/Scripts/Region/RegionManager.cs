@@ -39,36 +39,69 @@ public class RegionManager : MonoBehaviour
 
     void SpawnRegionFloor()
     {
-        StartCoroutine(Worker());
-        IEnumerator Worker()
+        StartCoroutine(SpawnRegionFloorRoutine());
+    }
+
+    IEnumerator SpawnRegionFloorRoutine()
+    {
+        travelAnim.SetTrigger("RoomTransition");
+
+        yield return new WaitForSeconds(0.5f);
+
+        ClearCurrentFloor();
+
+        regionFloorObj = new GameObject($"{currentRegion.name} - Floor {floorIndex}");
+
+        if (floorIndex == 0)
         {
-            travelAnim.SetTrigger("RoomTransition");
-
-            yield return new WaitForSeconds(0.5f);
-
-            if (regionFloorObj) Destroy(regionFloorObj);
-            regionFloorObj = new GameObject($"{currentRegion.name} - {floorIndex}");
-
-            RegionFloor floor = currentRegion.floors[floorIndex];
-            for (int i = 0; i < floor.floorLength; i++)
-            {
-                RoomObject roomObj = Instantiate(floor.GetRandomRoom(), spawnPos, Quaternion.identity);
-                roomObj.transform.SetParent(regionFloorObj.transform);
-
-                // If this is the first room, move the player to the spawn point.
-                if (i == 0)
-                {
-                    PlayerInstance.instance.RepositionPlayer(roomObj.playerSpawn.position, roomObj.playerSpawn.rotation);
-                }
-
-                // Spawn a hallway connector between the rooms if not on the last room of the floor.
-                if (i < floor.floorLength - 1)
-                {
-                    HallwayObject hallwayObj = roomObj.SpawnHallway();
-                    hallwayObj.transform.SetParent(roomObj.transform);
-                    spawnPos = hallwayObj.connectionPoint.position;
-                }
-            }
+            SpawnEntranceRoom();
+            yield break;
         }
+
+        SpawnStandardFloor();
+    }
+
+    void ClearCurrentFloor()
+    {
+        if (regionFloorObj != null)
+        {
+            Destroy(regionFloorObj);
+        }
+    }
+
+    void SpawnEntranceRoom()
+    {
+        RoomObject entranceRoom = Instantiate(currentRegion.entranceRoom, spawnPos, Quaternion.identity);
+        SetupRoom(entranceRoom);
+        
+        PlayerInstance.instance.RepositionPlayer(entranceRoom.playerSpawn.position, entranceRoom.playerSpawn.rotation);
+    }
+
+    void SpawnStandardFloor()
+    {
+        for (int i = 0; i < currentRegion.floorLength; i++)
+        {
+            RoomObject room = Instantiate(currentRegion.GetRandomRoom(), spawnPos, Quaternion.identity);
+            SetupRoom(room);
+
+            // If first room, move the player to the spawn point.
+            if (i == 0) PlayerInstance.instance.RepositionPlayer(room.playerSpawn.position, room.playerSpawn.rotation);
+
+            // If not the last room, spawn a connecting hallway.
+            bool isLastRoom = i >= currentRegion.floorLength - 1;
+            if (!isLastRoom) SpawnHallway(room);
+        }
+    }
+
+    void SetupRoom(RoomObject room)
+    {
+        room.transform.SetParent(regionFloorObj.transform);
+    }
+
+    void SpawnHallway(RoomObject room)
+    {
+        HallwayObject hallway = room.SpawnHallway();
+        hallway.transform.SetParent(room.transform);
+        spawnPos = hallway.connectionPoint.position;
     }
 }

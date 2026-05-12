@@ -13,11 +13,8 @@ MonoBehaviour:
   m_Name: Ruins
   m_EditorClassIdentifier: Assembly-CSharp::RegionSO
   regionName: Ruins
-  floors:
-  - floorLength: 1
-    rooms:
-    - {fileID: 6094264151662176123, guid: 1c7ef22a8d0c2ba4389b8c594045a283, type: 3}
-  - floorLength: 5
-    rooms:
-    - {fileID: 6094264151662176123, guid: b11564cf1d900a04d9708d8f8b865574, type: 3}
-    - {fileID: 6094264151662176123, guid: 426b3374d84391b48b00f2ad7b5f70a8, type: 3}
+  entranceRoom: {fileID: 6094264151662176123, guid: 1c7ef22a8d0c2ba4389b8c594045a283, type: 3}
+  floorLength: 5
+  rooms:
+  - {fileID: 6094264151662176123, guid: b11564cf1d900a04d9708d8f8b865574, type: 3}
+  - {fileID: 6094264151662176123, guid: 426b3374d84391b48b00f2ad7b5f70a8, type: 3}
