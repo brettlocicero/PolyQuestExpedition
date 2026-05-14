@@ -204,10 +204,14 @@ public class EnemyAI : MonoBehaviour
     {
         SpawnDrops();
         
-        GameObject deathFXObj = Instantiate(deathFX, transform.position, transform.rotation);
-        ApplyForcesToBody(deathFXObj);
+        if (deathFX)
+        {
+            GameObject deathFXObj = Instantiate(deathFX, transform.position, transform.rotation);
+            ApplyForcesToBody(deathFXObj);
+            
+            Destroy(deathFXObj, 10f);
+        }
         
-        Destroy(deathFXObj, 10f);
         Destroy(gameObject);
     }
 

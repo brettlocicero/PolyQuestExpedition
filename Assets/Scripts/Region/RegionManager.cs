@@ -72,7 +72,7 @@ public class RegionManager : MonoBehaviour
     void SpawnEntranceRoom()
     {
         RoomObject entranceRoom = Instantiate(currentRegion.entranceRoom, spawnPos, Quaternion.identity);
-        SetupRoom(entranceRoom);
+        entranceRoom.transform.SetParent(regionFloorObj.transform);
         
         PlayerInstance.instance.RepositionPlayer(entranceRoom.playerSpawn.position, entranceRoom.playerSpawn.rotation);
     }
@@ -82,7 +82,7 @@ public class RegionManager : MonoBehaviour
         for (int i = 0; i < currentRegion.floorLength; i++)
         {
             RoomObject room = Instantiate(currentRegion.GetRandomRoom(), spawnPos, Quaternion.identity);
-            SetupRoom(room);
+            room.transform.SetParent(regionFloorObj.transform);
 
             // If first room, move the player to the spawn point.
             if (i == 0) PlayerInstance.instance.RepositionPlayer(room.playerSpawn.position, room.playerSpawn.rotation);
@@ -90,12 +90,10 @@ public class RegionManager : MonoBehaviour
             // If not the last room, spawn a connecting hallway.
             bool isLastRoom = i >= currentRegion.floorLength - 1;
             if (!isLastRoom) SpawnHallway(room);
-        }
-    }
 
-    void SetupRoom(RoomObject room)
-    {
-        room.transform.SetParent(regionFloorObj.transform);
+            // Spawn enemies given the room's chances to have enemies
+            room.TrySpawnEnemies();
+        }
     }
 
     void SpawnHallway(RoomObject room)
