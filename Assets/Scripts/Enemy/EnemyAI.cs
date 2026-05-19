@@ -52,6 +52,8 @@ public class EnemyAI : MonoBehaviour
     bool tookDamage = false;
     bool attackOnCooldown = false;
 
+    Coroutine attackCoroutine;
+
     void Start()
     {
         health = maxHealth;
@@ -84,14 +86,14 @@ public class EnemyAI : MonoBehaviour
         if (target == null)
             return;
 
+        // Never move while stunned or attacking
+        if (state == EnemyState.Stunned || state == EnemyState.Attacking)
+            return;
+
         RotateTowardsTarget();
 
-        switch (state)
-        {
-            case EnemyState.Chasing:
-                HandleMovement();
-                break;
-        }
+        if (state == EnemyState.Chasing)
+            HandleMovement();
     }
 
     void UpdateTimers()
@@ -107,9 +109,6 @@ public class EnemyAI : MonoBehaviour
 
     void UpdateState()
     {
-        if (state == EnemyState.Attacking)
-            return;
-
         if (stunTimer > 0f)
         {
             state = EnemyState.Stunned;
@@ -128,13 +127,14 @@ public class EnemyAI : MonoBehaviour
 
         if (inAttackRange)
         {
-            if (!attackOnCooldown)
-                StartCoroutine(AttackRoutine());
+            if (!attackOnCooldown && state != EnemyState.Attacking)
+                attackCoroutine = StartCoroutine(AttackRoutine());
 
             return;
         }
 
-        state = EnemyState.Chasing;
+        if (state != EnemyState.Attacking)
+            state = EnemyState.Chasing;
     }
 
     void HandleMovement()
@@ -142,7 +142,7 @@ public class EnemyAI : MonoBehaviour
         Vector3 dir = (target.position - transform.position).normalized;
         dir.y = 0f;
 
-        Vector3 move = dir * moveSpeed * Time.fixedDeltaTime;
+        Vector3 move = moveSpeed * Time.fixedDeltaTime * dir;
 
         rb.MovePosition(rb.position + move);
     }
@@ -165,6 +165,7 @@ public class EnemyAI : MonoBehaviour
     {
         state = EnemyState.Attacking;
         attackOnCooldown = true;
+        rb.linearVelocity = Vector3.zero;
 
         if (anim)
             anim.SetTrigger("Attack");
@@ -174,9 +175,12 @@ public class EnemyAI : MonoBehaviour
         attackOnCooldown = false;
 
         if (stunTimer > 0f)
+        {
             state = EnemyState.Stunned;
-        else
-            state = EnemyState.Chasing;
+            yield break;
+        }
+
+        state = EnemyState.Idle;
     }
 
     bool InAttackRange()
@@ -245,6 +249,9 @@ public class EnemyAI : MonoBehaviour
     public void StunEnemy(float duration)
     {
         stunTimer = Mathf.Max(stunTimer, duration);
+        
+        if (attackCoroutine != null) 
+            StopCoroutine(attackCoroutine);
     }
 
     public void ApplyKnockback(Vector3 force)

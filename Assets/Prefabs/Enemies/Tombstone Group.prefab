@@ -111,12 +111,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawnArea
   enemies:
-  - {fileID: 99061385582094206, guid: b6d282821d70c4d33a4b430e6f19b6be, type: 3}
+  - {fileID: 7061056229429716420, guid: be582cb917018c34aa99004d0c1ab7d3, type: 3}
+  - {fileID: 6694078656640137992, guid: 3c788b994707bf84781e169574e778e1, type: 3}
   spawnPos:
   - {fileID: 6401862808147429447}
   - {fileID: 1180223294900758318}
   - {fileID: 7410500727076709061}
   enemyCountRange: {x: 2, y: 4}
+  spawnDelay: 0.5
+  raycastHeight: 10
+  raycastDistance: 50
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 1
   trigger: {fileID: 815985448791139361}
 --- !u!135 &815985448791139361
 SphereCollider:
