@@ -9,7 +9,7 @@ public class RegionManager : MonoBehaviour
         instance = this;
     }
 
-    [SerializeField] RegionSO testRegion;
+    [SerializeField] GameObject hubObject;
 
     [Header("VFX")]
     [SerializeField] Animator travelAnim;
@@ -18,11 +18,6 @@ public class RegionManager : MonoBehaviour
     GameObject regionFloorObj;
     int floorIndex = 0;
     Vector3 spawnPos = Vector3.zero;
-
-    void Start()
-    {
-        EnterRegion(testRegion);
-    }
 
     public void EnterRegion(RegionSO region)
     {
@@ -47,6 +42,9 @@ public class RegionManager : MonoBehaviour
         travelAnim.SetTrigger("RoomTransition");
 
         yield return new WaitForSeconds(0.5f);
+
+        hubObject.SetActive(false);
+        ApplyRegionVFX(currentRegion);
 
         ClearCurrentFloor();
 
@@ -101,5 +99,11 @@ public class RegionManager : MonoBehaviour
         HallwayObject hallway = room.SpawnHallway();
         hallway.transform.SetParent(room.transform);
         spawnPos = hallway.connectionPoint.position;
+    }
+
+    void ApplyRegionVFX(RegionSO region)
+    {
+        RenderSettings.fogColor = region.fogColor;
+        RenderSettings.skybox = region.skybox;
     }
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSO
   itemName: Rusty Iron Sword
   description: 
+  icon: {fileID: 0}
   attackRate: 1
   range: 2
   attacks:
@@ -39,13 +40,13 @@ MonoBehaviour:
     pitchRange: {x: 0.7, y: 0.9}
   heavyAttack:
     attackAnimation: {fileID: 7400000, guid: 2fdfde1d4d3325e47a1300851db498cb, type: 2}
-    damage: 10
+    damage: 20
     cleaveRadius: 1
     attackDirection: -1
     attackDelay: 0.05
     attackRatePenalty: 0.3
     stunTime: 1
-    knockbackForce: 15
+    knockbackForce: 20
     sound: {fileID: 8300000, guid: 123e3cb9a1826514a9b331ad8abeda50, type: 3}
     pitchRange: {x: 1, y: 1.2}
   hitSound: {fileID: 8300000, guid: 99f7a4a19ce0272418d4cdbad0bb6bca, type: 3}

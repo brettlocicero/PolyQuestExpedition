@@ -10,6 +10,10 @@ public class RegionSO : ScriptableObject
     public int floorLength = 5;
     public RoomObject[] rooms;
 
+    [Header("VFX")]
+    public Color fogColor;
+    public Material skybox;
+
     public RoomObject GetRandomRoom()
     {
         return rooms[Random.Range(0, rooms.Length)];

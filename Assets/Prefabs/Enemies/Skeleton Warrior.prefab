@@ -5233,7 +5233,7 @@ MonoBehaviour:
   attackRange: 3
   attackCooldown: 1.5
   engageDistance: 30
-  alwaysLookAtPlayer: 0
+  alwaysLookAtPlayer: 1
   moveSpeed: 8
   rotationSpeed: 10
   hitSFX: {fileID: 8300000, guid: fd1311da168b8584f978ba8bd054e726, type: 3}
@@ -6316,7 +6316,7 @@ Transform:
   m_GameObject: {fileID: 4664700238480900205}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.09, z: -0.515}
+  m_LocalPosition: {x: 0, y: 1.09, z: 0.779}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6602,6 +6602,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3308256206440475056}
   - component: {fileID: 8620166371696577679}
+  - component: {fileID: 8908170539259775768}
   m_Layer: 0
   m_Name: Skeleton Animator
   m_TagString: Untagged
@@ -6649,6 +6650,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8908170539259775768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4907568310764931430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6970404414d4854fb0c6cfba70f3cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  radius: 1.52
+  attackOrigin: {fileID: 501913071095396086}
+  damage: 10
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &4998657145126271676
 GameObject:
   m_ObjectHideFlags: 0

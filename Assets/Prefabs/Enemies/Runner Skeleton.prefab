@@ -5479,7 +5479,7 @@ Transform:
   m_GameObject: {fileID: 3467921312138010874}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.09, z: -0.515}
+  m_LocalPosition: {x: 0, y: 1.09, z: 1.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6329,6 +6329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4354277511267482610}
   - component: {fileID: 3236145109944963069}
+  - component: {fileID: 2958983905889448875}
   m_Layer: 0
   m_Name: Skeleton Animator
   m_TagString: Untagged
@@ -6376,6 +6377,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2958983905889448875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334188774659390455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6970404414d4854fb0c6cfba70f3cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  radius: 1.5
+  attackOrigin: {fileID: 8506982662143767704}
+  damage: 5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &8364725428429090819
 GameObject:
   m_ObjectHideFlags: 0

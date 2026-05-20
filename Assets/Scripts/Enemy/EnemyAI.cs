@@ -250,8 +250,11 @@ public class EnemyAI : MonoBehaviour
     {
         stunTimer = Mathf.Max(stunTimer, duration);
         
-        if (attackCoroutine != null) 
+        if (attackCoroutine != null)
+        {
             StopCoroutine(attackCoroutine);
+            attackOnCooldown = false;
+        }
     }
 
     public void ApplyKnockback(Vector3 force)
