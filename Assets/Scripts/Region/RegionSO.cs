@@ -13,6 +13,7 @@ public class RegionSO : ScriptableObject
     [Header("VFX")]
     public Color fogColor;
     public Material skybox;
+    public Color sunColor;
 
     public RoomObject GetRandomRoom()
     {

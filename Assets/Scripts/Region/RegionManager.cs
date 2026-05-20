@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class RegionManager : MonoBehaviour
@@ -41,6 +42,14 @@ public class RegionManager : MonoBehaviour
     {
         travelAnim.SetTrigger("RoomTransition");
 
+        // Fade out asynchronously
+        DOTween.To(
+            () => AudioListener.volume,
+            x => AudioListener.volume = x,
+            0f,
+            0.5f
+        );
+
         yield return new WaitForSeconds(0.5f);
 
         hubObject.SetActive(false);
@@ -50,15 +59,23 @@ public class RegionManager : MonoBehaviour
 
         regionFloorObj = new GameObject($"{currentRegion.name} - Floor {floorIndex}");
 
+        // Spawn the entrance room only on the first floor of the region.
         if (floorIndex == 0)
-        {
             SpawnEntranceRoom();
-            yield break;
-        }
+        else
+            SpawnStandardFloor();
 
-        SpawnStandardFloor();
+        // Transition animation cycles back after 0.5 secs.
+        yield return new WaitForSeconds(0.5f);
+
+        DOTween.To(
+            () => AudioListener.volume,
+            x => AudioListener.volume = x,
+            1f,
+            0.5f
+        );
     }
-
+    
     void ClearCurrentFloor()
     {
         if (regionFloorObj != null)
@@ -105,5 +122,6 @@ public class RegionManager : MonoBehaviour
     {
         RenderSettings.fogColor = region.fogColor;
         RenderSettings.skybox = region.skybox;
+        RenderSettings.sun.color = region.sunColor;
     }
 }

@@ -5998,7 +5998,7 @@ MonoBehaviour:
   enemyName: Skeleton
   target: {fileID: 0}
   maxHealth: 20
-  attackRange: 3
+  attackRange: 1.5
   attackCooldown: 1.5
   engageDistance: 30
   alwaysLookAtPlayer: 0
