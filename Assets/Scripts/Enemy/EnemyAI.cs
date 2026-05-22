@@ -30,13 +30,15 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float rotationSpeed = 10f;
 
-    [Header("VFX")]
+    [Header("FX")]
     [SerializeField] AudioClip hitSFX;
     [SerializeField] GameObject deathFX;
     [SerializeField] Animator anim;
     [SerializeField] ParticleSystem damagedParticles;
     public ContactParticles contactParticles;
     [SerializeField] GameObject[] randomizedObjects;
+    [SerializeField] AudioClip[] passiveSounds;
+    [SerializeField] Vector2 passiveAudioPitchRange;
 
     [Header("Drops")]
     [SerializeField] ItemDropObject[] itemDropObjects;
@@ -68,6 +70,7 @@ public class EnemyAI : MonoBehaviour
             anim.speed = Random.Range(0.95f, 1.05f);
 
         RandomizeAppearance();
+        PlayPassiveSound();
     }
 
     void Update()
@@ -310,8 +313,29 @@ public class EnemyAI : MonoBehaviour
     {
         foreach (GameObject obj in randomizedObjects)
         {
-            if (Random.value <= 0.3f)
+            if (Random.value <= 0.4f)
                 obj.SetActive(false);
+        }
+    }
+
+    void PlayPassiveSound()
+    {
+        StartCoroutine(Worker());
+    }
+
+    IEnumerator Worker()
+    {
+        while (true)
+        {
+            // Play Spawn Sound
+            yield return new WaitForSeconds(0.75f);
+            audioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
+            audioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
+
+            yield return new WaitForSeconds(Random.Range(3f, 6f));
+
+            audioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
+            audioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
         }
     }
 }

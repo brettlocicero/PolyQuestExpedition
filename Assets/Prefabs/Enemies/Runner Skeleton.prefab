@@ -6015,6 +6015,10 @@ MonoBehaviour:
   - {fileID: 582605304746582944}
   - {fileID: 8987581109184586025}
   - {fileID: 1472556820228354214}
+  passiveSounds:
+  - {fileID: 8300000, guid: c7244901cca678a4cb84bab91f46e61f, type: 3}
+  - {fileID: 8300000, guid: fba949b0fdd6e2f4dbc1d8feaf8cb2c7, type: 3}
+  passiveAudioPitchRange: {x: 1.3, y: 1.5}
   itemDropObjects: []
 --- !u!136 &8317653500382331315
 CapsuleCollider:
@@ -6087,10 +6091,10 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 2
+  MaxDistance: 25
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -6123,7 +6127,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
