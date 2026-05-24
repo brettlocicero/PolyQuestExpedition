@@ -1231,12 +1231,13 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: 8802544ed0324a14095edc70ab3bbab1, type: 3}
   landSound: {fileID: 8300000, guid: 942019cf9ecd5854ebeb343b12b7f779, type: 3}
   dashAnim: {fileID: 174417999}
-  dashSpeed: 50
+  dashSpeed: 100
   dashDuration: 0.25
   dashCooldown: 1
   dashFOV: 105
   normalFOV: 90
   fovTweenTime: 0.25
+  dashSound: {fileID: 8300000, guid: 4cc24354390fafa4ab6f255f9889b4de, type: 3}
 --- !u!143 &375646405
 CharacterController:
   m_ObjectHideFlags: 0

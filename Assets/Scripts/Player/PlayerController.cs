@@ -2,6 +2,8 @@ using UnityEngine;
 using DG.Tweening;
 using Unity.Cinemachine;
 using System.Security.Cryptography;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PlayerController : MonoBehaviour
 {
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dashFOV = 105f;
     [SerializeField] float normalFOV = 90f;
     [SerializeField] float fovTweenTime = 0.15f;
+    [SerializeField] AudioClip dashSound;
 
     Tween fovTween;
     bool isDashing;
@@ -214,11 +217,11 @@ public class PlayerController : MonoBehaviour
     {
         isDashing = true;
         lastDashTime = Time.time;
-        PlayDashFOV();
+        PlayDashEffect();
+        audioSource.PlayOneShot(dashSound);
         dashAnim.SetTrigger("Dash");
 
         Vector2 moveInput = InputManager.Actions.Player.Move.ReadValue<Vector2>();
-
         Vector3 dashDirection = transform.right * moveInput.x + transform.forward * moveInput.y;
 
         if (dashDirection.sqrMagnitude < 0.01f)
@@ -230,26 +233,44 @@ public class PlayerController : MonoBehaviour
         dashTimer = dashDuration;
     }
 
-    void PlayDashFOV()
+    void PlayDashEffect()
     {
-        if (vcam == null) return;
+        if (vcam == null)
+            return;
 
         if (fovTween != null && fovTween.IsActive())
             fovTween.Kill();
 
         fovTween = DOTween.Sequence()
-            .Append(DOTween.To(
-                () => vcam.Lens.FieldOfView,
-                x => vcam.Lens.FieldOfView = x,
-                dashFOV,
-                fovTweenTime * 0.5f
-            ).SetEase(Ease.OutQuad))
-            .Append(DOTween.To(
-                () => vcam.Lens.FieldOfView,
-                x => vcam.Lens.FieldOfView = x,
-                normalFOV,
-                fovTweenTime
-            ).SetEase(Ease.InOutQuad));
+
+            // FOV expand + chromatic aberration increase
+            .Append(
+                DOTween.To(
+                    () => vcam.Lens.FieldOfView,
+                    x =>
+                    {
+                        var lens = vcam.Lens;
+                        lens.FieldOfView = x;
+                        vcam.Lens = lens;
+                    },
+                    dashFOV,
+                    fovTweenTime * 0.5f
+                ).SetEase(Ease.OutQuad)
+            )
+            // FOV return + chromatic aberration fade out
+            .Append(
+                DOTween.To(
+                    () => vcam.Lens.FieldOfView,
+                    x =>
+                    {
+                        var lens = vcam.Lens;
+                        lens.FieldOfView = x;
+                        vcam.Lens = lens;
+                    },
+                    normalFOV,
+                    fovTweenTime
+                ).SetEase(Ease.InOutQuad)
+            );
     }
 
     void ResetFOV()
