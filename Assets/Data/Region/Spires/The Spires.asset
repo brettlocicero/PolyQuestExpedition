@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00b5b6d6f5417ff4cab938041f8fedbd, type: 3}
-  m_Name: The Ruins
+  m_Name: The Spires
   m_EditorClassIdentifier: Assembly-CSharp::RegionTypeSO
-  regionName: The Ruins
-  debugColor: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
-  noiseMin: 0.05
-  noiseMax: 0.4
+  regionName: The Spires
+  poiBudget: 10
+  poiDensity: 1
+  debugColor: {r: 1, g: 0, b: 0, a: 1}
+  noiseMin: 0.4
+  noiseMax: 0.7
   pointsOfInterest:
-  - {fileID: 11400000, guid: 3d96b8c8951f74c49ad4c7a0813b1af7, type: 2}
+  - {fileID: 11400000, guid: a63c2c61bf01cc34d999cb2ce3de5637, type: 2}

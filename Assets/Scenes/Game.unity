@@ -2463,7 +2463,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1683388482}
   - {fileID: 1975055213}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3084,7 +3083,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &896035925
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4583,12 +4582,12 @@ GameObject:
   - component: {fileID: 1425071765}
   - component: {fileID: 1425071766}
   m_Layer: 0
-  m_Name: Region Manager
+  m_Name: World Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1425071765
 Transform:
   m_ObjectHideFlags: 0
@@ -4613,11 +4612,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1425071764}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d1a08281bc8e004cb6b8c649b669ec4, type: 3}
+  m_Script: {fileID: 11500000, guid: a642e62ebe328524bac2a83a55a509c6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RegionManager
-  hubObject: {fileID: 665996956}
-  travelAnim: {fileID: 4296057692076978471}
+  m_EditorClassIdentifier: Assembly-CSharp::WorldGenerator
+  worldSize: 128
+  cellSize: 50
+  regionPointCount: 64
+  borderNoiseScale: 0.1
+  borderNoiseStrength: 10
+  worldRadius: 0.9
+  radiusNoiseScale: 0.1
+  radiusNoiseStrength: 0.3
+  seed: 77
+  debugRenderer: {fileID: 896035926}
+  voidColor: {r: 0, g: 0.65242577, b: 1, a: 1}
+  regionTypes:
+  - {fileID: 11400000, guid: dffea59bbf829a44db6049533ce8b5da, type: 2}
+  - {fileID: 11400000, guid: a6780c614a2ec68429b4ff5d552c77a3, type: 2}
+  - {fileID: 11400000, guid: 060f9a5efd0afdc48a13274aa45de3d2, type: 2}
 --- !u!1 &1426649232
 GameObject:
   m_ObjectHideFlags: 0
@@ -4963,132 +4975,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!1 &1683388478
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1683388482}
-  - component: {fileID: 1683388483}
-  - component: {fileID: 1683388481}
-  - component: {fileID: 1683388480}
-  - component: {fileID: 1683388479}
-  m_Layer: 8
-  m_Name: Ruins Region Door
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1683388479
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683388478}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1683388480
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683388478}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 39b77594cfc16a0498c51bd642bb6a5c, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1683388481
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683388478}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1683388482
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683388478}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -14.56}
-  m_LocalScale: {x: 2, y: 2, z: 2}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 665996957}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1683388483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683388478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18f2269dcb1cf84eb68bb24963ee38d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RegionDoor
-  region: {fileID: 11400000, guid: 48b932f6911b88f40a484240818164ba, type: 2}
 --- !u!1 &1760597746
 GameObject:
   m_ObjectHideFlags: 0
@@ -5233,66 +5119,6 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!1 &1782233374
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1782233376}
-  - component: {fileID: 1782233375}
-  m_Layer: 0
-  m_Name: World Generator
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1782233375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782233374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a642e62ebe328524bac2a83a55a509c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldGenerator
-  worldSize: 128
-  cellSize: 50
-  regionPointCount: 64
-  borderNoiseScale: 0.1
-  borderNoiseStrength: 10
-  worldRadius: 0.9
-  radiusNoiseScale: 0.1
-  radiusNoiseStrength: 0.3
-  seed: 77
-  debugRenderer: {fileID: 896035926}
-  voidColor: {r: 0, g: 0.65242577, b: 1, a: 1}
-  regionTypes:
-  - {fileID: 11400000, guid: d3c471169cdf5b345b37ce2f73cc5cad, type: 2}
-  - {fileID: 11400000, guid: dffea59bbf829a44db6049533ce8b5da, type: 2}
-  - {fileID: 11400000, guid: a6780c614a2ec68429b4ff5d552c77a3, type: 2}
-  - {fileID: 11400000, guid: 060f9a5efd0afdc48a13274aa45de3d2, type: 2}
---- !u!4 &1782233376
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1782233374}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1795464595
 GameObject:
   m_ObjectHideFlags: 0
@@ -6847,5 +6673,4 @@ SceneRoots:
   - {fileID: 1323557023}
   - {fileID: 987755990}
   - {fileID: 665996957}
-  - {fileID: 1782233376}
   - {fileID: 896035928}

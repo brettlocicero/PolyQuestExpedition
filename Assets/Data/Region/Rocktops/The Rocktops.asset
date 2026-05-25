@@ -10,11 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 00b5b6d6f5417ff4cab938041f8fedbd, type: 3}
-  m_Name: The Spires
+  m_Name: The Rocktops
   m_EditorClassIdentifier: Assembly-CSharp::RegionTypeSO
-  regionName: The Spires
-  debugColor: {r: 1, g: 0, b: 0, a: 1}
-  noiseMin: 0.4
-  noiseMax: 0.7
+  regionName: The Rocktops
+  poiBudget: 10
+  poiDensity: 1
+  debugColor: {r: 1, g: 0.94493365, b: 0, a: 1}
+  noiseMin: 0.7
+  noiseMax: 1
   pointsOfInterest:
-  - {fileID: 11400000, guid: 3d96b8c8951f74c49ad4c7a0813b1af7, type: 2}
+  - {fileID: 11400000, guid: 9d21ab83b4782bf4991b5a56b7f30866, type: 2}

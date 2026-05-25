@@ -4,6 +4,8 @@ using UnityEngine;
 public class RegionTypeSO : ScriptableObject
 {
     public string regionName;
+    public int poiBudget = 10;
+    public float poiDensity = 1f;
     public Color debugColor;
 
     public float noiseMin;
