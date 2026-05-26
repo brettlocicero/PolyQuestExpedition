@@ -2479,6 +2479,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RegionManager
   enemySpawner: {fileID: 858994042}
+  hubObjects: {fileID: 665996956}
   regionEntranceAnim: {fileID: 4296057692076978471}
 --- !u!1 &665996956
 GameObject:

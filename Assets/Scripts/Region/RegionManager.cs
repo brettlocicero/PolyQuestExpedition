@@ -11,12 +11,15 @@ public class RegionManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] EnemySpawner enemySpawner;
+    [SerializeField] GameObject hubObjects;
     [SerializeField] Animator regionEntranceAnim;
 
+    GameObject regionObj;
     RegionSO currentRegion;
 
     public void EnterRegion(RegionSO region)
     {
+        if (regionObj) Destroy(regionObj);
         StartCoroutine(EnterRegionWorker(region));
     }
 
@@ -28,6 +31,8 @@ public class RegionManager : MonoBehaviour
 
         currentRegion = region;
         region.ApplyRegionVFX();
+        regionObj = region.SpawnRegion();
+
         enemySpawner.StartSpawnLoop();
     }
 }
