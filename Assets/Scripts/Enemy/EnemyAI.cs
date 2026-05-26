@@ -320,7 +320,8 @@ public class EnemyAI : MonoBehaviour
 
     void PlayPassiveSound()
     {
-        StartCoroutine(Worker());
+        if (passiveSounds.Length > 0)
+           StartCoroutine(Worker());
     }
 
     IEnumerator Worker()
