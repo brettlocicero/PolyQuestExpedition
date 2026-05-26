@@ -2434,6 +2434,52 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!1 &656996629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 656996630}
+  - component: {fileID: 656996631}
+  m_Layer: 0
+  m_Name: Region Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &656996630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656996629}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1979494905}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &656996631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656996629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d1a08281bc8e004cb6b8c649b669ec4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RegionManager
+  enemySpawner: {fileID: 858994042}
+  regionEntranceAnim: {fileID: 4296057692076978471}
 --- !u!1 &665996956
 GameObject:
   m_ObjectHideFlags: 0
@@ -2817,12 +2863,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858994040}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1979494905}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &858994042
 MonoBehaviour:
@@ -2843,8 +2889,8 @@ MonoBehaviour:
   - {fileID: 7061056229429716420, guid: be582cb917018c34aa99004d0c1ab7d3, type: 3}
   spawnRadius: 35
   minSpawnDistance: 25
-  spawnInterval: 1
-  enemiesPerWave: 3
+  spawnInterval: 4
+  enemiesPerWave: 1
   maxEnemiesAlive: 20
   scaleDifficulty: 1
   difficultyIncreaseTime: 30
@@ -4521,52 +4567,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &1425071764
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1425071765}
-  - component: {fileID: 1425071766}
-  m_Layer: 0
-  m_Name: Region Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1425071765
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1425071764}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1979494905}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1425071766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1425071764}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d1a08281bc8e004cb6b8c649b669ec4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RegionManager
-  hubObject: {fileID: 665996956}
-  travelAnim: {fileID: 4296057692076978471}
 --- !u!1 &1426649232
 GameObject:
   m_ObjectHideFlags: 0
@@ -5034,10 +5034,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1683388478}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18f2269dcb1cf84eb68bb24963ee38d, type: 3}
+  m_Script: {fileID: 11500000, guid: df0f8ebc63ad04e4ea7861f82c483bd7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RegionDoor
-  region: {fileID: 11400000, guid: 48b932f6911b88f40a484240818164ba, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::RegionPortal
+  region: {fileID: 11400000, guid: 9d3e8310077c8bc4a913466b0ecf1ba5, type: 2}
 --- !u!1 &1760597746
 GameObject:
   m_ObjectHideFlags: 0
@@ -5307,53 +5307,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!1 &1862150691
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1862150692}
-  - component: {fileID: 1862150693}
-  m_Layer: 0
-  m_Name: Enemy Wave Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1862150692
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862150691}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1979494905}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1862150693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1862150691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81a97ca2956104234b2063a60c08ced7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyWaveManager
-  player: {fileID: 375646403}
-  minRadius: 25
-  maxRadius: 30
 --- !u!1 &1875118729
 GameObject:
   m_ObjectHideFlags: 0
@@ -5758,10 +5711,10 @@ Transform:
   - {fileID: 832575519}
   - {fileID: 934868023}
   - {fileID: 1145140467}
-  - {fileID: 1862150692}
   - {fileID: 818259861}
-  - {fileID: 1425071765}
   - {fileID: 695651753}
+  - {fileID: 858994041}
+  - {fileID: 656996630}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1983475052
@@ -6599,4 +6552,3 @@ SceneRoots:
   - {fileID: 1323557023}
   - {fileID: 987755990}
   - {fileID: 665996957}
-  - {fileID: 858994041}

@@ -1399,19 +1399,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   enemyName: Reaver
   target: {fileID: 0}
-  health: 30
   maxHealth: 60
   attackRange: 10
-  attackTime: 2
+  attackCooldown: 1
   engageDistance: 50
-  alwaysLookAtPlayer: 0
+  alwaysLookAtPlayer: 1
   moveSpeed: 5
   rotationSpeed: 10
   hitSFX: {fileID: 0}
+  deathFX: {fileID: 0}
   anim: {fileID: 4998154998878591481}
   damagedParticles: {fileID: 0}
   contactParticles: {fileID: 5500697978591745560, guid: 62bfed2336addfd41a4c139f63173b87, type: 3}
   randomizedObjects: []
+  passiveSounds: []
+  passiveAudioPitchRange: {x: 0, y: 0}
+  itemDropObjects: []
 --- !u!136 &6246488238714430806
 CapsuleCollider:
   m_ObjectHideFlags: 0

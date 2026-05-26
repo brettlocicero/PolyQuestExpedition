@@ -3,20 +3,18 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RegionSO", menuName = "Scriptable Objects/RegionSO")]
 public class RegionSO : ScriptableObject
 {
-    public string regionName = "Unnamed Region";
-    public RoomObject entranceRoom;
-
-    [Header("Floor Settings")]
-    public int floorLength = 5;
-    public RoomObject[] rooms;
+    public string regionName;
+    public EnemyAI[] enemies;
 
     [Header("VFX")]
-    public Color fogColor;
     public Material skybox;
+    public Color fogColor;
     public Color sunColor;
 
-    public RoomObject GetRandomRoom()
+    public void ApplyRegionVFX()
     {
-        return rooms[Random.Range(0, rooms.Length)];
+        RenderSettings.skybox = skybox;
+        RenderSettings.fogColor = fogColor;
+        RenderSettings.sun.color = sunColor;
     }
 }

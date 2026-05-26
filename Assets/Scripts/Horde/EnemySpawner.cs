@@ -32,7 +32,10 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!player)
             player = PlayerInstance.instance.transform;
+    }
 
+    public void StartSpawnLoop()
+    {
         StartCoroutine(SpawnLoop());
 
         if (scaleDifficulty)

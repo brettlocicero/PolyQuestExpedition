@@ -89,11 +89,11 @@ public class EnemyAI : MonoBehaviour
         if (target == null)
             return;
 
+        RotateTowardsTarget();
+
         // Never move while stunned or attacking
         if (state == EnemyState.Stunned || state == EnemyState.Attacking)
             return;
-
-        RotateTowardsTarget();
 
         if (state == EnemyState.Chasing)
             HandleMovement();
