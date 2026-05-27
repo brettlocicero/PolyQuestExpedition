@@ -32,6 +32,7 @@ public class RegionManager : MonoBehaviour
         currentRegion = region;
         region.ApplyRegionVFX();
         regionObj = region.SpawnRegion();
+        hubObjects.SetActive(false);
 
         enemySpawner.StartSpawnLoop();
     }
