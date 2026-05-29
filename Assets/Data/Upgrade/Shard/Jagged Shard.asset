@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ed8e7dc06a7f49d091721f22c461bdc, type: 3}
-  m_Name: Grindstone
+  m_Name: Jagged Shard
   m_EditorClassIdentifier: Assembly-CSharp::WeaponUpgradeSO
   upgradeName: Grindstone
   description: Adds bonus damage to enemies hit by the weapon.

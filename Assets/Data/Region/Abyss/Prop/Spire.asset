@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64a8d20397787634f99ad6a0478b6abe, type: 3}
+  m_Name: Spire
+  m_EditorClassIdentifier: Assembly-CSharp::PropSO
+  propObj: {fileID: 3928051004192126797, guid: 24e33c0cf0f37b34a9c6a093265e33de, type: 3}
+  maxAmount: 5
+  yOffset: 0
+  randomizeScale: 1
+  scaleRange: {x: 1, y: 1.5}
+  randomizeRotation: 1
+  rotationRange: {x: 0, y: 360}
