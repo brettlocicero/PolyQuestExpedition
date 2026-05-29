@@ -5230,7 +5230,7 @@ MonoBehaviour:
   enemyName: Skeleton
   target: {fileID: 0}
   maxHealth: 30
-  attackRange: 2
+  attackRange: 3
   attackCooldown: 1.5
   engageDistance: 30
   alwaysLookAtPlayer: 1
@@ -6355,7 +6355,7 @@ Transform:
   m_GameObject: {fileID: 4664700238480900205}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.09, z: 0.779}
+  m_LocalPosition: {x: 0, y: 1.09, z: 1.207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6701,7 +6701,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6970404414d4854fb0c6cfba70f3cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
-  radius: 1.52
+  radius: 2
   attackOrigin: {fileID: 501913071095396086}
   damage: 10
   playerLayer:

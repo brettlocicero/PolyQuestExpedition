@@ -8,8 +8,27 @@ public class DamageEffectSO : WeaponEffectSO
 
     public override void Apply(WeaponContext context)
     {
+        if (context.hits != null && context.hits.Length > 0)
+        {
+            foreach (WeaponHit hit in context.hits)
+            {
+                if (hit.killed || !hit.enemy)
+                    continue;
+
+                hit.enemy.TakeDamage(damage, stunTime);
+            }
+
+            return;
+        }
+
+        if (context.targets == null)
+            return;
+
         foreach (EnemyAI enemy in context.targets)
         {
+            if (!enemy)
+                continue;
+
             enemy.TakeDamage(damage, stunTime);
         }
     }

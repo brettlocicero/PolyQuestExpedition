@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public abstract class WeaponObject : MonoBehaviour
@@ -8,7 +7,8 @@ public abstract class WeaponObject : MonoBehaviour
     [SerializeField] protected WeaponSO weaponSO;
     
     [Header("Runtime")]
-    [SerializeField] List<WeaponUpgradeSO> upgrades = new();
+    [SerializeField] List<ShardSO> upgrades = new();
+    [SerializeField] WeaponRuntimeStats runtimeStats = new();
 
     [Header("Charge Settings")]
     [SerializeField] float maxChargeTime = 1f;
@@ -41,13 +41,16 @@ public abstract class WeaponObject : MonoBehaviour
     Vector3 targetPosition;
 
     Coroutine attackRoutine;
+    bool passivesInitialized;
 
     void Start()
     {
-        attackCounter = weaponSO.attackRate;
+        attackCounter = GetAttackRate();
         currentRotation = transform.localEulerAngles;
         currentPosition = transform.localPosition;
         mainCamTform = Camera.main.transform;
+        passivesInitialized = true;
+        TriggerUpgrades(WeaponUpgradeType.Passive, null);
     }
 
     void Update()
@@ -97,7 +100,7 @@ public abstract class WeaponObject : MonoBehaviour
 
         if (attackReleased)
         {
-            if (attackCounter >= weaponSO.attackRate)
+            if (attackCounter >= GetAttackRate())
             {
                 if (chargeCounter >= maxChargeTime * 0.5f)
                     attack = weaponSO.heavyAttack;
@@ -114,8 +117,9 @@ public abstract class WeaponObject : MonoBehaviour
     {
         if (attackRoutine != null)
             StopCoroutine(attackRoutine);
-            
-        TriggerUpgrades(WeaponUpgradeType.OnAttack);
+
+        attack = runtimeStats.ApplyTo(attack);
+        TriggerUpgrades(WeaponUpgradeType.OnAttack, attack);
 
         attackAnimation.Rewind(attack.attackAnimation.name);
         attackAnimation.Play(attack.attackAnimation.name);
@@ -133,13 +137,16 @@ public abstract class WeaponObject : MonoBehaviour
 
         yield return new WaitForSeconds(attack.attackDelay);
 
-        EnemyAI[] hitEnemies = Attack(attack);
-        if (hitEnemies.Length > 0) 
+        WeaponHit[] hits = Attack(attack);
+        if (hits.Length > 0)
         {
             StartCoroutine(TriggerHitstop(0.05f, attack.attackAnimation));
             PlayContactAudio();
-            
-            TriggerUpgrades(WeaponUpgradeType.OnHit, hitEnemies);
+
+            TriggerUpgrades(WeaponUpgradeType.OnHit, attack, hits);
+
+            if (HasKilledEnemy(hits))
+                TriggerUpgrades(WeaponUpgradeType.OnKill, attack, GetKilledHits(hits));
         }
         
         PlayAttackAudio(attack);
@@ -150,7 +157,7 @@ public abstract class WeaponObject : MonoBehaviour
         targetRotation = Vector3.zero;
     }
 
-    protected abstract EnemyAI[] Attack(WeaponAttack attack);
+    protected abstract WeaponHit[] Attack(WeaponAttack attack);
 
     void PlayAttackAudio(WeaponAttack attack)
     {
@@ -177,26 +184,108 @@ public abstract class WeaponObject : MonoBehaviour
         hitAudioSource.PlayOneShot(weaponSO.hitSound);
     }
     
-    public void AddUpgrade(WeaponUpgradeSO upgradeSO) 
+    public void AddUpgrade(ShardSO upgradeSO)
     {
+        if (!upgradeSO)
+            return;
+
+        int stacks = 0;
+        foreach (ShardSO upgrade in upgrades)
+        {
+            if (upgrade == upgradeSO)
+                stacks++;
+        }
+
+        if (stacks >= upgradeSO.MaxStacks)
+            return;
+
         upgrades.Add(upgradeSO);
+
+        if (passivesInitialized)
+        {
+            WeaponContext context = CreateContext(WeaponUpgradeType.Passive, null, null);
+            upgradeSO.Apply(context);
+        }
+    }
+
+    public void AddAttackSpeedPercent(float percentBonus)
+    {
+        runtimeStats.AddAttackSpeedPercent(percentBonus);
+    }
+
+    public void AddStunTime(float flatBonus, float percentBonus)
+    {
+        runtimeStats.AddStunTime(flatBonus, percentBonus);
+    }
+
+    public void AddKnockback(float flatBonus, float percentBonus)
+    {
+        runtimeStats.AddKnockback(flatBonus, percentBonus);
+    }
+
+    public float GetAttackRate()
+    {
+        return runtimeStats.GetAttackRate(weaponSO.attackRate);
     }
     
-    void TriggerUpgrades(WeaponUpgradeType weaponUpgradeType, EnemyAI[] enemies = null) 
+    void TriggerUpgrades(WeaponUpgradeType trigger, WeaponAttack attack, WeaponHit[] hits = null)
     {
-        List<WeaponUpgradeSO> filteredUpgrades = upgrades
-            .Where(u => u.weaponUpgradeType == weaponUpgradeType)
-            .ToList();
-            
-        foreach (WeaponUpgradeSO upgradeSO in filteredUpgrades) 
+        WeaponContext context = CreateContext(trigger, attack, hits);
+
+        foreach (ShardSO upgradeSO in upgrades) 
         {
-            WeaponContext context = new()
-            {
-                attacker = gameObject,
-                targets = enemies
-            };
-            
-            upgradeSO.effect.Apply(context);
+            if (!upgradeSO)
+                continue;
+
+            upgradeSO.Apply(context);
         }
+    }
+
+    WeaponContext CreateContext(WeaponUpgradeType trigger, WeaponAttack attack, WeaponHit[] hits)
+    {
+        hits ??= new WeaponHit[0];
+
+        EnemyAI[] targets = new EnemyAI[hits.Length];
+        for (int i = 0; i < hits.Length; i++)
+        {
+            targets[i] = hits[i].enemy;
+        }
+
+        return new WeaponContext
+        {
+            weapon = this,
+            weaponSO = weaponSO,
+            runtimeStats = runtimeStats,
+            attacker = gameObject,
+            attack = attack,
+            trigger = trigger,
+            targets = targets,
+            hits = hits,
+            hitPoint = hits.Length > 0 ? hits[0].point : Vector3.zero
+        };
+    }
+
+    bool HasKilledEnemy(WeaponHit[] hits)
+    {
+        foreach (WeaponHit hit in hits)
+        {
+            if (hit.killed)
+                return true;
+        }
+
+        return false;
+    }
+
+    WeaponHit[] GetKilledHits(WeaponHit[] hits)
+    {
+        List<WeaponHit> killedHits = new();
+
+        foreach (WeaponHit hit in hits)
+        {
+            if (hit.killed)
+                killedHits.Add(hit);
+        }
+
+        return killedHits.ToArray();
     }
 }

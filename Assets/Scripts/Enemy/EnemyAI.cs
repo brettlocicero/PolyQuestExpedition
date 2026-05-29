@@ -191,7 +191,7 @@ public class EnemyAI : MonoBehaviour
         return sqrDistToTarget <= attackRange * attackRange;
     }
 
-    public void TakeDamage(WeaponAttack attack)
+    public bool TakeDamage(WeaponAttack attack)
     {
         tookDamage = true;
         health -= attack.damage;
@@ -199,7 +199,7 @@ public class EnemyAI : MonoBehaviour
         if (health <= 0)
         {
             Die();
-            return;
+            return true;
         }
 
         PlayDamageAudio();
@@ -208,9 +208,11 @@ public class EnemyAI : MonoBehaviour
 
         if (damagedParticles)
             damagedParticles.Play();
+
+        return false;
     }
 
-    public void TakeDamage(int damage, float stunTime)
+    public bool TakeDamage(int damage, float stunTime)
     {
         tookDamage = true;
         health -= damage;
@@ -218,7 +220,7 @@ public class EnemyAI : MonoBehaviour
         if (health <= 0)
         {
             Die();
-            return;
+            return true;
         }
 
         PlayDamageAudio();
@@ -226,6 +228,8 @@ public class EnemyAI : MonoBehaviour
 
         if (damagedParticles)
             damagedParticles.Play();
+
+        return false;
     }
 
     void PlayHitDirectionAnimation(AttackDirection direction)

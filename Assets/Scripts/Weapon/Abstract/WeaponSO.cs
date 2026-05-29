@@ -32,4 +32,21 @@ public class WeaponAttack
     [Header("VFX")]
     public AudioClip sound;
     public Vector2 pitchRange = new(0.9f, 1.1f);
+
+    public WeaponAttack Copy()
+    {
+        return new WeaponAttack
+        {
+            attackAnimation = attackAnimation,
+            damage = damage,
+            cleaveRadius = cleaveRadius,
+            attackDirection = attackDirection,
+            attackDelay = attackDelay,
+            attackRatePenalty = attackRatePenalty,
+            stunTime = stunTime,
+            knockbackForce = knockbackForce,
+            sound = sound,
+            pitchRange = pitchRange
+        };
+    }
 }

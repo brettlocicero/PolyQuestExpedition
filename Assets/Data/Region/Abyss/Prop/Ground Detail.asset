@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ground Detail
   m_EditorClassIdentifier: Assembly-CSharp::PropSO
   propObj: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
-  maxAmount: 1000
+  maxAmount: 0
   yOffset: 0.5
   randomizeScale: 1
   scaleRange: {x: 1, y: 3}

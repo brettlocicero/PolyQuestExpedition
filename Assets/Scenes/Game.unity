@@ -2949,7 +2949,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponObject
   weaponSO: {fileID: 11400000, guid: f03f5dc8ad95f8441962e8780e40a556, type: 2}
-  upgrades: []
+  upgrades:
+  - {fileID: 11400000, guid: edce57acbee7b42bd842e6d2afda76bd, type: 2}
+  runtimeStats:
+    attackSpeedMultiplier: 1
+    stunTimeMultiplier: 1
+    stunTimeBonus: 0
+    knockbackMultiplier: 1
+    knockbackBonus: 0
   maxChargeTime: 1
   rotationSmoothSpeed: 10
   maxChargeRotation: {x: -20, y: 30, z: 0}

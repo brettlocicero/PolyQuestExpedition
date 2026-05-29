@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce5164e309e28447dba7636db014441b, type: 3}
-  m_Name: Sharpened Blade Effect
+  m_Name: Damage Increase
   m_EditorClassIdentifier: Assembly-CSharp::DamageEffectSO
   damage: 10
   stunTime: 0
