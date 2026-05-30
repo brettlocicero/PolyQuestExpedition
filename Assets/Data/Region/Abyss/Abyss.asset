@@ -20,7 +20,7 @@ MonoBehaviour:
   enemies: []
   regionObject: {fileID: 7354145412278490355, guid: 8ac9be5ec474df74f80fcd3ae2fceaab, type: 3}
   props:
-  - {fileID: 11400000, guid: df6941fc542c42444b2d39650bf71543, type: 2}
+  - {fileID: 11400000, guid: a6dbde0ffacf6364ca3909a508925a75, type: 2}
   skybox: {fileID: 2100000, guid: 701c293098f3b489fba199b7cf062bf4, type: 2}
   fogColor: {r: 0, g: 0, b: 0, a: 1}
   sunColor: {r: 1, g: 0, b: 0.03529412, a: 1}

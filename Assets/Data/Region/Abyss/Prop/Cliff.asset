@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cliff
   m_EditorClassIdentifier: Assembly-CSharp::PropSO
   propObj: {fileID: 4081111632752936374, guid: 57d592d280e7e0644b0b7d32dba26611, type: 3}
-  maxAmount: 1
+  maxAmount: 25
   yOffset: -20
   randomizeScale: 1
   scaleRange: {x: 1, y: 2}

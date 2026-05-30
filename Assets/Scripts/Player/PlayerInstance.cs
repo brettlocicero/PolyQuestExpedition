@@ -13,6 +13,7 @@ public class PlayerInstance : MonoBehaviour
     [Header("Runtime")]
     [SerializeField] int health = 100;
     [SerializeField] int maxHealth = 100;
+    [SerializeField] int souls = 0;
 
     [Header("VFX")]
     [SerializeField] Animator hitScreenAnim;
@@ -61,5 +62,10 @@ public class PlayerInstance : MonoBehaviour
         cc.enabled = false;
         transform.SetPositionAndRotation(pos, rot);
         cc.enabled = true;
+    }
+
+    public void AddSouls(int souls)
+    {
+        this.souls += souls;
     }
 }

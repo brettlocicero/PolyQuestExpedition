@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64a8d20397787634f99ad6a0478b6abe, type: 3}
-  m_Name: Spire
+  m_Name: Ruins POI 1
   m_EditorClassIdentifier: Assembly-CSharp::PropSO
-  propObj: {fileID: 3928051004192126797, guid: 24e33c0cf0f37b34a9c6a093265e33de, type: 3}
-  maxAmount: 5
+  propObj: {fileID: 6679942639048501323, guid: da5cb8e1f26ca59409858d6b139c9af5, type: 3}
+  maxAmount: 40
   yOffset: 0
   randomizeScale: 1
   scaleRange: {x: 1, y: 1.5}
