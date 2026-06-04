@@ -1,12 +1,16 @@
+using System.Collections;
 using UnityEngine;
 
 public class SoulDrop : MonoBehaviour
 {   
     [SerializeField] float magnetRange = 10f;
     [SerializeField] float magnetSpeed = 15f;
+    [SerializeField] ParticleSystem particles;
+    [SerializeField] MeshRenderer mesh;
 
     int dropAmount = 10;
     PlayerInstance player;
+    bool used = false;
 
     void Start()
     {
@@ -29,12 +33,24 @@ public class SoulDrop : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && !used)
         {
             player.AddSouls(dropAmount);
-            Destroy(gameObject);
+            StartCoroutine(DelayedDestroy());
         }
+    }
+
+    IEnumerator DelayedDestroy()
+    {
+        used = true;
+        mesh.enabled = false;
+        GetComponent<Collider>().enabled = false;
+        particles.Stop();
+
+        yield return new WaitForSeconds(2f);
+        
+        Destroy(gameObject);
     }
 }

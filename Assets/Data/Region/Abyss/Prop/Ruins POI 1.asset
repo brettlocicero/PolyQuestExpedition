@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Ruins POI 1
   m_EditorClassIdentifier: Assembly-CSharp::PropSO
   propObj: {fileID: 6679942639048501323, guid: da5cb8e1f26ca59409858d6b139c9af5, type: 3}
-  maxAmount: 40
+  maxAmount: 20
   yOffset: 0
   randomizeScale: 1
   scaleRange: {x: 1, y: 1.5}
