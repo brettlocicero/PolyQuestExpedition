@@ -30,7 +30,7 @@ public class RegionSO : ScriptableObject
 
     public GameObject SpawnRegion()
     {
-        GameObject regionObj = new GameObject(regionName + " Object");
+        GameObject regionObj = new(regionName + " Object");
 
         GameObject groundObj = Instantiate(regionObject, Vector3.zero, Quaternion.identity);
         groundObj.transform.SetParent(regionObj.transform);
@@ -48,11 +48,11 @@ public class RegionSO : ScriptableObject
             for (int i = 0; i < prop.maxAmount; i++)
             {
                 Vector2 randomCircle = Random.insideUnitCircle * regionRadius;
-                Vector3 rayOrigin = new Vector3(center.x + randomCircle.x, center.y + 500f, center.z + randomCircle.y);
+                Vector3 rayOrigin = new(center.x + randomCircle.x, center.y + 500f, center.z + randomCircle.y);
 
                 if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, 1000f, groundLayer))
                 {
-                    Vector3 pos = new Vector3(hit.point.x, hit.point.y + prop.yOffset, hit.point.z);
+                    Vector3 pos = new(hit.point.x, hit.point.y + prop.yOffset, hit.point.z);
                     GameObject spawnedProp = Instantiate(prop.propObj, pos, Quaternion.identity, regionObj.transform);
                     if (prop.randomizeScale)
                     {

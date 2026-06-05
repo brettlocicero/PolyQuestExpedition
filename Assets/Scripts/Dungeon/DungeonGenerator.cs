@@ -22,9 +22,9 @@ public class DungeonGenerator : MonoBehaviour
     [SerializeField, Min(0f)] float lateralNoise = 0f;
     [SerializeField, Min(0f)] float verticalNoise = 0f;
 
-    readonly List<DungeonRoom> spawnedRooms = new List<DungeonRoom>();
-    readonly List<GameObject> spawnedHallways = new List<GameObject>();
-    readonly List<OpenConnector> openConnectors = new List<OpenConnector>();
+    readonly List<DungeonRoom> spawnedRooms = new();
+    readonly List<GameObject> spawnedHallways = new();
+    readonly List<OpenConnector> openConnectors = new();
 
     enum ConnectorDirection
     {
@@ -56,7 +56,6 @@ public class DungeonGenerator : MonoBehaviour
         int attempts = 0;
         while (spawnedRooms.Count < roomCount && openConnectors.Count > 0 && attempts < maxPlacementAttempts)
         {
-            print($"attempt {attempts}");
             attempts++;
 
             int openConnectorIndex = Random.Range(0, openConnectors.Count);
@@ -90,6 +89,7 @@ public class DungeonGenerator : MonoBehaviour
 
             openConnectors.RemoveAt(openConnectorIndex);
             SpawnHallway(targetConnector.Connector, candidateConnector);
+            targetConnector.Room.AddUsedConnector(targetConnector.Connector);
             AcceptRoom(candidateRoom, candidateConnector);
         }
 
@@ -112,6 +112,7 @@ public class DungeonGenerator : MonoBehaviour
         AddOpenConnector(room, room.southConnector, ConnectorDirection.South, usedConnector);
         AddOpenConnector(room, room.westConnector, ConnectorDirection.West, usedConnector);
         AddOpenConnector(room, room.eastConnector, ConnectorDirection.East, usedConnector);
+        room.InitRoom(usedConnector);
     }
 
     void AddOpenConnector(DungeonRoom room, Transform connector, ConnectorDirection direction, Transform usedConnector)
@@ -139,9 +140,6 @@ public class DungeonGenerator : MonoBehaviour
 
     void SpawnHallway(Transform startConnector, Transform endConnector)
     {
-        if (hallwayPrefab == null || startConnector == null || endConnector == null)
-            return;
-
         Vector3 start = startConnector.position;
         Vector3 end = endConnector.position;
         Vector3 connectorDelta = end - start;

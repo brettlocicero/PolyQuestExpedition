@@ -7,7 +7,7 @@ public class EnemySpawnArea : MonoBehaviour
     [SerializeField] Transform[] spawnPos;
 
     [Header("Spawn Settings")]
-    [SerializeField] Vector2Int enemyCountRange = new Vector2Int(2, 5);
+    [SerializeField] Vector2Int enemyCountRange = new(2, 5);
     [SerializeField] float spawnDelay = 0.5f;
 
     [Header("Raycast")]
