@@ -5,6 +5,7 @@ public class PropSO : ScriptableObject
 {
     public GameObject propObj;
     public int maxAmount = 100;
+    public float minSpawnDistance = 50f;
 
     [Header("Transformation")]
     public float yOffset;

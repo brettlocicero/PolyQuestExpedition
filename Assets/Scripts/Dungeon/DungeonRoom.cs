@@ -14,6 +14,7 @@ public class DungeonRoom : MonoBehaviour
 
     [Header("Doorways")]
     [SerializeField] GameObject doorwayPrefab;
+    [SerializeField] GameObject doorwayFillerPrefab;
 
     [Header("Props")]
     [SerializeField] GameObject[] propPrefabs;
@@ -27,6 +28,7 @@ public class DungeonRoom : MonoBehaviour
 
     readonly List<Transform> usedConnectors = new();
     readonly List<Transform> spawnedDoorwayConnectors = new();
+    readonly Dictionary<Transform, GameObject> spawnedDoorwayFillers = new();
     bool initialized;
 
     public void InitRoom(Transform usedConnector = null)
@@ -49,13 +51,27 @@ public class DungeonRoom : MonoBehaviour
         usedConnectors.Add(connector);
 
         if (initialized)
+        {
+            RemoveDoorwayFiller(connector);
             SpawnDoorway(connector);
+        }
     }
 
     public void SpawnDoorways()
     {
         for (int i = 0; i < usedConnectors.Count; i++)
+        {
             SpawnDoorway(usedConnectors[i]);
+        }
+
+        if (!usedConnectors.Contains(northConnector))
+            SpawnDoorwayFiller(northConnector);
+        if (!usedConnectors.Contains(southConnector))
+            SpawnDoorwayFiller(southConnector);
+        if (!usedConnectors.Contains(eastConnector))
+            SpawnDoorwayFiller(eastConnector);
+        if (!usedConnectors.Contains(westConnector))
+            SpawnDoorwayFiller(westConnector);
     }
 
     public void SpawnProps()
@@ -91,6 +107,26 @@ public class DungeonRoom : MonoBehaviour
 
         Instantiate(doorwayPrefab, connector.position, connector.rotation, transform);
         spawnedDoorwayConnectors.Add(connector);
+    }
+
+    void SpawnDoorwayFiller(Transform connector)
+    {
+        if (doorwayFillerPrefab == null || connector == null || spawnedDoorwayFillers.ContainsKey(connector))
+            return;
+
+        GameObject filler = Instantiate(doorwayFillerPrefab, connector.position, connector.rotation, transform);
+        spawnedDoorwayFillers.Add(connector, filler);
+    }
+
+    void RemoveDoorwayFiller(Transform connector)
+    {
+        if (connector == null || !spawnedDoorwayFillers.TryGetValue(connector, out GameObject filler))
+            return;
+
+        if (filler != null)
+            Destroy(filler);
+
+        spawnedDoorwayFillers.Remove(connector);
     }
 
     GameObject GetRandomPropPrefab()

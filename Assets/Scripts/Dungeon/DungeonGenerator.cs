@@ -109,9 +109,14 @@ public class DungeonGenerator : MonoBehaviour
     {
         spawnedRooms.Add(room);
         AddOpenConnector(room, room.northConnector, ConnectorDirection.North, usedConnector);
-        AddOpenConnector(room, room.southConnector, ConnectorDirection.South, usedConnector);
-        AddOpenConnector(room, room.westConnector, ConnectorDirection.West, usedConnector);
-        AddOpenConnector(room, room.eastConnector, ConnectorDirection.East, usedConnector);
+
+        if (spawnedRooms.Count != 1)
+        {
+            AddOpenConnector(room, room.eastConnector, ConnectorDirection.East, usedConnector);            
+            AddOpenConnector(room, room.southConnector, ConnectorDirection.South, usedConnector);
+            AddOpenConnector(room, room.westConnector, ConnectorDirection.West, usedConnector);
+        }
+        
         room.InitRoom(usedConnector);
     }
 
