@@ -2248,7 +2248,7 @@ MonoBehaviour:
   landSound: {fileID: 8300000, guid: 942019cf9ecd5854ebeb343b12b7f779, type: 3}
   dashAnim: {fileID: 174417999}
   dashSpeed: 100
-  dashDuration: 0.25
+  dashDuration: 0.15
   dashCooldown: 1
   dashFOV: 105
   normalFOV: 90
@@ -4776,7 +4776,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &866541688
 Transform:
   m_ObjectHideFlags: 0
