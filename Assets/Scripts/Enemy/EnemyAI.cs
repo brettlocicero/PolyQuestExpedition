@@ -1,8 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI; // Required for NavMeshAgent
 
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshAgent))] // Replaced Rigidbody with NavMeshAgent
 public class EnemyAI : MonoBehaviour
 {
     enum EnemyState
@@ -44,7 +45,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] ItemDropObject[] itemDropObjects;
 
     AudioSource audioSource;
-    Rigidbody rb;
+    NavMeshAgent agent; // Replaced Rigidbody reference
 
     EnemyState state = EnemyState.Idle;
 
@@ -61,9 +62,14 @@ public class EnemyAI : MonoBehaviour
         health = maxHealth;
 
         audioSource = GetComponent<AudioSource>();
-        rb = GetComponent<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
 
-        if (!target)
+        // Configure NavMeshAgent using your inspector values
+        agent.speed = moveSpeed;
+        agent.stoppingDistance = attackRange;
+        agent.updateRotation = alwaysLookAtPlayer; // Let NavMesh handle rotation unless overridden
+
+        if (!target && PlayerInstance.instance != null)
             target = PlayerInstance.instance.transform;
 
         if (anim)
@@ -82,6 +88,7 @@ public class EnemyAI : MonoBehaviour
 
         UpdateTimers();
         UpdateState();
+        HandleMovementState();
     }
 
     void FixedUpdate()
@@ -89,14 +96,11 @@ public class EnemyAI : MonoBehaviour
         if (target == null)
             return;
 
-        RotateTowardsTarget();
-
-        // Never move while stunned or attacking
-        if (state == EnemyState.Stunned || state == EnemyState.Attacking)
-            return;
-
-        if (state == EnemyState.Chasing)
-            HandleMovement();
+        // If not using NavMesh built-in rotation, manually rotate
+        if (!alwaysLookAtPlayer)
+        {
+            RotateTowardsTarget();
+        }
     }
 
     void UpdateTimers()
@@ -104,9 +108,10 @@ public class EnemyAI : MonoBehaviour
         if (stunTimer > 0f)
         {
             stunTimer -= Time.deltaTime;
-
-            if (stunTimer < 0f)
+            if (stunTimer <= 0f)
+            {
                 stunTimer = 0f;
+            }
         }
     }
 
@@ -140,14 +145,29 @@ public class EnemyAI : MonoBehaviour
             state = EnemyState.Chasing;
     }
 
-    void HandleMovement()
+    void HandleMovementState()
     {
-        Vector3 dir = (target.position - transform.position).normalized;
-        dir.y = 0f;
+        switch (state)
+        {
+            case EnemyState.Idle:
+            case EnemyState.Stunned:
+            case EnemyState.Attacking:
+                // Safely halt the agent pathfinding
+                if (agent.isOnNavMesh)
+                {
+                    agent.isStopped = true;
+                    agent.velocity = Vector3.zero;
+                }
+                break;
 
-        Vector3 move = moveSpeed * Time.fixedDeltaTime * dir;
-
-        rb.MovePosition(rb.position + move);
+            case EnemyState.Chasing:
+                if (agent.isOnNavMesh)
+                {
+                    agent.isStopped = false;
+                    agent.SetDestination(target.position);
+                }
+                break;
+        }
     }
 
     void RotateTowardsTarget()
@@ -155,20 +175,17 @@ public class EnemyAI : MonoBehaviour
         Vector3 dir = target.position - transform.position;
         dir.y = 0f;
 
-        if (dir == Vector3.zero && !alwaysLookAtPlayer)
+        if (dir == Vector3.zero)
             return;
 
         Quaternion targetRotation = Quaternion.LookRotation(dir);
-        Quaternion smoothRotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
-
-        rb.MoveRotation(smoothRotation);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 
     IEnumerator AttackRoutine()
     {
         state = EnemyState.Attacking;
         attackOnCooldown = true;
-        rb.linearVelocity = Vector3.zero;
 
         if (anim)
             anim.SetTrigger("Attack");
@@ -184,11 +201,6 @@ public class EnemyAI : MonoBehaviour
         }
 
         state = EnemyState.Idle;
-    }
-
-    bool InAttackRange()
-    {
-        return sqrDistToTarget <= attackRange * attackRange;
     }
 
     public bool TakeDamage(WeaponAttack attack)
@@ -266,7 +278,27 @@ public class EnemyAI : MonoBehaviour
 
     public void ApplyKnockback(Vector3 force)
     {
-        rb.AddForce(force, ForceMode.Impulse);
+        // NavMeshAgents don't natively react to Rigidbody forces well. 
+        // We temporarily disable the agent component so it can be pushed, then re-enable it.
+        StartCoroutine(KnockbackRoutine(force));
+    }
+
+    IEnumerator KnockbackRoutine(Vector3 force)
+    {
+        Rigidbody knockbackRb = GetComponent<Rigidbody>();
+        
+        // If you don't keep a Rigidbody attached, you can instead use agent.Move(force)
+        if (knockbackRb != null)
+        {
+            agent.enabled = false;
+            knockbackRb.isKinematic = false;
+            knockbackRb.AddForce(force, ForceMode.Impulse);
+            
+            yield return new WaitForSeconds(0.2f); // Duration of velocity override
+            
+            knockbackRb.isKinematic = true;
+            agent.enabled = true;
+        }
     }
 
     void PlayDamageAudio()
@@ -285,9 +317,7 @@ public class EnemyAI : MonoBehaviour
         if (deathFX)
         {
             GameObject deathFXObj = Instantiate(deathFX, transform.position, transform.rotation);
-
             ApplyForcesToBody(deathFXObj);
-
             Destroy(deathFXObj, 10f);
         }
 
@@ -306,7 +336,6 @@ public class EnemyAI : MonoBehaviour
     void ApplyForcesToBody(GameObject deathFXObj)
     {
         Rigidbody[] rigidbodies = deathFXObj.GetComponentsInChildren<Rigidbody>();
-
         foreach (Rigidbody body in rigidbodies)
         {
             body.AddForce(-transform.forward * 300f);
@@ -332,7 +361,6 @@ public class EnemyAI : MonoBehaviour
     {
         while (true)
         {
-            // Play Spawn Sound
             yield return new WaitForSeconds(0.75f);
             audioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
             audioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
