@@ -45,7 +45,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] ItemDropObject[] itemDropObjects;
 
     AudioSource audioSource;
-    NavMeshAgent agent; // Replaced Rigidbody reference
+    NavMeshAgent agent;
 
     EnemyState state = EnemyState.Idle;
 
@@ -64,10 +64,9 @@ public class EnemyAI : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
 
-        // Configure NavMeshAgent using your inspector values
         agent.speed = moveSpeed;
         agent.stoppingDistance = attackRange;
-        agent.updateRotation = alwaysLookAtPlayer; // Let NavMesh handle rotation unless overridden
+        agent.updateRotation = alwaysLookAtPlayer;
 
         if (!target && PlayerInstance.instance != null)
             target = PlayerInstance.instance.transform;
@@ -96,7 +95,6 @@ public class EnemyAI : MonoBehaviour
         if (target == null)
             return;
 
-        // If not using NavMesh built-in rotation, manually rotate
         if (!alwaysLookAtPlayer)
         {
             RotateTowardsTarget();
@@ -152,7 +150,6 @@ public class EnemyAI : MonoBehaviour
             case EnemyState.Idle:
             case EnemyState.Stunned:
             case EnemyState.Attacking:
-                // Safely halt the agent pathfinding
                 if (agent.isOnNavMesh)
                 {
                     agent.isStopped = true;
@@ -278,8 +275,6 @@ public class EnemyAI : MonoBehaviour
 
     public void ApplyKnockback(Vector3 force)
     {
-        // NavMeshAgents don't natively react to Rigidbody forces well. 
-        // We temporarily disable the agent component so it can be pushed, then re-enable it.
         StartCoroutine(KnockbackRoutine(force));
     }
 
@@ -287,14 +282,13 @@ public class EnemyAI : MonoBehaviour
     {
         Rigidbody knockbackRb = GetComponent<Rigidbody>();
         
-        // If you don't keep a Rigidbody attached, you can instead use agent.Move(force)
         if (knockbackRb != null)
         {
             agent.enabled = false;
             knockbackRb.isKinematic = false;
             knockbackRb.AddForce(force, ForceMode.Impulse);
             
-            yield return new WaitForSeconds(0.2f); // Duration of velocity override
+            yield return new WaitForSeconds(0.2f);
             
             knockbackRb.isKinematic = true;
             agent.enabled = true;

@@ -2063,15 +2063,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1398575522}
   - {fileID: 558781065}
   - {fileID: 866541688}
-  m_Father: {fileID: 375646403}
+  m_Father: {fileID: 1875118731}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -2294,7 +2294,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 330585546}
   - {fileID: 989068894}
   - {fileID: 3158577400540482121}
   m_Father: {fileID: 0}
@@ -4901,7 +4900,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeaponObject
   weaponSO: {fileID: 11400000, guid: f03f5dc8ad95f8441962e8780e40a556, type: 2}
-  upgrades: []
+  upgrades:
+  - {fileID: 11400000, guid: 90981846c454ac44aa23cbb6a4c278e2, type: 2}
   runtimeStats:
     attackSpeedMultiplier: 1
     stunTimeMultiplier: 1
@@ -9576,7 +9576,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 330585546}
   m_Father: {fileID: 989068894}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1875118732
