@@ -1,11 +1,14 @@
 using UnityEngine;
-using System.Collections.Generic; // Required for List
 
 [CreateAssetMenu(fileName = "RegionSO", menuName = "Scriptable Objects/RegionSO")]
 public class RegionSO : ScriptableObject
 {
     public string regionName;
     public RoomSO[] rooms;
+
+    [Header("Map")]
+    public int mapLength = 10;
+    public int maxNodesPerLevel = 4;
 
     [Header("VFX")]
     public Material skybox;
@@ -22,6 +25,11 @@ public class RegionSO : ScriptableObject
     }
 
     public RoomSO GetRoom()
+    {
+        return rooms[Random.Range(0, rooms.Length)];
+    }
+
+    public RoomSO GetRoomFromMapLevel(int level)
     {
         return rooms[Random.Range(0, rooms.Length)];
     }

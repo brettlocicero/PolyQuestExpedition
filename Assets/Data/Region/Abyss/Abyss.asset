@@ -15,6 +15,8 @@ MonoBehaviour:
   regionName: Abyss
   rooms:
   - {fileID: 11400000, guid: 37c2f1bd456134146b6056a4414da9c7, type: 2}
+  mapLength: 8
+  maxNodesPerLevel: 5
   skybox: {fileID: 2100000, guid: 75741018f53870b4eb47806597b2d8bc, type: 2}
   fogColor: {r: 0, g: 0, b: 0, a: 1}
   sunColor: {r: 0.6037736, g: 0.6037736, b: 0.6037736, a: 1}

@@ -4,4 +4,6 @@ using UnityEngine;
 public class RoomSO : ScriptableObject
 {
     public GameObject roomObject;
+    public GameObject mapObject;
+    public float mapYPos;
 }

@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Abyss Ruins Room
   m_EditorClassIdentifier: Assembly-CSharp::RoomSO
   roomObject: {fileID: 7354145412278490355, guid: 8ac9be5ec474df74f80fcd3ae2fceaab, type: 3}
+  mapObject: {fileID: 4845385407675288750, guid: aea3b2fa074f2614d9e2305b596173eb, type: 3}
+  mapYPos: 0
