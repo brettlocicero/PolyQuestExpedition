@@ -4282,12 +4282,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 656996629}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d1a08281bc8e004cb6b8c649b669ec4, type: 3}
+  m_Script: {fileID: 11500000, guid: f1da522e7f79545429af9b8f31ec652b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RegionManager
-  enemySpawner: {fileID: 858994042}
+  m_EditorClassIdentifier: Assembly-CSharp::RegionGenerator
   hubObjects: {fileID: 665996956}
-  regionEntranceAnim: {fileID: 4296057692076978471}
+  roomSpacingNoise: 0
+  lateralNoise: 0
+  verticalNoise: 0
 --- !u!1 &665996956
 GameObject:
   m_ObjectHideFlags: 0
@@ -8370,7 +8371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0f8ebc63ad04e4ea7861f82c483bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RegionPortal
-  region: {fileID: 11400000, guid: 9d3e8310077c8bc4a913466b0ecf1ba5, type: 2}
+  region: {fileID: 11400000, guid: c7b1c56a9e9346e4a96741e2f5f60f56, type: 2}
 --- !u!1 &1705840117
 GameObject:
   m_ObjectHideFlags: 0

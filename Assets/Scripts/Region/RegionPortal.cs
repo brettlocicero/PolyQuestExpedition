@@ -7,10 +7,9 @@ public class RegionPortal : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        if (!used)
-        {
-            RegionManager.instance.EnterRegion(region);
-            used = true;
-        }
+        if (used) return;
+        
+        RegionGenerator.instance.EnterRegion(region);
+        used = true;
     }
 }

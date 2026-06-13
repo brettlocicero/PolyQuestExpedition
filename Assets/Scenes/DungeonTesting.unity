@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 855306213}
   - component: {fileID: 855306212}
   m_Layer: 0
-  m_Name: Dungeon Generator
+  m_Name: Region Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -275,15 +275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1da522e7f79545429af9b8f31ec652b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonGenerator
-  startingRoomPrefab: {fileID: 5361486831568803922, guid: a5f3890c392c3b54896c4113070042f5, type: 3}
-  roomPrefabs:
-  - {fileID: 5361486831568803922, guid: a5f3890c392c3b54896c4113070042f5, type: 3}
-  roomCount: 5
-  hallwayPrefab: {fileID: 4112476585436058981, guid: 9901475ceabcf72448f7694c9385f0e7, type: 3}
-  hallwayPrefabLength: 1
-  maxPlacementAttempts: 100
-  colliderShrink: 0
-  roomSpacing: 20
+  testRegion: {fileID: 11400000, guid: c7b1c56a9e9346e4a96741e2f5f60f56, type: 2}
   roomSpacingNoise: 5
   lateralNoise: 0
   verticalNoise: 0
