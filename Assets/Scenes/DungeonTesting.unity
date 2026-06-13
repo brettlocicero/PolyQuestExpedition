@@ -278,13 +278,12 @@ MonoBehaviour:
   startingRoomPrefab: {fileID: 5361486831568803922, guid: a5f3890c392c3b54896c4113070042f5, type: 3}
   roomPrefabs:
   - {fileID: 5361486831568803922, guid: a5f3890c392c3b54896c4113070042f5, type: 3}
-  - {fileID: 8283852407081312758, guid: a6b4cc5f50719f44998f7337af69d4bc, type: 3}
-  roomCount: 10
+  roomCount: 5
   hallwayPrefab: {fileID: 4112476585436058981, guid: 9901475ceabcf72448f7694c9385f0e7, type: 3}
   hallwayPrefabLength: 1
   maxPlacementAttempts: 100
   colliderShrink: 0
-  roomSpacing: 10
+  roomSpacing: 20
   roomSpacingNoise: 5
   lateralNoise: 0
   verticalNoise: 0
