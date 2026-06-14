@@ -143,37 +143,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8260411679999309053}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1812358993045560804
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5101015610498915715}
-  m_Layer: 0
-  m_Name: Player Spawn Point
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5101015610498915715
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1812358993045560804}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.33282, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8260411679999309053}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4000946806974179076
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +155,7 @@ GameObject:
   - component: {fileID: 5361486831568803922}
   - component: {fileID: 780744139429109843}
   m_Layer: 10
-  m_Name: Cliffs Room 1
+  m_Name: Cliffs Ending Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -205,7 +174,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5101015610498915715}
   - {fileID: 5001899717091490636}
   - {fileID: 8959100113706716619}
   - {fileID: 5892030855122036222}
@@ -237,6 +205,8 @@ Transform:
   - {fileID: 6195186017303172049}
   - {fileID: 37435859551516693}
   - {fileID: 4224365329284954287}
+  - {fileID: 2090151909600136370}
+  - {fileID: 959896962305483005}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5361486831568803922
@@ -251,7 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03678a79c8f688b4798972d890d12b45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DungeonRoom
-  playerSpawnPoint: {fileID: 5101015610498915715}
+  playerSpawnPoint: {fileID: 959896962305483005}
   roomCollider: {fileID: 780744139429109843}
   connectors:
   - {fileID: 5001899717091490636}
@@ -490,6 +460,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8260411679999309053}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!1 &8845546011535710504
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 959896962305483005}
+  m_Layer: 0
+  m_Name: Player Spawn Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &959896962305483005
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8845546011535710504}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.77, y: 5.33282, z: -29.33}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8260411679999309053}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &100037338432592298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1341,6 +1342,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3534304372178244003, guid: 8e232222dd345d34bb4bd2d0cd679760, type: 3}
   m_PrefabInstance: {fileID: 4742824391752679636}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4747338220352422099
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8260411679999309053}
+    m_Modifications:
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.17338243
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.0503373
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6995122656638335784, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+      propertyPath: m_Name
+      value: Floor Portal
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+--- !u!4 &2090151909600136370 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6692446778503973985, guid: 2b515bba419c3bd4daa94718f497972d, type: 3}
+  m_PrefabInstance: {fileID: 4747338220352422099}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4934036047381468824
 PrefabInstance:

@@ -297,4 +297,11 @@ public class PlayerController : MonoBehaviour
     {
         lockSensitivity = val;
     }
+
+    public void RepositionPlayer(Vector3 pos, Quaternion rot)
+    {
+        controller.enabled = false;
+        transform.SetPositionAndRotation(pos, rot);
+        controller.enabled = true;
+    }
 }

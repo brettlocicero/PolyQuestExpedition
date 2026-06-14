@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class RegionRoom : MonoBehaviour
 {
-    [Header("Bounds")]
-    public Collider roomCollider;
+    public Transform playerSpawnPoint;
 
-    [Header("Connectors")]
+    public Collider roomCollider;
     public List<Transform> connectors = new();
 
     [SerializeField, HideInInspector] Transform northConnector;
@@ -123,5 +122,10 @@ public class RegionRoom : MonoBehaviour
 
         if (!connectors.Contains(connector))
             connectors.Add(connector);
+    }
+
+    public void MovePlayerToSpawnpoint()
+    {
+        PlayerInstance.instance.GetPlayerController().RepositionPlayer(playerSpawnPoint.position, playerSpawnPoint.rotation);
     }
 }

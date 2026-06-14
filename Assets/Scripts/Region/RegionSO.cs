@@ -5,6 +5,7 @@ public class RegionSO : ScriptableObject
 {
     [Header("Rooms")]
     public RegionRoom startingRoomPrefab;
+    public RegionRoom endingRoomPrefab;
     public RegionRoom[] roomPrefabs;
     public int roomCount = 7;
 
@@ -20,10 +21,12 @@ public class RegionSO : ScriptableObject
     [Header("VFX")]
     public Material skybox;
     public Color sunColor;
+    public Color ambientColor;
 
     public void ApplyVFX()
     {
         RenderSettings.skybox = skybox;
         RenderSettings.sun.color = sunColor;
+        RenderSettings.ambientSkyColor = ambientColor;
     }
 }

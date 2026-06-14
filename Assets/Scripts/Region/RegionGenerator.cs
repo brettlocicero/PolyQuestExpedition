@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 public class RegionGenerator : MonoBehaviour
@@ -9,8 +10,14 @@ public class RegionGenerator : MonoBehaviour
         instance = this;
     }
 
+    [Header("Runtime")]
+    [SerializeField] RegionSO currentRegion;
+    [SerializeField] int floorNumber = 0;
+
     [Header("References")]
     [SerializeField] GameObject hubObjects;
+    [SerializeField] Animator transitionAnim;
+    [SerializeField] Animator regionEntranceAnim;
 
     [Header("Noise")]
     [SerializeField, Min(0f)] float roomSpacingNoise = 0f;
@@ -29,41 +36,61 @@ public class RegionGenerator : MonoBehaviour
 
     public void EnterRegion(RegionSO region)
     {
-        Generate(region);
+        floorNumber = 0;
+        currentRegion = region;
+        regionEntranceAnim.SetTrigger("RegionEntrance");
+
+        GenerateFloor();
         region.ApplyVFX();
 
         hubObjects.SetActive(false);
     }
 
-    [ContextMenu("Generate Region")]
-    public void Generate(RegionSO region)
+    public void GenerateFloor(float transitionDelay = 0.75f)
+    {
+        PlayTransitionVFX();
+        Invoke(nameof(GenerateFloorWorker), transitionDelay);
+    }
+
+    void PlayTransitionVFX()
+    {
+        transitionAnim.SetTrigger("RoomTransition");
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(DOTween.To(() => AudioListener.volume, x => AudioListener.volume = x, 0f, 0.75f));
+        seq.Append(DOTween.To(() => AudioListener.volume, x => AudioListener.volume = x, 1f, 0.75f));
+    }
+
+    void GenerateFloorWorker()
     {
         ClearGeneratedRooms();
 
-        if (region == null)
+        if (currentRegion == null)
         {
             Debug.LogWarning("Cannot generate a region without a RegionSO.", this);
             return;
         }
 
-        if (region.startingRoomPrefab == null)
+        floorNumber++;
+        if (currentRegion.startingRoomPrefab == null)
         {
-            Debug.LogWarning($"{region.name} does not have a starting room prefab assigned.", region);
+            Debug.LogWarning($"{currentRegion.name} does not have a starting room prefab assigned.", currentRegion);
             return;
         }
 
-        RegionRoom startRoom = Instantiate(region.startingRoomPrefab, transform.position, transform.rotation, transform);
+        RegionRoom startRoom = Instantiate(currentRegion.startingRoomPrefab, transform.position, transform.rotation, transform);
         AcceptRoom(startRoom, null);
+        startRoom.MovePlayerToSpawnpoint();
 
         int attempts = 0;
-        while (spawnedRooms.Count < region.roomCount && openConnectors.Count > 0 && attempts < region.maxPlacementAttempts)
+        while (spawnedRooms.Count < currentRegion.roomCount && openConnectors.Count > 0 && attempts < currentRegion.maxPlacementAttempts)
         {
             attempts++;
 
             int openConnectorIndex = Random.Range(0, openConnectors.Count);
             OpenConnector targetConnector = openConnectors[openConnectorIndex];
 
-            RegionRoom prefab = GetRandomRoomPrefab(region);
+            RegionRoom prefab = spawnedRooms.Count - 1 == currentRegion.roomCount ? currentRegion.endingRoomPrefab : GetRandomRoomPrefab(currentRegion);
             if (prefab == null)
                 break;
 
@@ -77,12 +104,12 @@ public class RegionGenerator : MonoBehaviour
                 continue;
             }
 
-            Vector3 connectionOffset = GetConnectionOffset(region, targetConnector);
+            Vector3 connectionOffset = GetConnectionOffset(currentRegion, targetConnector);
             AlignConnector(candidateRoom, candidateConnector, targetConnector, connectionOffset);
 
             Physics.SyncTransforms();
 
-            if (IntersectsSpawnedRoom(region, candidateRoom))
+            if (IntersectsSpawnedRoom(currentRegion, candidateRoom))
             {
                 DestroyRoom(candidateRoom);
                 openConnectors.RemoveAt(openConnectorIndex);
@@ -90,12 +117,12 @@ public class RegionGenerator : MonoBehaviour
             }
 
             openConnectors.RemoveAt(openConnectorIndex);
-            SpawnHallway(region, targetConnector.Connector, candidateConnector);
+            SpawnHallway(currentRegion, targetConnector.Connector, candidateConnector);
             targetConnector.Room.AddUsedConnector(targetConnector.Connector);
             AcceptRoom(candidateRoom, candidateConnector);
         }
 
-        if (attempts == region.maxPlacementAttempts)
+        if (attempts == currentRegion.maxPlacementAttempts)
             Debug.LogWarning("Reached maximum tries");
     }
 
