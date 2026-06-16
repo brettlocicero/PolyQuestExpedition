@@ -5188,8 +5188,8 @@ GameObject:
   - component: {fileID: 7648414632856468138}
   - component: {fileID: 6694078656640137992}
   - component: {fileID: 8274500225571209933}
-  - component: {fileID: 2333119357584216957}
   - component: {fileID: 7679946380430543039}
+  - component: {fileID: 7540113765672842631}
   m_Layer: 6
   m_Name: Skeleton Warrior
   m_TagString: Enemy
@@ -5227,30 +5227,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb106e5285c4014cb0be1b1b5d0ce42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  enemyName: Skeleton
+  enemyName: 
   target: {fileID: 0}
   maxHealth: 30
   attackRange: 3
   attackCooldown: 1.5
-  engageDistance: 30
-  alwaysLookAtPlayer: 1
-  moveSpeed: 8
+  engageDistance: 15
+  alwaysLookAtPlayer: 0
+  moveSpeed: 10
   rotationSpeed: 10
   hitSFX: {fileID: 8300000, guid: fd1311da168b8584f978ba8bd054e726, type: 3}
   deathFX: {fileID: 2375243330899510526, guid: cdd30621e4c424247a39a52088975cce, type: 3}
   anim: {fileID: 8620166371696577679}
   damagedParticles: {fileID: 5161991466970692268}
   contactParticles: {fileID: 5500697978591745560, guid: 3fde23b0343d984428a7b2db96682e9f, type: 3}
-  randomizedObjects:
-  - {fileID: 5465883793292108570}
-  - {fileID: 8393182428365688083}
-  - {fileID: 3249037454605036122}
-  passiveSounds:
-  - {fileID: 8300000, guid: c7244901cca678a4cb84bab91f46e61f, type: 3}
-  - {fileID: 8300000, guid: 645116a24028a0e48903362ec84f878f, type: 3}
-  - {fileID: 8300000, guid: fba949b0fdd6e2f4dbc1d8feaf8cb2c7, type: 3}
-  - {fileID: 8300000, guid: 66a14cc7abd765b4d9d4ae97c65d975a, type: 3}
-  passiveAudioPitchRange: {x: 0.9, y: 1.3}
+  randomizedObjects: []
+  passiveSounds: []
+  passiveAudioPitchRange: {x: 0, y: 0}
   itemDropObjects: []
 --- !u!136 &8274500225571209933
 CapsuleCollider:
@@ -5275,33 +5268,6 @@ CapsuleCollider:
   m_Height: 2.5853205
   m_Direction: 1
   m_Center: {x: 0, y: 1.0511947, z: 0}
---- !u!54 &2333119357584216957
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2375243330899510526}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!82 &7679946380430543039
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5399,6 +5365,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!54 &7540113765672842631
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2375243330899510526}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 80
+  m_CollisionDetection: 1
 --- !u!1 &2561118068485795038
 GameObject:
   m_ObjectHideFlags: 0
