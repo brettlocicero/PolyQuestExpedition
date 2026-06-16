@@ -66,21 +66,13 @@ public class EnemyAI : MonoBehaviour
         Agent = GetComponent<NavMeshAgent>();
         AudioSource = GetComponent<AudioSource>();
         Rb = GetComponent<Rigidbody>(); // Handled safely if you use knockback impulses
-
-        // Initialize States modularly
-        ChaseState = new ChaseState(this);
-        StrafeState = new StrafeState(this);
-        AttackState = new AttackState(this);
-        StunnedState = new StunnedState(this);
-        ChargeState = new ChargeState(this);
     }
 
     void Start()
     {
         health = maxHealth;
-
-        if (!target && PlayerInstance.instance != null)
-            target = PlayerInstance.instance.transform;
+        target = PlayerInstance.instance.transform;
+        InitStates();
 
         if (anim)
             anim.speed = Random.Range(0.95f, 1.05f);
@@ -88,8 +80,16 @@ public class EnemyAI : MonoBehaviour
         RandomizeAppearance();
         PlayPassiveSound();
 
-        // Default Starting State
         SwitchState(ChaseState);
+    }
+
+    void InitStates()
+    {
+        ChaseState = new ChaseState(this);
+        StrafeState = new StrafeState(this);
+        AttackState = new AttackState(this);
+        StunnedState = new StunnedState(this);
+        ChargeState = new ChargeState(this);
     }
 
     void Update()
