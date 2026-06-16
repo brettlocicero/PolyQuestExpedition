@@ -5186,10 +5186,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7648414632856468138}
-  - component: {fileID: 6694078656640137992}
+  - component: {fileID: 1324164283863216031}
   - component: {fileID: 8274500225571209933}
   - component: {fileID: 7679946380430543039}
-  - component: {fileID: 7540113765672842631}
+  - component: {fileID: 889649534178252016}
   m_Layer: 6
   m_Name: Skeleton Warrior
   m_TagString: Enemy
@@ -5215,7 +5215,7 @@ Transform:
   - {fileID: 3308256206440475056}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6694078656640137992
+--- !u!114 &1324164283863216031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5224,19 +5224,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2375243330899510526}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bb106e5285c4014cb0be1b1b5d0ce42, type: 3}
+  m_Script: {fileID: 11500000, guid: cdd784e14bc8a0b449b0a6db984b5e03, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAIController
   enemyName: 
   target: {fileID: 0}
   maxHealth: 30
   attackRange: 3
-  attackCooldown: 1.5
-  engageDistance: 15
-  alwaysLookAtPlayer: 0
-  moveSpeed: 10
+  combatThresholdRange: 8
+  attackCooldown: 1
+  lastAttackTime: 0
+  engageDistance: 30
+  alwaysLookAtPlayer: 1
   rotationSpeed: 10
-  hitSFX: {fileID: 8300000, guid: fd1311da168b8584f978ba8bd054e726, type: 3}
+  chargeChance: 0.5
+  hitSFX: {fileID: 8300000, guid: 7ce7ca5f763ee6f42bab52d1e71291bf, type: 3}
   deathFX: {fileID: 2375243330899510526, guid: cdd30621e4c424247a39a52088975cce, type: 3}
   anim: {fileID: 8620166371696577679}
   damagedParticles: {fileID: 5161991466970692268}
@@ -5245,6 +5247,12 @@ MonoBehaviour:
   passiveSounds: []
   passiveAudioPitchRange: {x: 0, y: 0}
   itemDropObjects: []
+  Agent: {fileID: 0}
+  AudioSource: {fileID: 0}
+  Rb: {fileID: 0}
+  tookDamage: 0
+  stunTimer: 0
+  sqrDistToTarget: Infinity
 --- !u!136 &8274500225571209933
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5365,33 +5373,28 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!54 &7540113765672842631
-Rigidbody:
+--- !u!195 &889649534178252016
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2375243330899510526}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 80
-  m_CollisionDetection: 1
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1.1
+  m_Speed: 9
+  m_Acceleration: 20
+  avoidancePriority: 50
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2.69
+  m_BaseOffset: 0.29
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &2561118068485795038
 GameObject:
   m_ObjectHideFlags: 0

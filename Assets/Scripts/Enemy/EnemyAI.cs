@@ -1,39 +1,47 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
+using System.Collections;
 
+[RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(Rigidbody))]
 public class EnemyAI : MonoBehaviour
 {
-    enum EnemyState
-    {
-        Idle,
-        Chasing,
-        Attacking,
-        Stunned
-    }
+    // --- State Machine ---
+    private EnemyBaseState currentState;
+    public ChaseState ChaseState { get; private set; }
+    public StrafeState StrafeState { get; private set; }
+    public AttackState AttackState { get; private set; }
+    public StunnedState StunnedState { get; private set; }
+    public ChargeState ChargeState { get; private set; }
 
+    [Header("Identity & Target")]
     [SerializeField] string enemyName;
-    [SerializeField] Transform target;
+    public Transform target;
 
     [Header("Stats")]
     [SerializeField] int maxHealth = 30;
-    int health;
+    private int health;
 
-    [Header("Attack")]
-    [SerializeField] float attackRange = 2f;
-    [SerializeField] float attackCooldown = 1f;
+    [Header("Attack Settings")]
+    public float attackRange = 2f;
+    public float combatThresholdRange = 7f; // Triggers tactical movement
+    public float attackCooldown = 1f;
+    [HideInInspector] public float lastAttackTime;
 
     [Header("Movement")]
-    [SerializeField] float engageDistance = 30f;
-    [SerializeField] bool alwaysLookAtPlayer = false;
-    [SerializeField] float moveSpeed = 5f;
-    [SerializeField] float rotationSpeed = 10f;
+    public float engageDistance = 30f;
+    public bool alwaysLookAtPlayer = false;
+    public float rotationSpeed = 10f;
 
-    [Header("FX")]
+    [Header("Behavior Weights")]
+    [Range(0f, 1f)] 
+    [SerializeField] float chargeChance = 0.5f;
+
+
+    [Header("FX & Polish")]
     [SerializeField] AudioClip hitSFX;
     [SerializeField] GameObject deathFX;
-    [SerializeField] Animator anim;
+    public Animator anim;
     [SerializeField] ParticleSystem damagedParticles;
     public ContactParticles contactParticles;
     [SerializeField] GameObject[] randomizedObjects;
@@ -43,27 +51,35 @@ public class EnemyAI : MonoBehaviour
     [Header("Drops")]
     [SerializeField] ItemDropObject[] itemDropObjects;
 
-    AudioSource audioSource;
-    Rigidbody rb;
+    // --- Component References ---
+    [HideInInspector] public NavMeshAgent Agent;
+    [HideInInspector] public AudioSource AudioSource;
+    [HideInInspector] public Rigidbody Rb;
 
-    EnemyState state = EnemyState.Idle;
+    // --- Runtime Trackers ---
+    [HideInInspector] public bool tookDamage = false;
+    [HideInInspector] public float stunTimer = 0f;
+    [HideInInspector] public float sqrDistToTarget = Mathf.Infinity;
 
-    float stunTimer = 0f;
-    float sqrDistToTarget = Mathf.Infinity;
+    void Awake()
+    {
+        Agent = GetComponent<NavMeshAgent>();
+        AudioSource = GetComponent<AudioSource>();
+        Rb = GetComponent<Rigidbody>(); // Handled safely if you use knockback impulses
 
-    bool tookDamage = false;
-    bool attackOnCooldown = false;
-
-    Coroutine attackCoroutine;
+        // Initialize States modularly
+        ChaseState = new ChaseState(this);
+        StrafeState = new StrafeState(this);
+        AttackState = new AttackState(this);
+        StunnedState = new StunnedState(this);
+        ChargeState = new ChargeState(this);
+    }
 
     void Start()
     {
         health = maxHealth;
 
-        audioSource = GetComponent<AudioSource>();
-        rb = GetComponent<Rigidbody>();
-
-        if (!target)
+        if (!target && PlayerInstance.instance != null)
             target = PlayerInstance.instance.transform;
 
         if (anim)
@@ -71,148 +87,101 @@ public class EnemyAI : MonoBehaviour
 
         RandomizeAppearance();
         PlayPassiveSound();
+
+        // Default Starting State
+        SwitchState(ChaseState);
     }
 
     void Update()
     {
-        if (target == null)
-            return;
+        if (target == null) return;
 
         sqrDistToTarget = (target.position - transform.position).sqrMagnitude;
 
-        UpdateTimers();
-        UpdateState();
-    }
-
-    void FixedUpdate()
-    {
-        if (target == null)
-            return;
-
-        RotateTowardsTarget();
-
-        // Never move while stunned or attacking
-        if (state == EnemyState.Stunned || state == EnemyState.Attacking)
-            return;
-
-        if (state == EnemyState.Chasing)
-            HandleMovement();
-    }
-
-    void UpdateTimers()
-    {
+        // Manage our stun clock here globally
         if (stunTimer > 0f)
         {
             stunTimer -= Time.deltaTime;
-
-            if (stunTimer < 0f)
+            if (stunTimer <= 0f)
+            {
                 stunTimer = 0f;
+                // If stun ended while we were in StunnedState, evaluate where to go next
+                if (currentState == StunnedState)
+                    DetermineNextState();
+            }
         }
+
+        // Delegate logic execution to active state
+        currentState?.UpdateState();
     }
 
-    void UpdateState()
+    public void SwitchState(EnemyBaseState newState)
+    {
+        currentState?.ExitState();
+        currentState = newState;
+        currentState.EnterState();
+    }
+
+    public void DetermineNextState()
     {
         if (stunTimer > 0f)
         {
-            state = EnemyState.Stunned;
+            SwitchState(StunnedState);
             return;
         }
 
         bool isEngaged = sqrDistToTarget <= engageDistance * engageDistance || tookDamage;
-
         if (!isEngaged)
         {
-            state = EnemyState.Idle;
+            SwitchState(ChaseState);
             return;
         }
 
-        bool inAttackRange = sqrDistToTarget <= attackRange * attackRange;
-
-        if (inAttackRange)
+        // --- RANDOMIZED COMBAT SELECTION ---
+        if (sqrDistToTarget <= combatThresholdRange * combatThresholdRange)
         {
-            if (!attackOnCooldown && state != EnemyState.Attacking)
-                attackCoroutine = StartCoroutine(AttackRoutine());
+            // If we are already right next to them and ready to attack, prioritize striking
+            if (sqrDistToTarget <= attackRange * attackRange && CanAttack())
+            {
+                SwitchState(AttackState);
+                return;
+            }
 
-            return;
+            // Otherwise, roll a random value between 0.0 and 1.0 to pick a tactical approach
+            if (Random.value <= chargeChance)
+            {
+                SwitchState(ChargeState); // Go hyper-aggressive
+            }
+            else
+            {
+                SwitchState(StrafeState); // Play it smart and circle
+            }
         }
-
-        if (state != EnemyState.Attacking)
-            state = EnemyState.Chasing;
-    }
-
-    void HandleMovement()
-    {
-        Vector3 dir = (target.position - transform.position).normalized;
-        dir.y = 0f;
-
-        Vector3 move = moveSpeed * Time.fixedDeltaTime * dir;
-
-        rb.MovePosition(rb.position + move);
-    }
-
-    void RotateTowardsTarget()
-    {
-        Vector3 dir = target.position - transform.position;
-        dir.y = 0f;
-
-        if (dir == Vector3.zero && !alwaysLookAtPlayer)
-            return;
-
-        Quaternion targetRotation = Quaternion.LookRotation(dir);
-        Quaternion smoothRotation = Quaternion.Slerp(rb.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
-
-        rb.MoveRotation(smoothRotation);
-    }
-
-    IEnumerator AttackRoutine()
-    {
-        state = EnemyState.Attacking;
-        attackOnCooldown = true;
-        rb.linearVelocity = Vector3.zero;
-
-        if (anim)
-            anim.SetTrigger("Attack");
-
-        yield return new WaitForSeconds(attackCooldown);
-
-        attackOnCooldown = false;
-
-        if (stunTimer > 0f)
+        else
         {
-            state = EnemyState.Stunned;
-            yield break;
+            SwitchState(ChaseState); // Close the distance across the map
         }
-
-        state = EnemyState.Idle;
     }
 
-    bool InAttackRange()
+    public bool CanAttack()
     {
-        return sqrDistToTarget <= attackRange * attackRange;
+        return Time.time >= lastAttackTime + attackCooldown;
     }
+
+    // --- Combat / Damage Integrations ---
 
     public bool TakeDamage(WeaponAttack attack)
     {
-        tookDamage = true;
-        health -= attack.damage;
-
-        if (health <= 0)
-        {
-            Die();
-            return true;
-        }
-
-        PlayDamageAudio();
         PlayHitDirectionAnimation(attack.attackDirection);
-        StunEnemy(attack.stunTime);
-
-        if (damagedParticles)
-            damagedParticles.Play();
-
-        return false;
+        return ApplyDamageCalculation(attack.damage, attack.stunTime);
     }
 
     public bool TakeDamage(int damage, float stunTime)
+    {
+        return ApplyDamageCalculation(damage, stunTime);
+    }
+
+    private bool ApplyDamageCalculation(int damage, float stunDuration)
     {
         tookDamage = true;
         health -= damage;
@@ -224,58 +193,54 @@ public class EnemyAI : MonoBehaviour
         }
 
         PlayDamageAudio();
-        StunEnemy(stunTime);
-
+        
         if (damagedParticles)
             damagedParticles.Play();
 
+        // Trigger stun transition seamlessly
+        StunEnemy(stunDuration);
         return false;
     }
 
+    public void StunEnemy(float duration)
+    {
+        stunTimer = Mathf.Max(stunTimer, duration);
+        SwitchState(StunnedState);
+    }
+
+    public void ApplyKnockback(Vector3 force)
+    {
+        if (Rb != null)
+        {
+            Rb.AddForce(force, ForceMode.Impulse);
+        }
+    }
+
+    // --- Contextual Helper Functions ---
+
     void PlayHitDirectionAnimation(AttackDirection direction)
     {
-        if (!anim)
-            return;
+        if (!anim) return;
 
         switch (direction)
         {
             case AttackDirection.Left:
                 anim.SetTrigger("HitLeft");
                 break;
-
             case AttackDirection.Right:
                 anim.SetTrigger("HitRight");
                 break;
-
             default:
                 anim.SetTrigger("HitLeft");
                 break;
         }
     }
 
-    public void StunEnemy(float duration)
-    {
-        stunTimer = Mathf.Max(stunTimer, duration);
-        
-        if (attackCoroutine != null)
-        {
-            StopCoroutine(attackCoroutine);
-            attackOnCooldown = false;
-        }
-    }
-
-    public void ApplyKnockback(Vector3 force)
-    {
-        rb.AddForce(force, ForceMode.Impulse);
-    }
-
     void PlayDamageAudio()
     {
-        if (!hitSFX)
-            return;
-
-        audioSource.pitch = Random.Range(0.9f, 1.1f);
-        audioSource.PlayOneShot(hitSFX);
+        if (!hitSFX) return;
+        AudioSource.pitch = Random.Range(0.9f, 1.1f);
+        AudioSource.PlayOneShot(hitSFX);
     }
 
     void Die()
@@ -285,9 +250,7 @@ public class EnemyAI : MonoBehaviour
         if (deathFX)
         {
             GameObject deathFXObj = Instantiate(deathFX, transform.position, transform.rotation);
-
             ApplyForcesToBody(deathFXObj);
-
             Destroy(deathFXObj, 10f);
         }
 
@@ -306,7 +269,6 @@ public class EnemyAI : MonoBehaviour
     void ApplyForcesToBody(GameObject deathFXObj)
     {
         Rigidbody[] rigidbodies = deathFXObj.GetComponentsInChildren<Rigidbody>();
-
         foreach (Rigidbody body in rigidbodies)
         {
             body.AddForce(-transform.forward * 300f);
@@ -325,22 +287,21 @@ public class EnemyAI : MonoBehaviour
     void PlayPassiveSound()
     {
         if (passiveSounds.Length > 0)
-           StartCoroutine(Worker());
+            StartCoroutine(Worker());
     }
 
     IEnumerator Worker()
     {
         while (true)
         {
-            // Play Spawn Sound
             yield return new WaitForSeconds(0.75f);
-            audioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
-            audioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
+            AudioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
+            AudioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
 
             yield return new WaitForSeconds(Random.Range(3f, 6f));
 
-            audioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
-            audioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
+            AudioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
+            AudioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
         }
     }
 }
