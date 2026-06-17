@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(CharacterController))]
@@ -18,6 +19,7 @@ public class PlayerInstance : MonoBehaviour
     [Header("VFX")]
     [SerializeField] Animator hitScreenAnim;
     [SerializeField] Animator roomTransitionAnim;
+    [SerializeField] Transform healthBarTransform;
     
     PlayerController playerController;
     CharacterController cc;
@@ -27,6 +29,7 @@ public class PlayerInstance : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         cc = GetComponent<CharacterController>();
         health = maxHealth;
+        UpdateHealthBarUI();
     }
     
     public PlayerController GetPlayerController() 
@@ -38,6 +41,7 @@ public class PlayerInstance : MonoBehaviour
     {
         health -= damage;
         hitScreenAnim.SetTrigger("Hit");
+        UpdateHealthBarUI();
     }
 
     public Vector3 GetPlayerVelocity()
@@ -67,5 +71,11 @@ public class PlayerInstance : MonoBehaviour
     public void AddSouls(int souls)
     {
         this.souls += souls;
+    }
+
+    void UpdateHealthBarUI()
+    {
+        float xScale = health / (float)maxHealth;
+        healthBarTransform.localScale = new Vector3(xScale, 1f, 1f);
     }
 }

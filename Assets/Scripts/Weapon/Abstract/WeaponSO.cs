@@ -6,6 +6,7 @@ public class WeaponSO : ItemSO
     [Header("Weapon Settings")]
     public float attackRate = 1f;
     public float range = 3f;
+    public bool canBlock = true;
 
     [Header("Attacks")]
     public WeaponAttack[] attacks;

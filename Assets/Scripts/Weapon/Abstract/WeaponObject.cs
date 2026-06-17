@@ -10,6 +10,10 @@ public abstract class WeaponObject : MonoBehaviour
     [SerializeField] List<ShardSO> upgrades = new();
     [SerializeField] WeaponRuntimeStats runtimeStats = new();
 
+    [Header("Block Settings")]
+    [SerializeField] Vector3 targetBlockPos;
+    [SerializeField] Vector3 targetBlockRot;
+
     [Header("Charge Settings")]
     [SerializeField] float maxChargeTime = 1f;
     [SerializeField] float rotationSmoothSpeed = 10f;
@@ -34,6 +38,7 @@ public abstract class WeaponObject : MonoBehaviour
     int comboIndex;
 
     bool inAttack = false;
+    bool inBlock = false;
 
     Vector3 currentPosition;
     Vector3 currentRotation;
@@ -55,18 +60,28 @@ public abstract class WeaponObject : MonoBehaviour
 
     void Update()
     {
+        // Player Intent
         HandleAttack();
+        HandleBlocking();
 
+        // VFX
+        HandlePosition();
         HandleRotation();
         HandleMovementAnimation();
     }
 
+    void HandlePosition()
+    {
+        currentPosition = Vector3.Lerp(currentPosition, targetPosition, Time.deltaTime * rotationSmoothSpeed);
+        transform.localPosition = currentPosition;
+    }
+    
     void HandleRotation()
     {
         currentRotation = Vector3.Lerp(currentRotation, targetRotation, Time.deltaTime * rotationSmoothSpeed);
         transform.localEulerAngles = currentRotation;
     }
-    
+
     void HandleMovementAnimation()
     {
         float targetMovement = InputManager.Actions.Player.Move.ReadValue<Vector2>().magnitude;
@@ -82,7 +97,7 @@ public abstract class WeaponObject : MonoBehaviour
     {
         attackCounter += Time.deltaTime;
 
-        if (inAttack || InventoryManager.instance.isOpen) return;
+        if (inAttack || inBlock || InventoryManager.instance.isOpen) return;
 
         bool attackPressed = InputManager.Actions.Player.Attack.IsPressed();
         bool attackReleased = InputManager.Actions.Player.Attack.WasReleasedThisFrame();
@@ -147,6 +162,8 @@ public abstract class WeaponObject : MonoBehaviour
 
             if (HasKilledEnemy(hits))
                 TriggerUpgrades(WeaponUpgradeType.OnKill, attack, GetKilledHits(hits));
+
+            CinemachineShake.instance.ShakeCamera(3f, 0.25f, 0.5f, 90f);
         }
         
         PlayAttackAudio(attack);
@@ -175,6 +192,25 @@ public abstract class WeaponObject : MonoBehaviour
         yield return new WaitForSeconds(duration);
 
         state.speed = originalSpeed;
+    }
+    
+    void HandleBlocking()
+    {
+        if (inAttack || !weaponSO.canBlock) return;
+
+        inBlock = InputManager.Actions.Player.SecondaryAttack.IsPressed();
+        bool released = InputManager.Actions.Player.SecondaryAttack.WasReleasedThisFrame();
+        if (inBlock)
+        {
+            targetPosition = targetBlockPos;
+            targetRotation = targetBlockRot;
+        }
+
+        else if (released)
+        {
+            targetPosition = Vector3.zero;
+            targetRotation = Vector3.zero;
+        }
     }
 
     void PlayContactAudio()
