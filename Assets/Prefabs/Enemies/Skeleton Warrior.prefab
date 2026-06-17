@@ -5207,7 +5207,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.06839, y: 50, z: 25}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8250934909622028214}
@@ -5232,7 +5232,8 @@ MonoBehaviour:
   maxHealth: 30
   attackRange: 3
   combatThresholdRange: 8
-  attackCooldown: 1
+  attackCooldown: 1.5
+  attackRecoveryDuration: 0.5
   lastAttackTime: 0
   engageDistance: 30
   alwaysLookAtPlayer: 1
@@ -5243,7 +5244,9 @@ MonoBehaviour:
   anim: {fileID: 8620166371696577679}
   damagedParticles: {fileID: 5161991466970692268}
   contactParticles: {fileID: 5500697978591745560, guid: 3fde23b0343d984428a7b2db96682e9f, type: 3}
-  randomizedObjects: []
+  randomizedObjects:
+  - {fileID: 3249037454605036122}
+  - {fileID: 5465883793292108570}
   passiveSounds: []
   passiveAudioPitchRange: {x: 0, y: 0}
   itemDropObjects: []
@@ -5383,7 +5386,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.1
-  m_Speed: 9
+  m_Speed: 5
   m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 1000

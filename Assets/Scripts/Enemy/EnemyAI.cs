@@ -24,8 +24,10 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Attack Settings")]
     public float attackRange = 2f;
-    public float combatThresholdRange = 7f; // Triggers tactical movement
+    public float combatThresholdRange = 7f; 
     public float attackCooldown = 1f;
+    [Tooltip("How long the enemy stands still to recover after an attack finishes.")]
+    public float attackRecoveryDuration = 0.5f; // 0.5 seconds of post-attack freeze
     [HideInInspector] public float lastAttackTime;
 
     [Header("Movement")]
@@ -65,7 +67,6 @@ public class EnemyAI : MonoBehaviour
     {
         Agent = GetComponent<NavMeshAgent>();
         AudioSource = GetComponent<AudioSource>();
-        Rb = GetComponent<Rigidbody>(); // Handled safely if you use knockback impulses
     }
 
     void Start()
@@ -73,6 +74,9 @@ public class EnemyAI : MonoBehaviour
         health = maxHealth;
         target = PlayerInstance.instance.transform;
         InitStates();
+
+        Agent.updateRotation = false; // Stops NavMesh from forcing the enemy to face its walking direction
+        Agent.updateUpAxis = false;   // Keeps the enemy upright smoothly
 
         if (anim)
             anim.speed = Random.Range(0.95f, 1.05f);
@@ -173,7 +177,7 @@ public class EnemyAI : MonoBehaviour
     public bool TakeDamage(WeaponAttack attack)
     {
         PlayHitDirectionAnimation(attack.attackDirection);
-        return ApplyDamageCalculation(attack.damage, attack.stunTime);
+        return ApplyDamageCalculation(attack.damage, attack.stunTime, attack.attackDirection);
     }
 
     public bool TakeDamage(int damage, float stunTime)
@@ -181,14 +185,14 @@ public class EnemyAI : MonoBehaviour
         return ApplyDamageCalculation(damage, stunTime);
     }
 
-    private bool ApplyDamageCalculation(int damage, float stunDuration)
+    private bool ApplyDamageCalculation(int damage, float stunDuration, AttackDirection direction = AttackDirection.Neutral)
     {
         tookDamage = true;
         health -= damage;
 
         if (health <= 0)
         {
-            Die();
+            Die(direction);
             return true;
         }
 
@@ -210,10 +214,7 @@ public class EnemyAI : MonoBehaviour
 
     public void ApplyKnockback(Vector3 force)
     {
-        if (Rb != null)
-        {
-            Rb.AddForce(force, ForceMode.Impulse);
-        }
+        // Stub for now, need to figure out how to add knockback in?
     }
 
     // --- Contextual Helper Functions ---
@@ -243,14 +244,14 @@ public class EnemyAI : MonoBehaviour
         AudioSource.PlayOneShot(hitSFX);
     }
 
-    void Die()
+    void Die(AttackDirection direction)
     {
         SpawnDrops();
 
         if (deathFX)
         {
             GameObject deathFXObj = Instantiate(deathFX, transform.position, transform.rotation);
-            ApplyForcesToBody(deathFXObj);
+            ApplyForcesToBody(deathFXObj, direction);
             Destroy(deathFXObj, 10f);
         }
 
@@ -266,12 +267,18 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    void ApplyForcesToBody(GameObject deathFXObj)
+    void ApplyForcesToBody(GameObject deathFXObj, AttackDirection direction)
     {
+        Vector3 dir = -transform.forward * 10f;
+        if (direction == AttackDirection.Left)
+            dir = -transform.forward * 5f + transform.right * 10f;
+        else if (direction == AttackDirection.Right)
+            dir = -transform.forward * 5f - transform.right * 10f;
+
         Rigidbody[] rigidbodies = deathFXObj.GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody body in rigidbodies)
         {
-            body.AddForce(-transform.forward * 300f);
+            body.AddForce(dir, ForceMode.Impulse);
         }
     }
 

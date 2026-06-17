@@ -17,7 +17,6 @@ public class StrafeState : EnemyBaseState
     {
         RotateTowardsTarget();
 
-        // If target sprinted outside combat zone, go back to hard chase
         if (AI.sqrDistToTarget > AI.combatThresholdRange * AI.combatThresholdRange)
         {
             AI.SwitchState(AI.ChaseState);

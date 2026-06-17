@@ -21,12 +21,20 @@ public abstract class EnemyBaseState
     protected void RotateTowardsTarget()
     {
         Vector3 dir = Target.position - AI.transform.position;
-        dir.y = 0f;
+        dir.y = 0f; // Keep the enemy flat on the ground plane so they don't tilt up/down
 
-        if (dir == Vector3.zero && !AI.alwaysLookAtPlayer)
+        // Prevent errors if the enemy is precisely on top of the player
+        if (dir.sqrMagnitude < 0.01f) 
             return;
 
+        // Calculate the look rotation
         Quaternion targetRotation = Quaternion.LookRotation(dir);
-        AI.transform.rotation = Quaternion.Slerp(AI.transform.rotation, targetRotation, AI.rotationSpeed * Time.deltaTime);
+        
+        // Smoothly interpolate from current rotation to target rotation using Time.deltaTime
+        AI.transform.rotation = Quaternion.Slerp(
+            AI.transform.rotation, 
+            targetRotation, 
+            AI.rotationSpeed * Time.deltaTime
+        );
     }
 }

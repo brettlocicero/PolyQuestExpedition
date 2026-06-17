@@ -140,7 +140,7 @@ public abstract class WeaponObject : MonoBehaviour
         WeaponHit[] hits = Attack(attack);
         if (hits.Length > 0)
         {
-            StartCoroutine(TriggerHitstop(0.05f, attack.attackAnimation));
+            StartCoroutine(TriggerHitstop(0.1f, attack.attackAnimation));
             PlayContactAudio();
 
             TriggerUpgrades(WeaponUpgradeType.OnHit, attack, hits);

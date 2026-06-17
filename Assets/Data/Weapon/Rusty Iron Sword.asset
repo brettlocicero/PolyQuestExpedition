@@ -16,7 +16,7 @@ MonoBehaviour:
   description: 
   icon: {fileID: 0}
   attackRate: 1.1
-  range: 2
+  range: 2.5
   attacks:
   - attackAnimation: {fileID: 7400000, guid: 30a02ab8a68cd294695e64059bfde137, type: 2}
     damage: 10
