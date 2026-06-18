@@ -1,12 +1,23 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Enemy/States/Strafe State")]
+public class StrafeStateSO : EnemyStateSO
+{
+    public override System.Type StateType => typeof(StrafeState);
+
+    public override EnemyBaseState CreateState(EnemyAI ai)
+    {
+        return new StrafeState(ai, this);
+    }
+}
+
 public class StrafeState : EnemyBaseState
 {
     private float strafeDirection = 1f;
     private float decisionTimer;
     private float nextDecisionTime;
 
-    public StrafeState(EnemyAI ai) : base(ai) {}
+    public StrafeState(EnemyAI ai, EnemyStateSO definition) : base(ai, definition) {}
 
     public override void EnterState()
     {
@@ -19,15 +30,18 @@ public class StrafeState : EnemyBaseState
 
         if (AI.sqrDistToTarget > AI.combatThresholdRange * AI.combatThresholdRange)
         {
-            AI.SwitchState(AI.ChaseState);
+            AI.TrySwitchState<ChaseState>();
             return;
         }
 
         // If inside range limits and timing permits, smash them!
-        if (AI.sqrDistToTarget <= AI.attackRange * AI.attackRange && AI.CanAttack())
+        if (AI.CanAttack())
         {
-            AI.SwitchState(AI.AttackState);
-            return;
+            if (AI.TrySwitchSelectableState<AttackState>())
+                return;
+
+            if (AI.TrySwitchBestCombatState())
+                return;
         }
 
         // Dynamic tactical repositioning updates
@@ -56,7 +70,7 @@ public class StrafeState : EnemyBaseState
         // While circling, there's a chance the enemy gets aggressive and breaks into a charge
         if (Random.value <= 0.3f) // 30% chance to break out of a strafe loop into a charge
         {
-            AI.SwitchState(AI.ChargeState);
+            AI.TrySwitchState<ChargeState>();
             return;
         }
 

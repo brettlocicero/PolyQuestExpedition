@@ -1,18 +1,23 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+using System.Collections.Generic;
+using Type = System.Type;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(AudioSource))]
 public class EnemyAI : MonoBehaviour
 {
     // --- State Machine ---
+    [Header("State Machine")]
+    [Tooltip("Assign only the behavior modules this enemy should be allowed to use.")]
+    [SerializeField] EnemyStateSO[] stateAssets;
+    [Tooltip("Optional. If blank, the enemy starts with Chase when available, otherwise the first assigned state.")]
+    [SerializeField] EnemyStateSO startingState;
+
     private EnemyBaseState currentState;
-    public ChaseState ChaseState { get; private set; }
-    public StrafeState StrafeState { get; private set; }
-    public AttackState AttackState { get; private set; }
-    public StunnedState StunnedState { get; private set; }
-    public ChargeState ChargeState { get; private set; }
+    private readonly Dictionary<Type, EnemyBaseState> statesByType = new Dictionary<Type, EnemyBaseState>();
+    private readonly List<EnemyBaseState> selectableStates = new List<EnemyBaseState>();
 
     [Header("Identity & Target")]
     [SerializeField] string enemyName;
@@ -79,21 +84,37 @@ public class EnemyAI : MonoBehaviour
         Agent.updateUpAxis = false;   // Keeps the enemy upright smoothly
 
         if (anim)
-            anim.speed = Random.Range(0.95f, 1.05f);
+            anim.speed = UnityEngine.Random.Range(0.95f, 1.05f);
 
         RandomizeAppearance();
         PlayPassiveSound();
 
-        SwitchState(ChaseState);
+        SwitchToStartingState();
     }
 
     void InitStates()
     {
-        ChaseState = new ChaseState(this);
-        StrafeState = new StrafeState(this);
-        AttackState = new AttackState(this);
-        StunnedState = new StunnedState(this);
-        ChargeState = new ChargeState(this);
+        statesByType.Clear();
+        selectableStates.Clear();
+
+        foreach (EnemyStateSO stateAsset in stateAssets)
+        {
+            if (!stateAsset)
+                continue;
+
+            if (statesByType.ContainsKey(stateAsset.StateType))
+            {
+                Debug.LogWarning($"{name} has more than one {stateAsset.StateType.Name} assigned. Only the first one will be used.", this);
+                continue;
+            }
+
+            EnemyBaseState state = stateAsset.CreateState(this);
+            statesByType.Add(stateAsset.StateType, state);
+            selectableStates.Add(state);
+        }
+
+        if (selectableStates.Count == 0)
+            Debug.LogError($"{name} has no enemy states assigned. Add state assets to the EnemyAI component.", this);
     }
 
     void Update()
@@ -110,7 +131,7 @@ public class EnemyAI : MonoBehaviour
             {
                 stunTimer = 0f;
                 // If stun ended while we were in StunnedState, evaluate where to go next
-                if (currentState == StunnedState)
+                if (currentState == GetState<StunnedState>())
                     DetermineNextState();
             }
         }
@@ -119,52 +140,152 @@ public class EnemyAI : MonoBehaviour
         currentState?.UpdateState();
     }
 
-    public void SwitchState(EnemyBaseState newState)
+    void SwitchToStartingState()
     {
+        if (startingState && TrySwitchState(startingState.StateType))
+            return;
+
+        if (TrySwitchState<ChaseState>())
+            return;
+
+        if (selectableStates.Count > 0)
+            SwitchState(selectableStates[0]);
+    }
+
+    public bool SwitchState(EnemyBaseState newState)
+    {
+        if (newState == null)
+            return false;
+
+        if (currentState == newState)
+            return true;
+
         currentState?.ExitState();
         currentState = newState;
         currentState.EnterState();
+        return true;
+    }
+
+    public bool TrySwitchState<T>() where T : EnemyBaseState
+    {
+        return TrySwitchState(typeof(T));
+    }
+
+    public bool TrySwitchSelectableState<T>() where T : EnemyBaseState
+    {
+        if (statesByType.TryGetValue(typeof(T), out EnemyBaseState state) &&
+            state.Definition.CanBeSelected(this))
+        {
+            return SwitchState(state);
+        }
+
+        return false;
+    }
+
+    public bool TrySwitchState(Type stateType)
+    {
+        if (statesByType.TryGetValue(stateType, out EnemyBaseState state))
+            return SwitchState(state);
+
+        return false;
+    }
+
+    public T GetState<T>() where T : EnemyBaseState
+    {
+        if (statesByType.TryGetValue(typeof(T), out EnemyBaseState state))
+            return state as T;
+
+        return null;
+    }
+
+    public bool HasState<T>() where T : EnemyBaseState
+    {
+        return statesByType.ContainsKey(typeof(T));
     }
 
     public void DetermineNextState()
     {
         if (stunTimer > 0f)
         {
-            SwitchState(StunnedState);
+            TrySwitchState<StunnedState>();
             return;
         }
 
         bool isEngaged = sqrDistToTarget <= engageDistance * engageDistance || tookDamage;
         if (!isEngaged)
         {
-            SwitchState(ChaseState);
+            TrySwitchState<ChaseState>();
             return;
         }
 
-        // --- RANDOMIZED COMBAT SELECTION ---
+        // --- MODULAR COMBAT SELECTION ---
         if (sqrDistToTarget <= combatThresholdRange * combatThresholdRange)
         {
             // If we are already right next to them and ready to attack, prioritize striking
-            if (sqrDistToTarget <= attackRange * attackRange && CanAttack())
+            if (sqrDistToTarget <= attackRange * attackRange && CanAttack() && TrySwitchState<AttackState>())
             {
-                SwitchState(AttackState);
                 return;
             }
 
-            // Otherwise, roll a random value between 0.0 and 1.0 to pick a tactical approach
-            if (Random.value <= chargeChance)
-            {
-                SwitchState(ChargeState); // Go hyper-aggressive
-            }
-            else
-            {
-                SwitchState(StrafeState); // Play it smart and circle
-            }
+            if (TrySwitchWeightedCombatState(true))
+                return;
         }
-        else
+
+        if (TrySwitchState<ChaseState>())
+            return;
+
+        TrySwitchWeightedCombatState(true);
+    }
+
+    public bool TrySwitchBestCombatState()
+    {
+        return TrySwitchWeightedCombatState(false);
+    }
+
+    bool TrySwitchWeightedCombatState(bool allowCurrentState)
+    {
+        float totalWeight = 0f;
+
+        foreach (EnemyBaseState state in selectableStates)
         {
-            SwitchState(ChaseState); // Close the distance across the map
+            if (!CanSelectCombatState(state, allowCurrentState))
+                continue;
+
+            totalWeight += GetStateWeight(state);
         }
+
+        if (totalWeight <= 0f)
+            return false;
+
+        float roll = UnityEngine.Random.value * totalWeight;
+        foreach (EnemyBaseState state in selectableStates)
+        {
+            if (!CanSelectCombatState(state, allowCurrentState))
+                continue;
+
+            roll -= GetStateWeight(state);
+            if (roll <= 0f)
+                return SwitchState(state);
+        }
+
+        return false;
+    }
+
+    bool CanSelectCombatState(EnemyBaseState state, bool allowCurrentState)
+    {
+        return state != null &&
+               (allowCurrentState || state != currentState) &&
+               !(state is ChaseState) &&
+               !(state is StunnedState) &&
+               state.Definition.CanBeSelected(this);
+    }
+
+    float GetStateWeight(EnemyBaseState state)
+    {
+        if (state is ChargeState)
+            return Mathf.Max(0f, state.Definition.SelectionWeight * chargeChance);
+
+        return state.Definition.SelectionWeight;
     }
 
     public bool CanAttack()
@@ -209,7 +330,7 @@ public class EnemyAI : MonoBehaviour
     public void StunEnemy(float duration)
     {
         stunTimer = Mathf.Max(stunTimer, duration);
-        SwitchState(StunnedState);
+        TrySwitchState<StunnedState>();
     }
 
     public void ApplyKnockback(Vector3 force)
@@ -240,7 +361,7 @@ public class EnemyAI : MonoBehaviour
     void PlayDamageAudio()
     {
         if (!hitSFX) return;
-        AudioSource.pitch = Random.Range(0.9f, 1.1f);
+        AudioSource.pitch = UnityEngine.Random.Range(0.9f, 1.1f);
         AudioSource.PlayOneShot(hitSFX);
     }
 
@@ -262,7 +383,7 @@ public class EnemyAI : MonoBehaviour
     {
         foreach (ItemDropObject drop in itemDropObjects)
         {
-            if (Random.value <= drop.dropChance)
+            if (UnityEngine.Random.value <= drop.dropChance)
                 Instantiate(drop, transform.position, transform.rotation);
         }
     }
@@ -286,7 +407,7 @@ public class EnemyAI : MonoBehaviour
     {
         foreach (GameObject obj in randomizedObjects)
         {
-            if (Random.value <= 0.4f)
+            if (UnityEngine.Random.value <= 0.4f)
                 obj.SetActive(false);
         }
     }
@@ -302,13 +423,13 @@ public class EnemyAI : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.75f);
-            AudioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
-            AudioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
+            AudioSource.pitch = UnityEngine.Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
+            AudioSource.PlayOneShot(passiveSounds[UnityEngine.Random.Range(0, passiveSounds.Length)]);
 
-            yield return new WaitForSeconds(Random.Range(3f, 6f));
+            yield return new WaitForSeconds(UnityEngine.Random.Range(3f, 6f));
 
-            AudioSource.pitch = Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
-            AudioSource.PlayOneShot(passiveSounds[Random.Range(0, passiveSounds.Length)]);
+            AudioSource.pitch = UnityEngine.Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
+            AudioSource.PlayOneShot(passiveSounds[UnityEngine.Random.Range(0, passiveSounds.Length)]);
         }
     }
 }

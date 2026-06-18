@@ -1358,9 +1358,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5351491958640160067}
-  - component: {fileID: 4344300332932652376}
+  - component: {fileID: 8009651869393924804}
+  - component: {fileID: 8673118975253960816}
   - component: {fileID: 6246488238714430806}
-  - component: {fileID: 6804242142513886629}
   - component: {fileID: 4004058281091155579}
   m_Layer: 6
   m_Name: Reaver
@@ -1385,7 +1385,7 @@ Transform:
   - {fileID: 158443149055048855}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4344300332932652376
+--- !u!114 &8009651869393924804
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1394,27 +1394,63 @@ MonoBehaviour:
   m_GameObject: {fileID: 3419855779133920224}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3bb106e5285c4014cb0be1b1b5d0ce42, type: 3}
+  m_Script: {fileID: 11500000, guid: cdd784e14bc8a0b449b0a6db984b5e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  enemyName: Reaver
+  stateAssets:
+  - {fileID: 11400000, guid: 33d397570f9c21f4f98db2fb03b71fa1, type: 2}
+  - {fileID: 11400000, guid: 9b512474f9c8caf42a4485b94fe1fcc8, type: 2}
+  - {fileID: 11400000, guid: 664c4c1dab065bd4996befaf59cc9741, type: 2}
+  startingState: {fileID: 11400000, guid: 9b512474f9c8caf42a4485b94fe1fcc8, type: 2}
+  enemyName: 
   target: {fileID: 0}
-  maxHealth: 60
-  attackRange: 10
-  attackCooldown: 1
-  engageDistance: 50
+  maxHealth: 30
+  attackRange: 25
+  combatThresholdRange: 40
+  attackCooldown: 1.5
+  attackRecoveryDuration: 1
+  lastAttackTime: 0
+  engageDistance: 40
   alwaysLookAtPlayer: 1
-  moveSpeed: 5
   rotationSpeed: 10
+  chargeChance: 0.5
   hitSFX: {fileID: 0}
   deathFX: {fileID: 0}
   anim: {fileID: 4998154998878591481}
-  damagedParticles: {fileID: 0}
+  damagedParticles: {fileID: 938293721594166028}
   contactParticles: {fileID: 5500697978591745560, guid: 62bfed2336addfd41a4c139f63173b87, type: 3}
   randomizedObjects: []
   passiveSounds: []
   passiveAudioPitchRange: {x: 0, y: 0}
   itemDropObjects: []
+  Agent: {fileID: 0}
+  AudioSource: {fileID: 0}
+  Rb: {fileID: 0}
+  tookDamage: 0
+  stunTimer: 0
+  sqrDistToTarget: Infinity
+--- !u!195 &8673118975253960816
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3419855779133920224}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1.43
+  m_Speed: 8
+  m_Acceleration: 50
+  avoidancePriority: 50
+  m_AngularSpeed: 500
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 4.56
+  m_BaseOffset: 3.1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!136 &6246488238714430806
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1438,33 +1474,6 @@ CapsuleCollider:
   m_Height: 4.51
   m_Direction: 1
   m_Center: {x: 0, y: -0.25, z: 0}
---- !u!54 &6804242142513886629
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3419855779133920224}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 1
 --- !u!82 &4004058281091155579
 AudioSource:
   m_ObjectHideFlags: 0

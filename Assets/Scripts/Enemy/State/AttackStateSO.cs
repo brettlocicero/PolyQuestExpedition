@@ -1,12 +1,30 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Enemy/States/Melee Attack State")]
+public class AttackStateSO : EnemyStateSO
+{
+    public override System.Type StateType => typeof(AttackState);
+
+    public override EnemyBaseState CreateState(EnemyAI ai)
+    {
+        return new AttackState(ai, this);
+    }
+
+    public override bool CanBeSelected(EnemyAI ai)
+    {
+        return base.CanBeSelected(ai) &&
+               ai.CanAttack() &&
+               ai.sqrDistToTarget <= ai.attackRange * ai.attackRange;
+    }
+}
+
 public class AttackState : EnemyBaseState
 {
     private float attackTimer;
     private float activeSwingDuration = 0.6f; // Time spent executing the attack strike
     private bool standardSequenceComplete;
 
-    public AttackState(EnemyAI ai) : base(ai) {}
+    public AttackState(EnemyAI ai, EnemyStateSO definition) : base(ai, definition) {}
 
     public override void EnterState()
     {

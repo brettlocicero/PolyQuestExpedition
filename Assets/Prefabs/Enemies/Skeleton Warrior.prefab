@@ -5227,12 +5227,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd784e14bc8a0b449b0a6db984b5e03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIController
+  stateAssets:
+  - {fileID: 11400000, guid: 88880de1623ae9141ba4f7ec816a5f8e, type: 2}
+  - {fileID: 11400000, guid: e61db85f3cedbaf46a5141c36cda1a88, type: 2}
+  - {fileID: 11400000, guid: 9c1957a6b5cca7d49be3ebb03c53fee4, type: 2}
+  startingState: {fileID: 11400000, guid: 88880de1623ae9141ba4f7ec816a5f8e, type: 2}
   enemyName: 
   target: {fileID: 0}
   maxHealth: 30
   attackRange: 3
   combatThresholdRange: 8
-  attackCooldown: 1.5
+  attackCooldown: 1.25
   attackRecoveryDuration: 0.5
   lastAttackTime: 0
   engageDistance: 30
@@ -5386,7 +5391,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.1
-  m_Speed: 5
+  m_Speed: 8
   m_Acceleration: 20
   avoidancePriority: 50
   m_AngularSpeed: 1000

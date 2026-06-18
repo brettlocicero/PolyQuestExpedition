@@ -6,12 +6,14 @@ public abstract class EnemyBaseState
     protected EnemyAI AI;
     protected NavMeshAgent Agent;
     protected Transform Target;
+    public EnemyStateSO Definition { get; }
 
-    public EnemyBaseState(EnemyAI aiController)
+    public EnemyBaseState(EnemyAI aiController, EnemyStateSO definition)
     {
         this.AI = aiController;
         this.Agent = aiController.Agent;
         this.Target = aiController.target;
+        this.Definition = definition;
     }
 
     public abstract void EnterState();
