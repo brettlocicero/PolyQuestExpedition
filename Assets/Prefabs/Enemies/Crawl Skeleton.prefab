@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &259686585424537975
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4791734806266994399}
+  m_Layer: 6
+  m_Name: Hitbox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4791734806266994399
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259686585424537975}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.75, z: 1.35}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4306126558018330917}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &636658575945654014
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,6 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6268126387566229059}
   - component: {fileID: 8177556131970877982}
+  - component: {fileID: 9122738579676747410}
   m_Layer: 0
   m_Name: Skeleton Animator
   m_TagString: Untagged
@@ -342,6 +374,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9122738579676747410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3360155627607853979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6970404414d4854fb0c6cfba70f3cb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackHitbox
+  radius: 1.5
+  attackOrigin: {fileID: 4791734806266994399}
+  damage: 5
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &4832458846948686149
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +582,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2183959516270068919}
+  - {fileID: 4791734806266994399}
   - {fileID: 6268126387566229059}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -550,12 +601,13 @@ MonoBehaviour:
   stateAssets:
   - {fileID: 11400000, guid: 88880de1623ae9141ba4f7ec816a5f8e, type: 2}
   - {fileID: 11400000, guid: 9c1957a6b5cca7d49be3ebb03c53fee4, type: 2}
+  - {fileID: 11400000, guid: e61db85f3cedbaf46a5141c36cda1a88, type: 2}
   startingState: {fileID: 0}
   enemyName: 
   target: {fileID: 0}
   maxHealth: 30
-  attackRange: 2
-  combatThresholdRange: 7
+  attackRange: 3
+  combatThresholdRange: 6
   attackCooldown: 1
   attackRecoveryDuration: 0.5
   lastAttackTime: 0
@@ -735,7 +787,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 1.26
-  m_Speed: 10
+  m_Speed: 12
   m_Acceleration: 40
   avoidancePriority: 50
   m_AngularSpeed: 50

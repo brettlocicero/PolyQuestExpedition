@@ -5207,7 +5207,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.06839, y: 50, z: 25}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8250934909622028214}
@@ -5228,9 +5228,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAIController
   stateAssets:
-  - {fileID: 11400000, guid: 88880de1623ae9141ba4f7ec816a5f8e, type: 2}
   - {fileID: 11400000, guid: e61db85f3cedbaf46a5141c36cda1a88, type: 2}
   - {fileID: 11400000, guid: 9c1957a6b5cca7d49be3ebb03c53fee4, type: 2}
+  - {fileID: 11400000, guid: 88880de1623ae9141ba4f7ec816a5f8e, type: 2}
   startingState: {fileID: 11400000, guid: 88880de1623ae9141ba4f7ec816a5f8e, type: 2}
   enemyName: 
   target: {fileID: 0}
@@ -5240,8 +5240,8 @@ MonoBehaviour:
   attackCooldown: 1.25
   attackRecoveryDuration: 0.5
   lastAttackTime: 0
-  engageDistance: 30
-  alwaysLookAtPlayer: 1
+  engageDistance: 5
+  alwaysLookAtPlayer: 0
   rotationSpeed: 10
   chargeChance: 0.5
   hitSFX: {fileID: 8300000, guid: 7ce7ca5f763ee6f42bab52d1e71291bf, type: 3}

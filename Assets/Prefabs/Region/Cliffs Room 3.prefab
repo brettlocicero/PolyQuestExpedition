@@ -161,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5691401137262118812
 Transform:
   m_ObjectHideFlags: 0
@@ -491,6 +491,7 @@ GameObject:
   - component: {fileID: 7974552025263984310}
   - component: {fileID: 6175676733537404683}
   - component: {fileID: 7664385303094583504}
+  - component: {fileID: 5743218518491975176}
   m_Layer: 10
   m_Name: Cliffs Room 3
   m_TagString: Untagged
@@ -511,10 +512,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3639067796472600215}
-  - {fileID: 7017229087726152637}
-  - {fileID: 3257659084326506381}
-  - {fileID: 3052366497258768162}
   - {fileID: 3381143363424885509}
   - {fileID: 4798070673507701951}
   - {fileID: 6661152002693565929}
@@ -526,6 +523,10 @@ Transform:
   - {fileID: 2198071119420328136}
   - {fileID: 2688855626305074443}
   - {fileID: 5691401137262118812}
+  - {fileID: 3639067796472600215}
+  - {fileID: 7017229087726152637}
+  - {fileID: 3257659084326506381}
+  - {fileID: 3052366497258768162}
   - {fileID: 5850038528103652635}
   - {fileID: 6787301920988757222}
   - {fileID: 791936114807023011}
@@ -600,12 +601,44 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 108.87978, y: 100, z: 80.40321}
   m_Center: {x: -19.63329, y: 0, z: 9.798393}
+--- !u!114 &5743218518491975176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807356735390818134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 2
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: 2a757858b13881344890f66a1fc28b26, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &2453717880093078409
 GameObject:
   m_ObjectHideFlags: 0
@@ -1128,6 +1161,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tombstone3
       objectReference: {fileID: 0}
+    - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6862948959449896854, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.57925594
@@ -1197,6 +1234,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1308,6 +1349,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tombstone4
       objectReference: {fileID: 0}
+    - target: {fileID: 6937946976802367088, guid: 4aeddd526852e0e4480e7d3ad370c47b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1329,6 +1374,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1391,6 +1440,10 @@ PrefabInstance:
     - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_Name
       value: Tombstone3 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6862948959449896854, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_LocalScale.y
@@ -1461,6 +1514,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1576,6 +1633,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LanternPost (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8493698536210065649, guid: 8e232222dd345d34bb4bd2d0cd679760, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1650,6 +1711,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cliff (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 4081111632752936374, guid: 57d592d280e7e0644b0b7d32dba26611, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1719,6 +1784,10 @@ PrefabInstance:
     - target: {fileID: 6937946976802367088, guid: 4aeddd526852e0e4480e7d3ad370c47b, type: 3}
       propertyPath: m_Name
       value: Tombstone4 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6937946976802367088, guid: 4aeddd526852e0e4480e7d3ad370c47b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1794,6 +1863,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cliff (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 4081111632752936374, guid: 57d592d280e7e0644b0b7d32dba26611, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1815,6 +1888,10 @@ PrefabInstance:
     - target: {fileID: 3461826725788602736, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
       propertyPath: m_Name
       value: CasketDoorGround (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461826725788602736, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3473289332592892058, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1878,6 +1955,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CasketDoorGround (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 3461826725788602736, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3473289332592892058, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.3941078
@@ -1939,6 +2020,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2002,6 +2087,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CasketDoorGround
       objectReference: {fileID: 0}
+    - target: {fileID: 3461826725788602736, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3473289332592892058, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
       propertyPath: m_LocalPosition.x
       value: -20.765831
@@ -2060,9 +2149,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7974552025263984310}
     m_Modifications:
+    - target: {fileID: 889649534178252016, guid: 3c788b994707bf84781e169574e778e1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2375243330899510526, guid: 3c788b994707bf84781e169574e778e1, type: 3}
       propertyPath: m_Name
       value: Skeleton Warrior
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375243330899510526, guid: 3c788b994707bf84781e169574e778e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7648414632856468138, guid: 3c788b994707bf84781e169574e778e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2126,6 +2223,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundDetail (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
       value: -38.72
@@ -2187,6 +2288,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2302,6 +2407,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LanternPost
       objectReference: {fileID: 0}
+    - target: {fileID: 8493698536210065649, guid: 8e232222dd345d34bb4bd2d0cd679760, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2376,6 +2485,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cliff
       objectReference: {fileID: 0}
+    - target: {fileID: 4081111632752936374, guid: 57d592d280e7e0644b0b7d32dba26611, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2394,9 +2507,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7974552025263984310}
     m_Modifications:
+    - target: {fileID: 889649534178252016, guid: 3c788b994707bf84781e169574e778e1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2375243330899510526, guid: 3c788b994707bf84781e169574e778e1, type: 3}
       propertyPath: m_Name
       value: Skeleton Warrior (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375243330899510526, guid: 3c788b994707bf84781e169574e778e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7648414632856468138, guid: 3c788b994707bf84781e169574e778e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2460,6 +2581,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CasketDoorGround (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3461826725788602736, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3473289332592892058, guid: 07fbdd40b01d2964796c331e8d7a3537, type: 3}
       propertyPath: m_LocalPosition.x
       value: 15.621443
@@ -2521,6 +2646,10 @@ PrefabInstance:
     - target: {fileID: 3471497250330661044, guid: e7dad8b60366c2049b648600e3d000a6, type: 3}
       propertyPath: m_Name
       value: Tombstone2 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3471497250330661044, guid: e7dad8b60366c2049b648600e3d000a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7444347389275016146, guid: e7dad8b60366c2049b648600e3d000a6, type: 3}
       propertyPath: m_LocalScale.y
@@ -2591,6 +2720,10 @@ PrefabInstance:
     - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_Name
       value: Tombstone3 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6862948959449896854, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_LocalScale.y
@@ -2710,6 +2843,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tombstone4 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6937946976802367088, guid: 4aeddd526852e0e4480e7d3ad370c47b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2731,6 +2868,10 @@ PrefabInstance:
     - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_Name
       value: Tombstone3 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6862948959449896854, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_LocalScale.y
@@ -2842,6 +2983,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CasketClosed
       objectReference: {fileID: 0}
+    - target: {fileID: 3091007971917952377, guid: 8e09d335e2c988c47a4dea383c67b6d2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2863,6 +3008,10 @@ PrefabInstance:
     - target: {fileID: 3471497250330661044, guid: e7dad8b60366c2049b648600e3d000a6, type: 3}
       propertyPath: m_Name
       value: Tombstone2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3471497250330661044, guid: e7dad8b60366c2049b648600e3d000a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7444347389275016146, guid: e7dad8b60366c2049b648600e3d000a6, type: 3}
       propertyPath: m_LocalScale.y
@@ -2934,6 +3083,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tombstone5
       objectReference: {fileID: 0}
+    - target: {fileID: 4134132477605308538, guid: 52c81f0004ff4544bacafc72a15fa0b2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5843342538683946906, guid: 52c81f0004ff4544bacafc72a15fa0b2, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.5812358
@@ -3004,6 +3157,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pillar
       objectReference: {fileID: 0}
+    - target: {fileID: 1972962720818546865, guid: 10ca7ae37194c0e4a9d998088006fea2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4420151553334124876, guid: 10ca7ae37194c0e4a9d998088006fea2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.035082
@@ -3065,6 +3222,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3128,6 +3289,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundDetail (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
       value: -34.9
@@ -3186,9 +3351,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7974552025263984310}
     m_Modifications:
+    - target: {fileID: 889649534178252016, guid: 3c788b994707bf84781e169574e778e1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2375243330899510526, guid: 3c788b994707bf84781e169574e778e1, type: 3}
       propertyPath: m_Name
       value: Skeleton Warrior (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2375243330899510526, guid: 3c788b994707bf84781e169574e778e1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7648414632856468138, guid: 3c788b994707bf84781e169574e778e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3304,6 +3477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cliff (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4081111632752936374, guid: 57d592d280e7e0644b0b7d32dba26611, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3325,6 +3502,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3387,6 +3568,10 @@ PrefabInstance:
     - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_Name
       value: Tombstone3 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2818644727072212979, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6862948959449896854, guid: d2a0b138b889c9c4eaea2fb21a06ddd1, type: 3}
       propertyPath: m_LocalScale.y
@@ -3457,6 +3642,10 @@ PrefabInstance:
     - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_Name
       value: GroundDetail (8)
+      objectReference: {fileID: 0}
+    - target: {fileID: 602708194883725564, guid: df7f2936a049e564396bce473d880617, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3537559425350018455, guid: df7f2936a049e564396bce473d880617, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3559,6 +3748,10 @@ PrefabInstance:
     - target: {fileID: 3091007971917952377, guid: 8e09d335e2c988c47a4dea383c67b6d2, type: 3}
       propertyPath: m_Name
       value: CasketClosed (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3091007971917952377, guid: 8e09d335e2c988c47a4dea383c67b6d2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
