@@ -24,6 +24,8 @@ public class PlayerInstance : MonoBehaviour
     PlayerController playerController;
     CharacterController cc;
 
+    bool isBlocking = false;
+
     void Start()
     {
         playerController = GetComponent<PlayerController>();
@@ -39,6 +41,8 @@ public class PlayerInstance : MonoBehaviour
     
     public void TakeDamage(int damage)
     {
+        if (isBlocking) return;
+
         health -= damage;
         hitScreenAnim.SetTrigger("Hit");
         UpdateHealthBarUI();
@@ -77,5 +81,10 @@ public class PlayerInstance : MonoBehaviour
     {
         float xScale = health / (float)maxHealth;
         healthBarTransform.localScale = new Vector3(xScale, 1f, 1f);
+    }
+
+    public void SetBlocking(bool val)
+    {
+        isBlocking = val;
     }
 }

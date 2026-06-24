@@ -5240,7 +5240,7 @@ MonoBehaviour:
   attackCooldown: 1.25
   attackRecoveryDuration: 0.5
   lastAttackTime: 0
-  engageDistance: 5
+  engageDistance: 40
   alwaysLookAtPlayer: 0
   rotationSpeed: 10
   chargeChance: 0.5

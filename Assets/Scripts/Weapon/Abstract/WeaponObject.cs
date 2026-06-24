@@ -48,6 +48,8 @@ public abstract class WeaponObject : MonoBehaviour
     Coroutine attackRoutine;
     bool passivesInitialized;
 
+    PlayerInstance playerInstance;
+
     void Start()
     {
         attackCounter = GetAttackRate();
@@ -56,6 +58,8 @@ public abstract class WeaponObject : MonoBehaviour
         mainCamTform = Camera.main.transform;
         passivesInitialized = true;
         TriggerUpgrades(WeaponUpgradeType.Passive, null);
+
+        playerInstance = PlayerInstance.instance;
     }
 
     void Update()
@@ -211,6 +215,8 @@ public abstract class WeaponObject : MonoBehaviour
             targetPosition = Vector3.zero;
             targetRotation = Vector3.zero;
         }
+
+        playerInstance.SetBlocking(inBlock);
     }
 
     void PlayContactAudio()

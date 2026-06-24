@@ -12,12 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9b5996409d6cfc4cbc04ea4bc2b340d, type: 3}
   m_Name: Cliffs Region
   m_EditorClassIdentifier: 
-  startingRoomPrefab: {fileID: 5361486831568803922, guid: a5f3890c392c3b54896c4113070042f5, type: 3}
-  endingRoomPrefab: {fileID: 5361486831568803922, guid: e41198733047bb544831dd72ee722917, type: 3}
+  startingRoomPrefab: {fileID: 4873439396744072629, guid: 791cf0264dc5eae4791db6356b4b5105, type: 3}
+  endingRoomPrefab: {fileID: 4873439396744072629, guid: 791cf0264dc5eae4791db6356b4b5105, type: 3}
   roomPrefabs:
-  - {fileID: 5361486831568803922, guid: a5f3890c392c3b54896c4113070042f5, type: 3}
-  - {fileID: 4533294211638774146, guid: 68ffb57263af6214ea48c7ba90ac01cf, type: 3}
-  - {fileID: 6175676733537404683, guid: 49a1bd258927d8547b6906af2a0c73bd, type: 3}
+  - {fileID: 4873439396744072629, guid: 791cf0264dc5eae4791db6356b4b5105, type: 3}
   roomCount: 7
   hallwayPrefab: {fileID: 4112476585436058981, guid: 9901475ceabcf72448f7694c9385f0e7, type: 3}
   hallwayPrefabLength: 1
@@ -26,4 +24,4 @@ MonoBehaviour:
   roomSpacing: 40
   skybox: {fileID: 2100000, guid: 75741018f53870b4eb47806597b2d8bc, type: 2}
   sunColor: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
-  ambientColor: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
+  ambientColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
