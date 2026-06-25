@@ -5178,7 +5178,7 @@ MonoBehaviour:
   regionEntranceAnim: {fileID: 1011617337}
   roomSpacingNoise: 0
   lateralNoise: 0
-  verticalNoise: 50
+  verticalNoise: 0
 --- !u!1 &665996956
 GameObject:
   m_ObjectHideFlags: 0

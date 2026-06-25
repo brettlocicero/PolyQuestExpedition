@@ -90,7 +90,7 @@ public class RegionGenerator : MonoBehaviour
             int openConnectorIndex = Random.Range(0, openConnectors.Count);
             OpenConnector targetConnector = openConnectors[openConnectorIndex];
 
-            RegionRoom prefab = spawnedRooms.Count - 1 == currentRegion.roomCount ? currentRegion.endingRoomPrefab : GetRandomRoomPrefab(currentRegion);
+            RegionRoom prefab = spawnedRooms.Count == currentRegion.roomCount - 1 ? currentRegion.endingRoomPrefab : GetRandomRoomPrefab(currentRegion);
             if (prefab == null)
                 break;
 
@@ -104,15 +104,16 @@ public class RegionGenerator : MonoBehaviour
                 continue;
             }
 
-            Vector3 connectionOffset = GetConnectionOffset(currentRegion, targetConnector);
-            AlignConnector(candidateRoom, candidateConnector, targetConnector, connectionOffset);
+            AlignConnector(candidateRoom, candidateConnector, targetConnector);
+
+            Vector3 connectionOffset = GetConnectionOffset(currentRegion, targetConnector, candidateRoom, candidateConnector);
+            candidateRoom.transform.position += connectionOffset;
 
             Physics.SyncTransforms();
 
             if (IntersectsSpawnedRoom(currentRegion, candidateRoom))
             {
                 DestroyRoom(candidateRoom);
-                openConnectors.RemoveAt(openConnectorIndex);
                 continue;
             }
 
@@ -159,14 +160,13 @@ public class RegionGenerator : MonoBehaviour
         });
     }
 
-    void AlignConnector(RegionRoom room, Transform roomConnector, OpenConnector targetConnector, Vector3 connectionOffset)
+    void AlignConnector(RegionRoom room, Transform roomConnector, OpenConnector targetConnector)
     {
         Quaternion connectorLocalRotation = Quaternion.Inverse(room.transform.rotation) * roomConnector.rotation;
         Quaternion targetRotation = targetConnector.Connector.rotation * Quaternion.Euler(0f, 180f, 0f) * Quaternion.Inverse(connectorLocalRotation);
-        Vector3 targetPosition = targetConnector.Connector.position + connectionOffset;
 
         room.transform.rotation = targetRotation;
-        room.transform.position += targetPosition - roomConnector.position;
+        room.transform.position += targetConnector.Connector.position - roomConnector.position;
     }
 
     void SpawnHallway(RegionSO region, Transform startConnector, Transform endConnector)
@@ -193,7 +193,7 @@ public class RegionGenerator : MonoBehaviour
         spawnedHallways.Add(hallway);
     }
 
-    Vector3 GetConnectionOffset(RegionSO region, OpenConnector targetConnector)
+    Vector3 GetConnectionOffset(RegionSO region, OpenConnector targetConnector, RegionRoom candidateRoom, Transform candidateConnector)
     {
         float spacing = Mathf.Max(0f, region.roomSpacing + Random.Range(-roomSpacingNoise, roomSpacingNoise));
         float lateral = Random.Range(-lateralNoise, lateralNoise);
@@ -201,12 +201,50 @@ public class RegionGenerator : MonoBehaviour
 
         if (targetConnector.Connector != null)
         {
-            return targetConnector.Connector.forward * spacing
+            Vector3 connectionDirection = targetConnector.Connector.forward;
+            float roomClearance = GetConnectorClearance(targetConnector.Room, targetConnector.Connector, connectionDirection)
+                + GetConnectorClearance(candidateRoom, candidateConnector, -connectionDirection);
+
+            return connectionDirection * (roomClearance + spacing)
                 + targetConnector.Connector.right * lateral
                 + Vector3.up * vertical;
         }
 
         return Vector3.forward * spacing + Vector3.right * lateral + Vector3.up * vertical;
+    }
+
+    float GetConnectorClearance(RegionRoom room, Transform connector, Vector3 direction)
+    {
+        if (room == null || connector == null || room.roomCollider == null)
+            return 0f;
+
+        direction.Normalize();
+
+        if (room.roomCollider is BoxCollider boxCollider)
+        {
+            Transform colliderTransform = boxCollider.transform;
+            Vector3 scaledExtents = Vector3.Scale(boxCollider.size * 0.5f, colliderTransform.lossyScale);
+            Vector3 worldCenter = colliderTransform.TransformPoint(boxCollider.center);
+            float projectedRadius =
+                Mathf.Abs(Vector3.Dot(colliderTransform.right, direction)) * scaledExtents.x
+                + Mathf.Abs(Vector3.Dot(colliderTransform.up, direction)) * scaledExtents.y
+                + Mathf.Abs(Vector3.Dot(colliderTransform.forward, direction)) * scaledExtents.z;
+
+            float colliderEdge = Vector3.Dot(worldCenter, direction) + projectedRadius;
+            float connectorPosition = Vector3.Dot(connector.position, direction);
+            return Mathf.Max(0f, colliderEdge - connectorPosition);
+        }
+
+        Bounds bounds = room.roomCollider.bounds;
+        Vector3 extents = bounds.extents;
+        float fallbackRadius =
+            Mathf.Abs(direction.x) * extents.x
+            + Mathf.Abs(direction.y) * extents.y
+            + Mathf.Abs(direction.z) * extents.z;
+
+        float fallbackEdge = Vector3.Dot(bounds.center, direction) + fallbackRadius;
+        float fallbackConnectorPosition = Vector3.Dot(connector.position, direction);
+        return Mathf.Max(0f, fallbackEdge - fallbackConnectorPosition);
     }
 
     bool IntersectsSpawnedRoom(RegionSO region, RegionRoom candidateRoom)
