@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df0f8ebc63ad04e4ea7861f82c483bd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RegionPortal
-  region: {fileID: 11400000, guid: c7b1c56a9e9346e4a96741e2f5f60f56, type: 2}
+  region: {fileID: 11400000, guid: a554cb349cfdbad4eb576a6a89173301, type: 2}
 --- !u!1 &8239286146830080449
 GameObject:
   m_ObjectHideFlags: 0

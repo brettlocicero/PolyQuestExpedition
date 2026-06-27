@@ -138,7 +138,6 @@ public abstract class WeaponObject : MonoBehaviour
             StopCoroutine(attackRoutine);
 
         attack = runtimeStats.ApplyTo(attack);
-        TriggerUpgrades(WeaponUpgradeType.OnAttack, attack);
 
         attackAnimation.Rewind(attack.attackAnimation.name);
         attackAnimation.Play(attack.attackAnimation.name);
@@ -155,6 +154,7 @@ public abstract class WeaponObject : MonoBehaviour
         inAttack = true;
 
         yield return new WaitForSeconds(attack.attackDelay);
+        TriggerUpgrades(WeaponUpgradeType.OnAttack, attack);
 
         WeaponHit[] hits = Attack(attack);
         if (hits.Length > 0)

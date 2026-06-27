@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ed8e7dc06a7f49d091721f22c461bdc, type: 3}
+  m_Name: Arcane Crystal
+  m_EditorClassIdentifier: Assembly-CSharp::ShardSO
+  upgradeName: 
+  description: 
+  maxStacks: 1
+  effects:
+  - trigger: 2
+    effect: {fileID: 11400000, guid: 5b4de9ea12127d64d8a62ade5dc1a0ca, type: 2}
+  weaponUpgradeType: 0
+  effect: {fileID: 0}

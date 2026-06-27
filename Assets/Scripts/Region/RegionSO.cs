@@ -3,20 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RegionSO", menuName = "Scriptable Objects/RegionSO")]
 public class RegionSO : ScriptableObject
 {
-    [Header("Rooms")]
-    public RegionRoom startingRoomPrefab;
-    public RegionRoom endingRoomPrefab;
-    public RegionRoom[] roomPrefabs;
-    public int roomCount = 7;
+    [Header("Region Settings")]
+    public string regionName;
 
-    [Header("Hallways")]
-    public GameObject hallwayPrefab;
-    public float hallwayPrefabLength = 1f;
-
-    [Header("Placement")]
-    public int maxPlacementAttempts = 100;
-    public float colliderShrink = 0.05f;
-    public float roomSpacing = 5f;
+    [Header("")]
+    public RoomObject[] rooms;
 
     [Header("VFX")]
     public Material skybox;
@@ -28,5 +19,10 @@ public class RegionSO : ScriptableObject
         RenderSettings.skybox = skybox;
         RenderSettings.sun.color = sunColor;
         RenderSettings.ambientSkyColor = ambientColor;
+    }
+
+    public RoomObject GetRoomToSpawn()
+    {
+        return rooms[Random.Range(0, rooms.Length)];
     }
 }
