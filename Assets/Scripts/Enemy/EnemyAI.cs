@@ -68,6 +68,8 @@ public class EnemyAI : MonoBehaviour
     [HideInInspector] public float stunTimer = 0f;
     [HideInInspector] public float sqrDistToTarget = Mathf.Infinity;
 
+    EnemySpawnerObject enemySpawnerObject;
+
     void Awake()
     {
         Agent = GetComponent<NavMeshAgent>();
@@ -376,6 +378,11 @@ public class EnemyAI : MonoBehaviour
             Destroy(deathFXObj, 10f);
         }
 
+        if (enemySpawnerObject)
+        {
+            enemySpawnerObject.RegisterEnemyDeath(this);
+        }
+
         Destroy(gameObject);
     }
 
@@ -431,5 +438,10 @@ public class EnemyAI : MonoBehaviour
             AudioSource.pitch = UnityEngine.Random.Range(passiveAudioPitchRange.x, passiveAudioPitchRange.y);
             AudioSource.PlayOneShot(passiveSounds[UnityEngine.Random.Range(0, passiveSounds.Length)]);
         }
+    }
+
+    public void AttachEnemySpawnerObject(EnemySpawnerObject enemySpawnerObject)
+    {
+        this.enemySpawnerObject = enemySpawnerObject;
     }
 }
